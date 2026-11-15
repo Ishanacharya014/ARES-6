@@ -87,9 +87,10 @@ export function createInitialGameState() {
             },
 
             greenhouse: {
-                cropStatus: "empty",
-                solsUntilHarvest: 0
-            },
+    cropStatus: "empty",
+    solsUntilHarvest: 0,
+    totalHarvests: 0
+},
 
             shelter: {
                 shieldingLevel: "none",

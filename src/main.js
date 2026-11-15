@@ -3,7 +3,6 @@ import './style.css';
 import { initializeOutpost } from './ui/outpost.js';
 import { createInitialGameState } from './game/gameState.js';
 
-
 const app = document.querySelector('#app');
 
 
@@ -291,3 +290,4 @@ app.innerHTML = `
 `;
 // Enable outpost building interactions.
 initializeOutpost();
+

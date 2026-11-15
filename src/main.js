@@ -2,9 +2,14 @@
 import './style.css';
 import { initializeOutpost } from './ui/outpost.js';
 import { createInitialGameState } from './game/gameState.js';
-
+import {
+    generateSolarPower,
+    consumePower,
+    setSolarDustLevel
+} from './simulation/powerSystem.js';
 
 const app = document.querySelector('#app');
+
 
 if (!app) {
     throw new Error('ARES-6 application container not found.');
@@ -291,3 +296,80 @@ app.innerHTML = `
 // Enable outpost building interactions.
 initializeOutpost();
 
+// =====================================
+// POWER SYSTEM TESTS
+// =====================================
+
+console.log("===== ARES-6 POWER SYSTEM TESTS =====");
+
+
+// TEST 1: Clean solar panels.
+
+const powerTest1 = createInitialGameState();
+
+const result1 = generateSolarPower(powerTest1);
+
+console.log("TEST 1 - Clean panels:", result1);
+
+console.log("Power:", powerTest1.resources.power);
+
+
+// TEST 2: Dusty solar panels.
+
+const powerTest2 = createInitialGameState();
+
+setSolarDustLevel(powerTest2, "dusty");
+
+const result2 = generateSolarPower(powerTest2);
+
+console.log("TEST 2 - Dusty panels:", result2);
+
+console.log("Power:", powerTest2.resources.power);
+
+
+// TEST 3: Consume power.
+
+const powerTest3 = createInitialGameState();
+
+const result3 = consumePower(
+    powerTest3,
+    15,
+    "Habitat equipment"
+);
+
+console.log("TEST 3 - Power consumption:", result3);
+
+console.log("Power:", powerTest3.resources.power);
+
+
+// TEST 4: Insufficient power.
+
+const powerTest4 = createInitialGameState();
+
+powerTest4.resources.power = 3;
+
+const result4 = consumePower(
+    powerTest4,
+    5,
+    "Science equipment"
+);
+
+console.log("TEST 4 - Insufficient power:", result4);
+
+console.log("Power:", powerTest4.resources.power);
+
+
+// TEST 5: Maximum power limit.
+
+const powerTest5 = createInitialGameState();
+
+powerTest5.resources.power = 95;
+
+const result5 = generateSolarPower(powerTest5);
+
+console.log("TEST 5 - Maximum storage:", result5);
+
+console.log("Power:", powerTest5.resources.power);
+
+
+console.log("===== POWER TESTING COMPLETE =====");

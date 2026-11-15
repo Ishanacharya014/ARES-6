@@ -1315,3 +1315,52 @@ button {
     font-size: 9px;
     font-weight: bold;
 }
+
+/* =====================================
+   ARES-6 DYNAMIC FACILITY INFORMATION
+===================================== */
+
+.facility-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin: 12px 0;
+}
+
+.facility-detail-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 9px 10px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+.facility-detail-row span {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.facility-detail-row strong {
+    color: var(--text);
+    font-size: 10px;
+    text-align: right;
+    line-height: 1.5;
+}
+
+.facility-status-value {
+    color: var(--green);
+}
+
+.facility-close {
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 1;
+}

@@ -324,7 +324,7 @@ app.innerHTML = `
 // INITIALIZE OUTPOST
 // =====================================
 
-initializeOutpost();
+initializeOutpost(gameState);
 
 updateDashboard(gameState);
 

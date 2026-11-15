@@ -3,7 +3,7 @@
     ARES-6
     GAME STATE
 
-    This file stores all information about the current mission.
+    Stores all information about the current mission.
 */
 
 // =====================================
@@ -48,15 +48,10 @@ export function createInitialGameState() {
         // Astronaut information
         crew: {
             count: GAME_CONFIG.crewCount,
-            condition: "healthy"
+            condition: "healthy",
+            supplyShortageSols: 0,
+            radiationRiskPoints: 0
         },
-        crew: {
-    count: GAME_CONFIG.crewCount,
-    condition: "healthy",
-    supplyShortageSols: 0,
-    radiationRiskPoints: 0
-},
-
 
 
         // Main resources
@@ -65,16 +60,12 @@ export function createInitialGameState() {
         },
 
 
-        // Life support and environmental conditions
+        // Environmental and life-support systems
         systems: {
             airStatus: "good",
-            radiationStatus: "safe"
+            radiationStatus: "safe",
+            airFailureSols: 0
         },
-        systems: {
-    airStatus: "good",
-    radiationStatus: "safe",
-    airFailureSols: 0
-},
 
 
         // Facility conditions
@@ -89,10 +80,10 @@ export function createInitialGameState() {
             },
 
             greenhouse: {
-    cropStatus: "empty",
-    solsUntilHarvest: 0,
-    totalHarvests: 0
-},
+                cropStatus: "empty",
+                solsUntilHarvest: 0,
+                totalHarvests: 0
+            },
 
             shelter: {
                 shieldingLevel: "none",
@@ -124,7 +115,7 @@ export function createInitialGameState() {
         },
 
 
-        // Research objectives
+        // Scientific research objectives
         objectives: {
 
             geologicalResearch: false,
@@ -136,9 +127,12 @@ export function createInitialGameState() {
 
         // Communication with Earth
         communication: {
-    pendingReply: null,
-    receivedMessages: []
-},
+
+            pendingReply: null,
+
+            receivedMessages: []
+
+        },
 
 
         // History of player decisions

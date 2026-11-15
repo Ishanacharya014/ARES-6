@@ -1221,3 +1221,97 @@ button {
 .nasa-source-section a:hover {
     text-decoration: underline;
 }
+
+/* =====================================
+   ARES-6 DONKI SPACE WEATHER PANEL
+===================================== */
+
+.donki-live-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.donki-introduction {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.donki-notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.donki-notification {
+    padding: 11px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid var(--border);
+
+    border-radius: 7px;
+}
+
+.donki-type {
+    display: inline-block;
+
+    margin-bottom: 7px;
+
+    padding: 4px 7px;
+
+    background: rgba(105, 216, 255, 0.1);
+
+    color: #69D8FF;
+
+    border-radius: 4px;
+
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.donki-notification strong {
+    display: block;
+
+    color: var(--text);
+
+    font-size: 10px;
+}
+
+.donki-notification p {
+    margin-top: 7px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.donki-notification a {
+    display: inline-block;
+
+    margin-top: 8px;
+
+    color: #69D8FF;
+
+    font-size: 10px;
+
+    text-decoration: none;
+}
+
+.donki-notification a:hover {
+    text-decoration: underline;
+}
+
+.donki-update-time {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.donki-source-label {
+    color: #69D8FF;
+    font-size: 9px;
+    font-weight: bold;
+}

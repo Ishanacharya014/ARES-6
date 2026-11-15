@@ -19,6 +19,13 @@ import { loadNASAData } from './data/nasaData.js';
 import {
     renderNasaSciencePanel
 } from './ui/nasaSciencePanel.js';
+import {
+    fetchRecentSEPNotifications
+} from './data/donkiApi.js';
+
+import {
+    renderDonkiLivePanel
+} from './ui/nasaSciencePanel.js';
 
 const app = document.querySelector('#app');
 
@@ -247,6 +254,24 @@ app.innerHTML = `
     </p>
 
 </section>
+
+<!-- LIVE SPACE WEATHER PANEL -->
+<section
+    class="side-panel donki-live-panel"
+    id="donki-live-panel-root"
+    aria-live="polite"
+>
+
+    <span class="eyebrow">SPACE WEATHER UPDATE</span>
+
+    <h3>Checking NASA DONKI...</h3>
+
+    <p>
+        Retrieving recent space-weather notifications.
+    </p>
+
+</section>
+
                     <!-- FACILITY INFORMATION -->
                     <section
                         class="side-panel facility-panel"
@@ -300,9 +325,14 @@ app.innerHTML = `
 // =====================================
 
 initializeOutpost();
-initializeNasaSciencePanel();
+
 updateDashboard(gameState);
+
 initializeMissionEvent();
+
+initializeNasaSciencePanel();
+
+initializeDonkiPanel();
 
 // =====================================
 // HANDLE PLAYER DECISION
@@ -586,8 +616,51 @@ async function initializeNasaSciencePanel() {
 }
 
 // =====================================
+// INITIALIZE DONKI SPACE WEATHER PANEL
+// =====================================
+
+async function initializeDonkiPanel() {
+
+    console.log("Requesting NASA DONKI information...");
+
+
+    const result = await fetchRecentSEPNotifications({
+        days: 7
+    });
+
+
+    // Render the result or the fallback message.
+    renderDonkiLivePanel(result);
+
+
+    if (result.success) {
+
+        console.log(
+            "DONKI retrieval successful:",
+            result
+        );
+
+        console.log(
+            "SEP notification count:",
+            result.notifications.length
+        );
+
+    } else {
+
+        console.warn(
+            "DONKI unavailable. Historical data remains active.",
+            result.message
+        );
+
+    }
+
+}
+
+// =====================================
 // START THE MISSION
 // =====================================
+
+
 
 
 

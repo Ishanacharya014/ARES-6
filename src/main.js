@@ -1,7 +1,19 @@
-
 import './style.css';
+
 import { initializeOutpost } from './ui/outpost.js';
+
 import { createInitialGameState } from './game/gameState.js';
+
+import { renderEventPanel } from './ui/eventPanel.js';
+
+import { loadEventForCurrentSol } from './game/eventManager.js';
+
+import { applyDecision } from './game/actionManager.js';
+
+import { updateDashboard } from './ui/dashboard.js';
+import {
+    completeCurrentSol
+} from './simulation/simulationManager.js';
 const app = document.querySelector('#app');
 
 
@@ -36,7 +48,7 @@ app.innerHTML = `
             </div>
 
             <div class="sol-counter">
-                SOL <strong>01</strong> / 07
+                SOL <strong id="sol-value">01</strong> / 07
             </div>
 
         </header>
@@ -53,7 +65,7 @@ app.innerHTML = `
 
                     <div class="resource-info">
                         <span>POWER</span>
-                        <strong>80</strong>
+                        <strong id="power-value">80</strong>
                         <small>Energy units</small>
                     </div>
                 </div>
@@ -63,7 +75,7 @@ app.innerHTML = `
 
                     <div class="resource-info">
                         <span>WATER</span>
-                        <strong>70</strong>
+                        <strong id="water-value">70</strong>
                         <small>Water units</small>
                     </div>
                 </div>
@@ -73,7 +85,7 @@ app.innerHTML = `
 
                     <div class="resource-info">
                         <span>FOOD</span>
-                        <strong>60</strong>
+                        <strong id="food-value">60</strong>
                         <small>Food units</small>
                     </div>
                 </div>
@@ -198,19 +210,19 @@ app.innerHTML = `
                         <h3>4 Astronauts</h3>
 
                         <div class="status-row">
-                            <span>Air system</span>
-                            <span class="status-good">● Good</span>
-                        </div>
+    <span>Air system</span>
+    <span class="status-good" id="air-status-value">● Good</span>
+</div>
 
-                        <div class="status-row">
-                            <span>Crew condition</span>
-                            <span class="status-good">● Healthy</span>
-                        </div>
+<div class="status-row">
+    <span>Crew condition</span>
+    <span class="status-good" id="crew-status-value">● Healthy</span>
+</div>
 
-                        <div class="status-row">
-                            <span>Radiation</span>
-                            <span class="status-good">● Safe</span>
-                        </div>
+<div class="status-row">
+    <span>Radiation</span>
+    <span class="status-good" id="radiation-status-value">● Safe</span>
+</div>
 
                     </section>
                     <!-- FACILITY INFORMATION -->
@@ -223,54 +235,22 @@ app.innerHTML = `
                     </section>
 
 
-                    <!-- DAILY BRIEFING -->
-                    <section class="side-panel briefing-panel">
+                   <!-- DAILY EVENT PANEL -->
+<section
+    class="side-panel event-panel"
+    id="event-panel-root"
+    aria-live="polite"
+>
 
-                        <span class="eyebrow">DAILY BRIEFING</span>
+    <span class="eyebrow">MISSION EVENTS</span>
 
-                        <h3>Welcome to Mars!</h3>
+    <h3>Preparing today's mission...</h3>
 
-                        <p>
-                            Your crew has arrived at the ARES-6
-                            outpost. Keep everyone safe and complete
-                            your research mission over seven Sols.
-                        </p>
+    <p>
+        Your daily situation will appear here.
+    </p>
 
-                        <div class="briefing-note">
-                            Your first mission is to inspect
-                            the outpost systems.
-                        </div>
-
-                    </section>
-
-
-                    <!-- DAILY DECISION -->
-                    <section class="side-panel action-panel">
-
-                        <span class="eyebrow">MISSION ACTION</span>
-
-                        <h3>Daily decisions</h3>
-
-                        <p>
-                            You have one major decision available
-                            this Sol.
-                        </p>
-
-                        <div class="decision-indicator">
-                            <span class="status-dot"></span>
-                            Decision available
-                        </div>
-
-                        <button class="end-sol-button" disabled>
-                            END SOL
-                        </button>
-
-                        <small>
-                            Decisions will be enabled when gameplay
-                            is implemented.
-                        </small>
-
-                    </section>
+</section>
 
                 </aside>
 
@@ -286,8 +266,271 @@ app.innerHTML = `
         </footer>
 
     </div>
+  
 `;
-// Enable outpost building interactions.
+
+
+
+
+
+// =====================================
+// INITIALIZE OUTPOST
+// =====================================
+
 initializeOutpost();
 
+updateDashboard(gameState);
 
+
+// =====================================
+// HANDLE PLAYER DECISION
+// =====================================
+
+function handleChoiceSelected(choice) {
+
+    // Apply the selected decision.
+    const result = applyDecision(gameState, choice);
+
+
+    if (!result.success) {
+        return result;
+    }
+
+
+    // Update resources and crew status.
+    updateDashboard(gameState);
+
+
+    return {
+
+        success: true,
+
+        message:
+            choice.explanation ||
+            result.message
+
+    };
+
+}
+
+
+// =====================================
+// DISPLAY FINAL MISSION RESULT
+// =====================================
+
+function renderMissionFinished() {
+
+    const panel = document.querySelector("#event-panel-root");
+
+    const status = gameState.mission.status;
+
+
+    let title;
+    let description;
+
+
+    if (status === "success") {
+
+        title = "Mission Successful!";
+
+        description =
+            "Your crew survived seven Sols and completed both scientific research objectives. Excellent mission work!";
+
+    } else if (status === "partial-success") {
+
+        title = "Mission Complete!";
+
+        description =
+            "Your crew survived the seven-Sol mission, but some research objectives remain incomplete.";
+
+    } else {
+
+        title = "Mission Failed";
+
+        description =
+            "The crew could not safely complete the mission. Review the resource and life-support decisions.";
+
+    }
+
+
+    const completedObjectives =
+        Object.values(gameState.objectives)
+            .filter(Boolean).length;
+
+
+    panel.innerHTML = `
+
+        <span class="eyebrow">MISSION REPORT</span>
+
+        <h3 class="event-title">${title}</h3>
+
+        <p class="event-description">
+            ${description}
+        </p>
+
+        <div class="event-science-fact">
+
+            <span>RESEARCH PROGRESS</span>
+
+            <p>
+                ${completedObjectives} of 2 scientific objectives completed.
+            </p>
+
+        </div>
+
+        <div class="event-science-fact">
+
+            <span>FINAL RESOURCES</span>
+
+            <p>
+                Power: ${gameState.resources.power}<br>
+                Water: ${gameState.resources.water}<br>
+                Food: ${gameState.resources.food}
+            </p>
+
+        </div>
+
+        <p class="event-description">
+            Thank you for completing ARES-6.
+        </p>
+
+    `;
+
+
+    // Update mission indicator.
+    const missionInfo = document.querySelector(".mission-info");
+
+    if (missionInfo) {
+
+        missionInfo.textContent =
+            status === "failure"
+                ? "MISSION FAILED"
+                : "MISSION COMPLETE";
+
+    }
+
+}
+
+
+// =====================================
+// COMPLETE CURRENT SOL
+// =====================================
+
+async function handleEndSol() {
+
+    // Run all simulation systems.
+    const result = completeCurrentSol(gameState);
+
+
+    if (!result.success) {
+
+        return result;
+
+    }
+
+
+    console.log(
+        `SOL COMPLETED. Current Sol: ${gameState.mission.currentSol}`,
+        result.results
+    );
+
+
+    // Update the dashboard.
+    updateDashboard(gameState);
+
+
+    // Check whether the campaign has ended.
+    if (gameState.mission.status !== "playing") {
+
+        renderMissionFinished();
+
+        return {
+            success: true,
+            message: "The seven-Sol mission has ended."
+        };
+
+    }
+
+
+    // Load the next Sol's event.
+    await initializeMissionEvent();
+
+
+    return {
+        success: true,
+        message: "The next Sol has started."
+    };
+
+}
+
+
+// =====================================
+// LOAD AND DISPLAY CURRENT EVENT
+// =====================================
+
+async function initializeMissionEvent() {
+
+    const panel = document.querySelector("#event-panel-root");
+
+
+    if (!panel) {
+
+        console.error("Mission event panel not found.");
+
+        return;
+
+    }
+
+
+    panel.innerHTML = `
+        <span class="eyebrow">MISSION EVENTS</span>
+        <h3>Loading today's event...</h3>
+    `;
+
+
+    const result = await loadEventForCurrentSol(gameState);
+
+
+    if (!result.success) {
+
+        panel.innerHTML = `
+            <span class="eyebrow">EVENT ERROR</span>
+            <h3>Unable to load today's event.</h3>
+            <p>${result.message}</p>
+        `;
+
+        console.error(result.message);
+
+        return;
+
+    }
+
+
+    updateDashboard(gameState);
+
+
+    // Render actual event with both callbacks.
+    renderEventPanel(
+
+        result.event,
+
+        handleChoiceSelected,
+
+        handleEndSol
+
+    );
+
+
+    console.log(
+        "Current event loaded:",
+        result.event.title
+    );
+
+}
+
+
+// =====================================
+// START THE MISSION
+// =====================================
+
+initializeMissionEvent();

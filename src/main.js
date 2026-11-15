@@ -13,7 +13,7 @@ if (!app) {
 const gameState = createInitialGameState();
 
 // Temporary verification.
-console.log("ARES-6 Initial Game State:", gameState);
+
 
 
 app.innerHTML = `

@@ -1,0 +1,56 @@
+
+{
+  "dataset": {
+    "id": "MSL-M-RAD-3-RDR-V1.0",
+    "name": "Mars Science Laboratory Radiation Assessment Detector",
+    "instrument": "RAD",
+    "rover": "Curiosity",
+    "target": "Mars",
+    "agency": "NASA",
+    "dataType": "historical_measurements",
+    "observationPeriod": "First 10 months of Curiosity's Mars surface mission",
+    "approximatePeriod": "August 2012 to June 2013"
+  },
+
+  "observations": [
+    {
+      "id": "mars-gcr-average-2012-2013",
+      "name": "Average galactic cosmic-ray absorbed dose rate",
+      "value": 210,
+      "unit": "microgray per day",
+      "unitSymbol": "µGy/day",
+      "environment": "Mars surface",
+      "description": "Curiosity RAD observations showed an average galactic cosmic-ray absorbed dose rate of approximately 210 micrograys per day during the first ten months on Mars.",
+      "educationalExplanation": "Mars has a radiation environment that can be dangerous for astronauts. Radiation protection is an important part of planning a human mission.",
+      "dataType": "historical_average"
+    }
+  ],
+
+  "observedFeatures": [
+    {
+      "name": "Galactic cosmic rays",
+      "description": "They contributed almost all of the observed surface radiation during the reported period."
+    },
+    {
+      "name": "Forbush decreases",
+      "marsSols": [50, 97, 208, 259],
+      "description": "NASA reported sudden reductions in measured radiation associated with additional shielding from interplanetary coronal mass ejections."
+    },
+    {
+      "name": "Solar particle events",
+      "description": "Only one weak solar particle event was observed by RAD on the surface during the reported period."
+    }
+  ],
+
+  "limitations": [
+    "These are historical observations, not current live measurements.",
+    "The reported average is not a prediction of radiation exposure during the ARES-6 mission.",
+    "Absorbed dose in microgray is not the same as dose equivalent in microsievert.",
+    "The game's radiation risk points are fictional gameplay values and must not be treated as measured radiation doses."
+  ],
+
+  "sourceIds": [
+    "nasa-curiosity-rad",
+    "nasa-pds-rad-rdr"
+  ]
+}

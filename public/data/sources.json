@@ -1,0 +1,39 @@
+
+{
+  "sources": [
+    {
+      "id": "nasa-curiosity-rad",
+      "agency": "NASA",
+      "title": "Radiation Measurements on Mars",
+      "publisher": "NASA Science",
+      "url": "https://science.nasa.gov/resource/radiation-measurements-on-mars/",
+      "accessed": "2026-11-15",
+      "usedFor": "Historical Mars surface radiation measurement and educational explanation"
+    },
+    {
+      "id": "nasa-pds-rad-rdr",
+      "agency": "NASA",
+      "title": "MSL Mars Radiation Assessment Detector RDR",
+      "datasetId": "MSL-M-RAD-3-RDR-V1.0",
+      "url": "https://pds.nasa.gov/ds-view/pds/viewProfile.jsp?dsid=MSL-M-RAD-3-RDR-V1.0",
+      "accessed": "2026-11-15",
+      "usedFor": "Original calibrated radiation data archive and dataset identification"
+    },
+    {
+      "id": "nasa-donki",
+      "agency": "NASA",
+      "title": "Database of Notifications, Knowledge, Information",
+      "url": "https://ccmc.gsfc.nasa.gov/DONKI/",
+      "accessed": "2026-11-15",
+      "usedFor": "Space weather event context and optional live information"
+    },
+    {
+      "id": "nasa-osdr",
+      "agency": "NASA",
+      "title": "Open Science Data Repository",
+      "url": "https://osdr.nasa.gov/bio/repo/",
+      "accessed": "2026-11-15",
+      "usedFor": "Optional astronaut health and space life-science research"
+    }
+  ]
+}

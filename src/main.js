@@ -14,6 +14,7 @@ import { updateDashboard } from './ui/dashboard.js';
 import {
     completeCurrentSol
 } from './simulation/simulationManager.js';
+
 const app = document.querySelector('#app');
 
 
@@ -534,3 +535,4 @@ async function initializeMissionEvent() {
 // =====================================
 
 initializeMissionEvent();
+

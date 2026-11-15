@@ -14,6 +14,11 @@ import { updateDashboard } from './ui/dashboard.js';
 import {
     completeCurrentSol
 } from './simulation/simulationManager.js';
+import { loadNASAData } from './data/nasaData.js';
+
+import {
+    renderNasaSciencePanel
+} from './ui/nasaSciencePanel.js';
 
 const app = document.querySelector('#app');
 
@@ -226,6 +231,22 @@ app.innerHTML = `
 </div>
 
                     </section>
+                    <!-- NASA SCIENCE PANEL -->
+<section
+    class="side-panel nasa-science-panel"
+    id="nasa-science-panel-root"
+    aria-live="polite"
+>
+
+    <span class="eyebrow">NASA SCIENCE DATA</span>
+
+    <h3>Loading historical research...</h3>
+
+    <p>
+        Retrieving Curiosity rover radiation measurements.
+    </p>
+
+</section>
                     <!-- FACILITY INFORMATION -->
                     <section
                         class="side-panel facility-panel"
@@ -279,9 +300,9 @@ app.innerHTML = `
 // =====================================
 
 initializeOutpost();
-
+initializeNasaSciencePanel();
 updateDashboard(gameState);
-
+initializeMissionEvent();
 
 // =====================================
 // HANDLE PLAYER DECISION
@@ -531,8 +552,42 @@ async function initializeMissionEvent() {
 
 
 // =====================================
+// INITIALIZE NASA SCIENCE PANEL
+// =====================================
+
+async function initializeNasaSciencePanel() {
+
+    console.log("Loading NASA science information...");
+
+
+    // Load validated historical NASA data.
+    const result = await loadNASAData();
+
+
+    // Render the information.
+    const rendered = renderNasaSciencePanel(result);
+
+
+    if (!rendered) {
+
+        console.warn(
+            "NASA Science Panel could not display its data."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "NASA historical radiation data displayed successfully."
+    );
+
+}
+
+// =====================================
 // START THE MISSION
 // =====================================
 
-initializeMissionEvent();
+
 

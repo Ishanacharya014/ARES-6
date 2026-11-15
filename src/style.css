@@ -1078,3 +1078,146 @@ button {
 
     text-align: center;
 }
+
+/* =====================================
+   ARES-6 NASA SCIENCE PANEL
+===================================== */
+
+.nasa-science-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.nasa-data-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.nasa-data-badge {
+    color: #69D8FF;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+}
+
+.nasa-data-status {
+    padding: 4px 7px;
+    border-radius: 5px;
+    background: rgba(105, 216, 255, 0.09);
+    color: #69D8FF;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+.nasa-science-title {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.nasa-radiation-measurement {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+
+    padding: 13px;
+
+    background: rgba(105, 216, 255, 0.09);
+
+    border-left: 3px solid #69D8FF;
+
+    border-radius: 6px;
+}
+
+.nasa-radiation-measurement strong {
+    color: #69D8FF;
+    font-size: 27px;
+    line-height: 1.2;
+}
+
+.nasa-radiation-measurement span {
+    color: #C4D8EA;
+    font-size: 11px;
+}
+
+.nasa-science-description {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.nasa-science-detail {
+    padding: 10px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border-radius: 6px;
+}
+
+.nasa-science-detail span,
+.nasa-source-section > span {
+    display: block;
+
+    color: #69D8FF;
+
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+}
+
+.nasa-science-detail p {
+    margin-top: 6px;
+
+    color: #D1DEEC;
+
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.nasa-science-warning {
+    padding: 10px;
+
+    background: rgba(255, 190, 100, 0.08);
+
+    border-left: 3px solid #E8BD69;
+
+    border-radius: 5px;
+}
+
+.nasa-science-warning strong {
+    color: #E8BD69;
+    font-size: 10px;
+}
+
+.nasa-science-warning p {
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.nasa-source-section {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.nasa-source-section a {
+    color: #69D8FF;
+
+    font-size: 10px;
+    line-height: 1.5;
+
+    text-decoration: none;
+}
+
+.nasa-source-section a:hover {
+    text-decoration: underline;
+}

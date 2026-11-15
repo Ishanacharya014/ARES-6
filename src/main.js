@@ -1,12 +1,20 @@
 
 import './style.css';
 import { initializeOutpost } from './ui/outpost.js';
+import { createInitialGameState } from './game/gameState.js';
+
 
 const app = document.querySelector('#app');
 
 if (!app) {
     throw new Error('ARES-6 application container not found.');
 }
+// Create a fresh mission state.
+const gameState = createInitialGameState();
+
+// Temporary verification.
+console.log("ARES-6 Initial Game State:", gameState);
+
 
 app.innerHTML = `
     <div class="game-shell">
@@ -282,3 +290,4 @@ app.innerHTML = `
 `;
 // Enable outpost building interactions.
 initializeOutpost();
+

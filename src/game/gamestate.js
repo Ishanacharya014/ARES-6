@@ -50,6 +50,11 @@ export function createInitialGameState() {
             count: GAME_CONFIG.crewCount,
             condition: "healthy"
         },
+        crew: {
+    count: GAME_CONFIG.crewCount,
+    condition: "healthy",
+    supplyShortageSols: 0
+},
 
 
         // Main resources
@@ -63,6 +68,11 @@ export function createInitialGameState() {
             airStatus: "good",
             radiationStatus: "safe"
         },
+        systems: {
+    airStatus: "good",
+    radiationStatus: "safe",
+    airFailureSols: 0
+},
 
 
         // Facility conditions

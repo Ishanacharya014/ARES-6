@@ -3,8 +3,11 @@
     ARES-6
     SIMULATION MANAGER
 
-    Coordinates all simulation systems
-    at the end of each Sol.
+    Coordinates all simulation systems at the end of each Sol.
+
+    Uses an atomic update:
+    Either the complete Sol succeeds, or the original
+    game state remains unchanged.
 */
 
 import {
@@ -78,7 +81,6 @@ function updateCrewCondition(gameState) {
     }
 
 
-    // All systems are healthy.
     gameState.crew.condition = "healthy";
 
 }
@@ -88,25 +90,65 @@ function updateCrewCondition(gameState) {
 // 2. RUN A SINGLE SIMULATION STEP
 // =====================================
 
-function runSimulationStep(name, simulationFunction, gameState) {
+function runSimulationStep(
+    name,
+    simulationFunction,
+    gameState
+) {
 
-    const result = simulationFunction(gameState);
+    try {
 
-    if (!result.success) {
+        const result = simulationFunction(gameState);
+
+
+        if (!result || result.success !== true) {
+
+            return {
+
+                success: false,
+
+                step: name,
+
+                message:
+                    result?.message ||
+                    `${name} simulation failed.`
+
+            };
+
+        }
+
 
         return {
-            success: false,
+
+            success: true,
+
             step: name,
-            message: result.message
+
+            result: result
+
+        };
+
+
+    } catch (error) {
+
+        console.error(
+            `Simulation error in ${name}:`,
+            error
+        );
+
+
+        return {
+
+            success: false,
+
+            step: name,
+
+            message:
+                `${name} encountered an unexpected error.`
+
         };
 
     }
-
-    return {
-        success: true,
-        step: name,
-        result: result
-    };
 
 }
 
@@ -117,14 +159,55 @@ function runSimulationStep(name, simulationFunction, gameState) {
 
 export function completeCurrentSol(gameState) {
 
+    // Validate original state.
+    if (!gameState?.mission || !gameState?.turn) {
+
+        return {
+
+            success: false,
+
+            message: "Game state is unavailable."
+
+        };
+
+    }
+
+
+    // =====================================
+    // 4. CREATE TEMPORARY GAME STATE
+    // =====================================
+
+    let draftState;
+
+    try {
+
+        draftState = structuredClone(gameState);
+
+    } catch (error) {
+
+        return {
+
+            success: false,
+
+            message: "Could not create a temporary simulation state."
+
+        };
+
+    }
+
+
     // Check whether ending the Sol is allowed.
-    const validation = canEndCurrentSol(gameState);
+    const validation = canEndCurrentSol(draftState);
+
 
     if (!validation.allowed) {
 
         return {
+
             success: false,
+
             message: validation.reason
+
         };
 
     }
@@ -134,11 +217,14 @@ export function completeCurrentSol(gameState) {
     const results = {};
 
 
-    // STEP 1: Generate solar electricity.
+    // =====================================
+    // STEP 1: GENERATE SOLAR ELECTRICITY
+    // =====================================
+
     const powerResult = runSimulationStep(
         "Solar power",
         generateSolarPower,
-        gameState
+        draftState
     );
 
     if (!powerResult.success) {
@@ -148,11 +234,14 @@ export function completeCurrentSol(gameState) {
     results.power = powerResult.result;
 
 
-    // STEP 2: Operate life support.
+    // =====================================
+    // STEP 2: OPERATE LIFE SUPPORT
+    // =====================================
+
     const airResult = runSimulationStep(
         "Life support",
         runLifeSupport,
-        gameState
+        draftState
     );
 
     if (!airResult.success) {
@@ -162,11 +251,14 @@ export function completeCurrentSol(gameState) {
     results.lifeSupport = airResult.result;
 
 
-    // STEP 3: Consume crew food and water.
+    // =====================================
+    // STEP 3: CONSUME CREW SUPPLIES
+    // =====================================
+
     const supplyResult = runSimulationStep(
         "Crew supplies",
         consumeCrewSupplies,
-        gameState
+        draftState
     );
 
     if (!supplyResult.success) {
@@ -176,11 +268,14 @@ export function completeCurrentSol(gameState) {
     results.supplies = supplyResult.result;
 
 
-    // STEP 4: Advance greenhouse growth.
+    // =====================================
+    // STEP 4: ADVANCE GREENHOUSE GROWTH
+    // =====================================
+
     const cropResult = runSimulationStep(
         "Greenhouse",
         advanceCropGrowth,
-        gameState
+        draftState
     );
 
     if (!cropResult.success) {
@@ -190,11 +285,14 @@ export function completeCurrentSol(gameState) {
     results.greenhouse = cropResult.result;
 
 
-    // STEP 5: Resolve the radiation warning.
+    // =====================================
+    // STEP 5: RESOLVE RADIATION EVENT
+    // =====================================
+
     const radiationResult = runSimulationStep(
         "Radiation",
         resolveRadiationEvent,
-        gameState
+        draftState
     );
 
     if (!radiationResult.success) {
@@ -204,19 +302,30 @@ export function completeCurrentSol(gameState) {
     results.radiation = radiationResult.result;
 
 
-    // STEP 6: Recalculate overall crew condition.
-    updateCrewCondition(gameState);
+    // =====================================
+    // STEP 6: UPDATE CREW CONDITION
+    // =====================================
+
+    updateCrewCondition(draftState);
 
 
-    // STEP 7: End the Sol and evaluate the mission.
-    const turnResult = endCurrentSol(gameState);
+    // =====================================
+    // STEP 7: END THE CURRENT SOL
+    // =====================================
+
+    const turnResult = endCurrentSol(draftState);
+
 
     if (!turnResult.ended) {
 
         return {
+
             success: false,
+
             message: turnResult.message,
+
             results: results
+
         };
 
     }
@@ -225,18 +334,31 @@ export function completeCurrentSol(gameState) {
     results.turn = turnResult;
 
 
-    // STEP 8: Prepare the next Sol.
+    // =====================================
+    // STEP 8: PREPARE THE NEXT SOL
+    // =====================================
+
     if (turnResult.advanced) {
 
-        // Radiation warnings apply to one Sol
-        // in our current gameplay model.
-        gameState.systems.radiationStatus = "safe";
+        // Radiation warning applies to one Sol
+        // in the current gameplay model.
+        draftState.systems.radiationStatus = "safe";
 
 
         // Deliver any reply due on the new Sol.
-        results.communication = processCommunication(gameState);
+        results.communication =
+            processCommunication(draftState);
 
     }
+
+
+    // =====================================
+    // STEP 9: COMMIT COMPLETE SIMULATION
+    // =====================================
+
+    // No original state changes have occurred
+    // until every simulation step succeeded.
+    Object.assign(gameState, draftState);
 
 
     return {

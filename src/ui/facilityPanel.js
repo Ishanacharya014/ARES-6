@@ -5,7 +5,8 @@
 
     Displays live information about outpost facilities.
 */
-
+// Stores the currently inspected facility.
+let activeFacilityId = null;
 
 // =====================================
 // 1. FACILITY DESCRIPTIONS
@@ -459,6 +460,7 @@ export function showFacilityPanel(facilityId, gameState) {
         return;
 
     }
+    activeFacilityId = facilityId;
 
 
     // =====================================
@@ -562,10 +564,39 @@ export function showFacilityPanel(facilityId, gameState) {
 
     closeButton.addEventListener("click", () => {
 
-        panel.hidden = true;
+    panel.hidden = true;
 
-        panel.innerHTML = "";
+    panel.innerHTML = "";
 
-    });
+    activeFacilityId = null;
+
+});
+return true;
+}
+
+// =====================================
+// REFRESH CURRENT FACILITY PANEL
+// =====================================
+
+export function refreshFacilityPanel(gameState) {
+
+    const panel = document.querySelector(
+        "#facility-panel-root"
+    );
+
+
+    // Nothing is currently being inspected.
+    if (!activeFacilityId || !panel || panel.hidden) {
+
+        return false;
+
+    }
+
+
+    // Re-render the same facility using updated game state.
+    return showFacilityPanel(
+        activeFacilityId,
+        gameState
+    );
 
 }

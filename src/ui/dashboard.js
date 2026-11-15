@@ -3,12 +3,12 @@
     ARES-6
     DASHBOARD
 
-    Updates resource values, Sol number and crew status.
+    Synchronizes the interface with the current game state.
 */
 
 
 // =====================================
-// 1. UPDATE RESOURCE VALUES
+// 1. UPDATE TEXT ELEMENTS
 // =====================================
 
 function updateText(id, value) {
@@ -16,7 +16,7 @@ function updateText(id, value) {
     const element = document.getElementById(id);
 
     if (element) {
-        element.textContent = value;
+        element.textContent = String(value);
     }
 
 }
@@ -30,28 +30,43 @@ function updateStatus(id, value, labels) {
 
     const element = document.getElementById(id);
 
-    if (!element) {
-        return;
-    }
+    if (!element) return;
 
     const status = labels[value] ?? "Unknown";
 
-    element.textContent = `● ${status}`;
+    element.textContent = status;
 
-    if (value === "good" || value === "healthy" || value === "safe") {
+    element.classList.remove(
+        "status-good",
+        "status-warning",
+        "status-critical"
+    );
 
-        element.className = "status-good";
+    if (
+        value === "good" ||
+        value === "healthy" ||
+        value === "safe"
+    ) {
+
+        element.classList.add("status-good");
 
     } else if (
         value === "needs-attention" ||
         value === "caution"
     ) {
 
-        element.className = "status-warning";
+        element.classList.add("status-warning");
+
+    } else if (
+        value === "critical" ||
+        value === "danger"
+    ) {
+
+        element.classList.add("status-critical");
 
     } else {
 
-        element.className = "status-critical";
+        element.classList.add("status-warning");
 
     }
 
@@ -59,18 +74,162 @@ function updateStatus(id, value, labels) {
 
 
 // =====================================
-// 3. UPDATE COMPLETE DASHBOARD
+// 3. UPDATE MISSION STATUS
+// =====================================
+
+function updateMissionStatus(gameState) {
+
+    const missionStatus = gameState.mission.status;
+
+    const labels = {
+
+        playing: "MARS MISSION ACTIVE",
+        success: "MISSION COMPLETE",
+        "partial-success": "MISSION COMPLETE",
+        failure: "MISSION FAILED"
+
+    };
+
+    updateText(
+        "mission-status-label",
+        labels[missionStatus] ?? "MISSION STATUS UNKNOWN"
+    );
+
+    const dot = document.getElementById("mission-status-dot");
+
+    if (dot) {
+        dot.dataset.status = missionStatus;
+    }
+
+}
+
+
+// =====================================
+// 4. UPDATE MISSION OBJECTIVES
+// =====================================
+
+function updateObjectives(gameState) {
+
+    const objectives = gameState.objectives;
+
+    const geologicalComplete =
+        objectives.geologicalResearch;
+
+    const environmentalComplete =
+        objectives.environmentalResearch;
+
+    const completedObjectives =
+        Number(geologicalComplete) +
+        Number(environmentalComplete);
+
+
+    updateText(
+        "geological-objective-status",
+        geologicalComplete ? "Completed" : "Pending"
+    );
+
+    updateText(
+        "environmental-objective-status",
+        environmentalComplete ? "Completed" : "Pending"
+    );
+
+    updateText(
+        "completed-objectives-value",
+        `${completedObjectives} / 2`
+    );
+
+
+    // Update objective progress bar.
+    const objectiveFill = document.getElementById(
+        "objectives-progress-fill"
+    );
+
+    if (objectiveFill) {
+
+        objectiveFill.style.width =
+            `${completedObjectives / 2 * 100}%`;
+
+    }
+
+}
+
+
+// =====================================
+// 5. UPDATE SEVEN-SOL TIMELINE
+// =====================================
+
+function updateSolTimeline(gameState) {
+
+    const currentSol = gameState.mission.currentSol;
+
+    const totalSols = gameState.mission.totalSols;
+
+    updateText(
+        "sol-progress-label",
+        `Sol ${currentSol} of ${totalSols}`
+    );
+
+
+    const timeline = document.getElementById(
+        "sol-timeline"
+    );
+
+    if (!timeline) return;
+
+
+    timeline.querySelectorAll("[data-sol-step]")
+        .forEach(step => {
+
+            const number = Number(step.dataset.solStep);
+
+            step.classList.toggle(
+                "is-complete",
+                number < currentSol ||
+                (
+                    number === currentSol &&
+                    gameState.mission.status !== "playing"
+                )
+            );
+
+            step.classList.toggle(
+                "is-current",
+                number === currentSol &&
+                gameState.mission.status === "playing"
+            );
+
+        });
+
+}
+
+
+// =====================================
+// 6. UPDATE COMPLETE DASHBOARD
 // =====================================
 
 export function updateDashboard(gameState) {
 
-    if (!gameState) {
-        console.error("Cannot update dashboard: game state missing.");
-        return;
+    // Validate game state.
+    if (
+        !gameState?.resources ||
+        !gameState?.mission ||
+        !gameState?.crew ||
+        !gameState?.systems ||
+        !gameState?.objectives
+    ) {
+
+        console.error(
+            "Cannot update dashboard: invalid game state."
+        );
+
+        return false;
+
     }
 
 
-    // Update resources.
+    // =====================================
+    // RESOURCES
+    // =====================================
+
     updateText("power-value", gameState.resources.power);
 
     updateText("water-value", gameState.resources.water);
@@ -78,14 +237,35 @@ export function updateDashboard(gameState) {
     updateText("food-value", gameState.resources.food);
 
 
-    // Update Sol number.
+    // =====================================
+    // MISSION PROGRESS
+    // =====================================
+
     updateText(
         "sol-value",
         String(gameState.mission.currentSol).padStart(2, "0")
     );
 
+    updateText(
+        "total-sols-value",
+        String(gameState.mission.totalSols).padStart(2, "0")
+    );
 
-    // Update crew and system status.
+
+    // =====================================
+    // CREW COUNT
+    // =====================================
+
+    updateText(
+        "crew-count-value",
+        gameState.crew.count
+    );
+
+
+    // =====================================
+    // AIR SYSTEM
+    // =====================================
+
     updateStatus(
         "air-status-value",
         gameState.systems.airStatus,
@@ -96,6 +276,10 @@ export function updateDashboard(gameState) {
         }
     );
 
+
+    // =====================================
+    // CREW CONDITION
+    // =====================================
 
     updateStatus(
         "crew-status-value",
@@ -108,6 +292,10 @@ export function updateDashboard(gameState) {
     );
 
 
+    // =====================================
+    // RADIATION STATUS
+    // =====================================
+
     updateStatus(
         "radiation-status-value",
         gameState.systems.radiationStatus,
@@ -117,5 +305,29 @@ export function updateDashboard(gameState) {
             danger: "Danger"
         }
     );
+
+
+    // =====================================
+    // OVERALL MISSION STATUS
+    // =====================================
+
+    updateMissionStatus(gameState);
+
+
+    // =====================================
+    // OBJECTIVES
+    // =====================================
+
+    updateObjectives(gameState);
+
+
+    // =====================================
+    // SOL TIMELINE
+    // =====================================
+
+    updateSolTimeline(gameState);
+
+
+    return true;
 
 }

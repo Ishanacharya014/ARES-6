@@ -1364,3 +1364,366 @@ button {
     font-size: 20px;
     line-height: 1;
 }
+
+/* =====================================
+   DASHBOARD STATUS INDICATORS
+===================================== */
+
+/* Small status dots without Unicode text. */
+
+.status-good::before,
+.status-warning::before,
+.status-critical::before {
+
+    content: "";
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    margin-right: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+    vertical-align: middle;
+
+}
+
+
+/* Overall mission indicator */
+
+.live-dot[data-status="failure"] {
+
+    background: #ff7474;
+
+    box-shadow: 0 0 8px rgba(255, 116, 116, 0.7);
+
+}
+
+
+.live-dot[data-status="success"],
+.live-dot[data-status="partial-success"] {
+
+    background: var(--green);
+
+    box-shadow: 0 0 8px rgba(127, 224, 165, 0.7);
+
+}
+
+/* =====================================
+   ARES-6 LAYOUT CALIBRATION
+===================================== */
+
+/* Use available screen width and remove artificial empty space */
+
+.game-shell {
+    width: min(100%, 1760px);
+    min-height: 100vh;
+    padding: 16px clamp(16px, 2.2vw, 36px);
+}
+
+.game-content {
+    flex: 0 0 auto;
+    padding: 18px 0 24px;
+}
+
+
+/* Compact resource cards */
+
+.resource-dashboard {
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.resource-card {
+    min-height: 88px;
+    padding: 15px;
+    border-radius: 11px;
+}
+
+.resource-icon {
+    width: 42px;
+    height: 42px;
+}
+
+
+/* Main two-column layout */
+
+.game-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 340px);
+    align-items: start;
+    gap: 18px;
+}
+
+.outpost-map {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+}
+
+.section-heading {
+    margin-bottom: 11px;
+}
+
+
+/* Sidebar hierarchy */
+
+.mission-sidebar {
+    gap: 12px;
+}
+
+.side-panel {
+    padding: 16px;
+    border-radius: 11px;
+}
+
+.side-panel h3 {
+    margin: 7px 0 12px;
+}
+
+.event-panel {
+    order: 0;
+}
+
+.crew-panel {
+    order: -1;
+}
+
+
+/* Collapsible science section */
+
+.science-drawer {
+    padding: 14px 16px;
+
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+
+.science-drawer summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    list-style: none;
+    cursor: pointer;
+}
+
+.science-drawer summary::-webkit-details-marker {
+    display: none;
+}
+
+.science-drawer summary strong {
+    display: block;
+    color: var(--blue);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.science-drawer summary small {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.science-chevron {
+    color: var(--blue);
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+
+.science-drawer[open] .science-chevron {
+    transform: rotate(45deg);
+}
+
+.science-drawer > .side-panel {
+    margin-top: 12px;
+    padding: 13px 0 0;
+
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+}
+
+
+/* Mission progress below the map */
+
+.outpost-progress {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.progress-card {
+    min-width: 0;
+    padding: 15px;
+
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.progress-card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.progress-card-heading strong {
+    color: var(--blue);
+    font-size: 11px;
+}
+
+.objective-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+
+    font-size: 10px;
+}
+
+.objective-item span {
+    color: var(--muted);
+}
+
+.objective-item strong {
+    color: var(--green);
+    font-size: 10px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 5px;
+    margin-top: 9px;
+
+    overflow: hidden;
+    background: #26384f;
+    border-radius: 10px;
+}
+
+#objectives-progress-fill {
+    width: 0;
+    height: 100%;
+
+    background: var(--green);
+    border-radius: inherit;
+
+    transition: width 0.3s ease;
+}
+
+
+/* Seven-Sol timeline */
+
+.sol-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+
+    margin: 20px 0 12px;
+}
+
+.sol-timeline span {
+    display: grid;
+    place-items: center;
+
+    width: 27px;
+    height: 27px;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    background: #1a2b40;
+    color: var(--muted);
+
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.sol-timeline span.is-current {
+    background: rgba(105, 216, 255, 0.15);
+    border: 2px solid var(--blue);
+    color: var(--blue);
+}
+
+.sol-timeline span.is-complete {
+    background: rgba(127, 224, 165, 0.15);
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.timeline-labels {
+    display: flex;
+    justify-content: space-between;
+
+    color: var(--muted);
+    font-size: 8px;
+    letter-spacing: 0.8px;
+}
+
+
+/* Responsive layout */
+
+@media (max-width: 900px) {
+
+    .game-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mission-sidebar {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .outpost-progress {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .game-shell {
+        padding: 12px;
+    }
+
+    .game-content {
+        padding: 14px 0;
+    }
+
+    .resource-card {
+        min-height: 78px;
+        padding: 9px;
+    }
+
+    .resource-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .resource-info strong {
+        font-size: 19px;
+    }
+
+    .outpost-progress {
+        grid-template-columns: 1fr;
+    }
+
+    .outpost-map {
+        min-height: 300px;
+    }
+
+}

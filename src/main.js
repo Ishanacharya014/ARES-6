@@ -26,7 +26,9 @@ import {
 import {
     renderDonkiLivePanel
 } from './ui/nasaSciencePanel.js';
-
+import {
+    refreshFacilityPanel
+} from './ui/facilityPanel.js';
 const app = document.querySelector('#app');
 
 
@@ -35,6 +37,20 @@ if (!app) {
 }
 // Create a fresh mission state.
 const gameState = createInitialGameState();
+
+// =====================================
+// CENTRALIZED INTERFACE REFRESH
+// =====================================
+
+function refreshGameInterface() {
+
+    // Update resources, crew and mission status.
+    updateDashboard(gameState);
+
+    // Update currently inspected facility.
+    refreshFacilityPanel(gameState);
+
+}
 
 // Temporary verification.
 
@@ -56,12 +72,22 @@ app.innerHTML = `
             </div>
 
             <div class="mission-info">
-                <span class="live-dot"></span>
-                MARS MISSION ACTIVE
-            </div>
+
+    <span
+        class="live-dot"
+        id="mission-status-dot"
+        data-status="playing"
+    ></span>
+
+    <span id="mission-status-label">
+        MARS MISSION ACTIVE
+    </span>
+
+</div>
 
             <div class="sol-counter">
-                SOL <strong id="sol-value">01</strong> / 07
+                SOL <strong id="sol-value">01</strong> /
+<span id="total-sols-value">07</span>
             </div>
 
         </header>
@@ -209,97 +235,162 @@ app.innerHTML = `
                         <span>OUTPOST VIEW</span>
                     </div>
 
+<!-- MISSION PROGRESS UNDER OUTPOST -->
+<section class="outpost-progress">
+
+    <!-- OBJECTIVES -->
+    <div class="progress-card">
+
+        <div class="progress-card-heading">
+            <span class="eyebrow">MISSION OBJECTIVES</span>
+            <strong id="completed-objectives-value">0 / 2</strong>
+        </div>
+
+        <div class="objective-item">
+            <span>Geological research</span>
+            <strong id="geological-objective-status">Pending</strong>
+        </div>
+
+        <div class="objective-item">
+            <span>Environmental research</span>
+            <strong id="environmental-objective-status">Pending</strong>
+        </div>
+
+        <div class="progress-track">
+            <div id="objectives-progress-fill"></div>
+        </div>
+
+    </div>
+
+
+    <!-- SEVEN SOL TIMELINE -->
+    <div class="progress-card">
+
+        <div class="progress-card-heading">
+            <span class="eyebrow">MISSION TIMELINE</span>
+            <strong id="sol-progress-label">Sol 1 of 7</strong>
+        </div>
+
+        <div class="sol-timeline" id="sol-timeline">
+
+            <span data-sol-step="1" class="is-current">1</span>
+            <span data-sol-step="2">2</span>
+            <span data-sol-step="3">3</span>
+            <span data-sol-step="4">4</span>
+            <span data-sol-step="5">5</span>
+            <span data-sol-step="6">6</span>
+            <span data-sol-step="7">7</span>
+
+        </div>
+
+        <div class="timeline-labels">
+            <span>MISSION START</span>
+            <span>MISSION END</span>
+        </div>
+
+    </div>
+
+</section>
+
+
                 </section>
 
 
                 <!-- RIGHT SIDEBAR -->
-                <aside class="mission-sidebar">
+                
+<!-- RIGHT SIDEBAR -->
+<aside class="mission-sidebar">
 
-                    <!-- CREW STATUS -->
-                    <section class="side-panel">
+    <!-- CREW STATUS -->
+    <section class="side-panel crew-panel">
 
-                        <span class="eyebrow">CREW STATUS</span>
+        <span class="eyebrow">CREW STATUS</span>
 
-                        <h3>4 Astronauts</h3>
+        <h3>
+            <span id="crew-count-value">4</span>
+            Astronauts
+        </h3>
 
-                        <div class="status-row">
-    <span>Air system</span>
-    <span class="status-good" id="air-status-value">● Good</span>
-</div>
+        <div class="status-row">
+            <span>Air system</span>
+            <span class="status-good" id="air-status-value">Good</span>
+        </div>
 
-<div class="status-row">
-    <span>Crew condition</span>
-    <span class="status-good" id="crew-status-value">● Healthy</span>
-</div>
+        <div class="status-row">
+            <span>Crew condition</span>
+            <span class="status-good" id="crew-status-value">Healthy</span>
+        </div>
 
-<div class="status-row">
-    <span>Radiation</span>
-    <span class="status-good" id="radiation-status-value">● Safe</span>
-</div>
+        <div class="status-row">
+            <span>Radiation</span>
+            <span class="status-good" id="radiation-status-value">Safe</span>
+        </div>
 
-                    </section>
-                    <!-- NASA SCIENCE PANEL -->
-<section
-    class="side-panel nasa-science-panel"
-    id="nasa-science-panel-root"
-    aria-live="polite"
->
-
-    <span class="eyebrow">NASA SCIENCE DATA</span>
-
-    <h3>Loading historical research...</h3>
-
-    <p>
-        Retrieving Curiosity rover radiation measurements.
-    </p>
-
-</section>
-
-<!-- LIVE SPACE WEATHER PANEL -->
-<section
-    class="side-panel donki-live-panel"
-    id="donki-live-panel-root"
-    aria-live="polite"
->
-
-    <span class="eyebrow">SPACE WEATHER UPDATE</span>
-
-    <h3>Checking NASA DONKI...</h3>
-
-    <p>
-        Retrieving recent space-weather notifications.
-    </p>
-
-</section>
-
-                    <!-- FACILITY INFORMATION -->
-                    <section
-                        class="side-panel facility-panel"
-                        id="facility-panel-root"
-                        hidden
-                        aria-live="polite"
-                    >
-                    </section>
+    </section>
 
 
-                   <!-- DAILY EVENT PANEL -->
-<section
-    class="side-panel event-panel"
-    id="event-panel-root"
-    aria-live="polite"
->
+    <!-- DAILY MISSION - PRIORITY -->
+    <section
+        class="side-panel event-panel"
+        id="event-panel-root"
+        aria-live="polite"
+    >
 
-    <span class="eyebrow">MISSION EVENTS</span>
+        <span class="eyebrow">TODAY'S MISSION</span>
 
-    <h3>Preparing today's mission...</h3>
+        <h3>Preparing today's mission...</h3>
 
-    <p>
-        Your daily situation will appear here.
-    </p>
+        <p>Your daily situation will appear here.</p>
 
-</section>
+    </section>
 
-                </aside>
+
+    <!-- FACILITY INSPECTION -->
+    <section
+        class="side-panel facility-panel"
+        id="facility-panel-root"
+        hidden
+        aria-live="polite"
+    >
+    </section>
+
+
+    <!-- COLLAPSIBLE SCIENCE INFORMATION -->
+    <details class="science-drawer">
+
+        <summary>
+            <span>
+                <strong>NASA SCIENCE & SPACE WEATHER</strong>
+                <small>Historical research and live updates</small>
+            </span>
+
+            <span class="science-chevron">+</span>
+        </summary>
+
+
+        <section
+            class="side-panel nasa-science-panel"
+            id="nasa-science-panel-root"
+            aria-live="polite"
+        >
+            <span class="eyebrow">NASA HISTORICAL DATA</span>
+            <h3>Loading historical research...</h3>
+        </section>
+
+
+        <section
+            class="side-panel donki-live-panel"
+            id="donki-live-panel-root"
+            aria-live="polite"
+        >
+            <span class="eyebrow">SPACE WEATHER UPDATE</span>
+            <h3>Checking NASA DONKI...</h3>
+        </section>
+
+    </details>
+
+</aside>
+
 
             </section>
 
@@ -326,13 +417,9 @@ app.innerHTML = `
 
 initializeOutpost(gameState);
 
-updateDashboard(gameState);
+refreshGameInterface();
 
-initializeMissionEvent();
 
-initializeNasaSciencePanel();
-
-initializeDonkiPanel();
 
 // =====================================
 // HANDLE PLAYER DECISION
@@ -350,7 +437,7 @@ function handleChoiceSelected(choice) {
 
 
     // Update resources and crew status.
-    updateDashboard(gameState);
+    refreshGameInterface();;
 
 
     return {
@@ -449,17 +536,7 @@ function renderMissionFinished() {
     `;
 
 
-    // Update mission indicator.
-    const missionInfo = document.querySelector(".mission-info");
-
-    if (missionInfo) {
-
-        missionInfo.textContent =
-            status === "failure"
-                ? "MISSION FAILED"
-                : "MISSION COMPLETE";
-
-    }
+    
 
 }
 
@@ -488,7 +565,7 @@ async function handleEndSol() {
 
 
     // Update the dashboard.
-    updateDashboard(gameState);
+    refreshGameInterface();;
 
 
     // Check whether the campaign has ended.
@@ -558,7 +635,7 @@ async function initializeMissionEvent() {
     }
 
 
-    updateDashboard(gameState);
+    refreshGameInterface();;
 
 
     // Render actual event with both callbacks.
@@ -664,3 +741,54 @@ async function initializeDonkiPanel() {
 
 
 
+
+// =====================================
+// ARES-6 APPLICATION STARTUP
+// =====================================
+
+async function startApplication() {
+
+    console.log("===== ARES-6 INITIALIZATION =====");
+
+
+    // Load independent mission panels together.
+    const results = await Promise.allSettled([
+
+        initializeMissionEvent(),
+
+        initializeNasaSciencePanel(),
+
+        initializeDonkiPanel()
+
+    ]);
+
+
+    // Report initialization failures.
+    results.forEach((result, index) => {
+
+        const names = [
+            "Mission Event",
+            "NASA Science",
+            "NASA DONKI"
+        ];
+
+
+        if (result.status === "rejected") {
+
+            console.error(
+                `${names[index]} initialization failed:`,
+                result.reason
+            );
+
+        }
+
+    });
+
+
+    console.log("===== ARES-6 INITIALIZATION FINISHED =====");
+
+}
+
+
+// Start the application panels.
+startApplication();

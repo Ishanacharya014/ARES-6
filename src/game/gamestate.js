@@ -53,8 +53,10 @@ export function createInitialGameState() {
         crew: {
     count: GAME_CONFIG.crewCount,
     condition: "healthy",
-    supplyShortageSols: 0
+    supplyShortageSols: 0,
+    radiationRiskPoints: 0
 },
+
 
 
         // Main resources

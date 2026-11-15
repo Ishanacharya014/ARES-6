@@ -136,10 +136,9 @@ export function createInitialGameState() {
 
         // Communication with Earth
         communication: {
-
-            pendingReply: null
-
-        },
+    pendingReply: null,
+    receivedMessages: []
+},
 
 
         // History of player decisions

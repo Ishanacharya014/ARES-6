@@ -290,4 +290,3 @@ app.innerHTML = `
 `;
 // Enable outpost building interactions.
 initializeOutpost();
-

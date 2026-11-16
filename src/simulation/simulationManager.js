@@ -295,10 +295,7 @@ export function completeCurrentSol(gameState) {
 
     const cropResult = runSimulationStep(
         "Greenhouse",
-        state => advanceCropGrowth(
-            state,
-            state.turn.powerAllocation?.greenhouse === 2
-        ),
+        advanceCropGrowth,
         draftState
     );
 

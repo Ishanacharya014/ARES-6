@@ -366,9 +366,8 @@ export function renderDonkiLivePanel(result) {
                     </strong>
 
                     <p>
-                        ${escapeHTML(
-                            notification.message.slice(0, 260)
-                        )}${notification.message.length > 260 ? "..." : ""}
+                        NASA has posted a science report about fast-moving particles from the Sun.
+                        The full report is written for readers who want the technical details.
                     </p>
 
                     ${
@@ -379,7 +378,7 @@ export function renderDonkiLivePanel(result) {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    Read NASA alert ↗
+                                    Read full NASA alert ↗
                                 </a>
                             `
                             : ""

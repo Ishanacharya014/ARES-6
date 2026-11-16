@@ -2783,3 +2783,271 @@ body {
         background-position: center center;
     }
 }
+
+
+/* =====================================
+   MAY 2024 HISTORICAL SCENARIO
+===================================== */
+
+.mission-scenario-button {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 11px;
+    color: var(--blue);
+    background: rgba(105, 216, 255, 0.07);
+    border: 1px solid rgba(105, 216, 255, 0.32);
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.55px;
+    white-space: nowrap;
+}
+
+.mission-scenario-button:hover {
+    background: rgba(105, 216, 255, 0.15);
+    border-color: var(--blue);
+}
+
+.mission-scenario-button:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+}
+
+.live-dot[data-status="historical"] {
+    background: var(--blue);
+    box-shadow: 0 0 10px var(--blue);
+}
+
+@media (max-width: 900px) {
+    .topbar {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .topbar {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .mission-scenario-button {
+        min-height: 32px;
+        padding: 0 8px;
+        font-size: 8px;
+    }
+
+    .mission-guide-button {
+        min-height: 32px;
+    }
+}
+
+
+/* =====================================
+   HISTORICAL NASA EVENT CARD
+===================================== */
+
+.historical-storm-card {
+    margin: 14px 0 16px;
+    padding: 14px;
+    color: var(--text);
+    background:
+        linear-gradient(140deg, rgba(105, 216, 255, 0.08), rgba(105, 216, 255, 0.025)),
+        rgba(17, 31, 49, 0.92);
+    border: 1px solid rgba(105, 216, 255, 0.34);
+    border-left: 3px solid var(--blue);
+    border-radius: 9px;
+}
+
+.historical-storm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+    color: var(--blue);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.85px;
+}
+
+.historical-storm-header span:last-child {
+    padding: 4px 6px;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+}
+
+.historical-storm-date {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 11px;
+}
+
+.historical-storm-dose {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 9px;
+    padding: 10px;
+    background: rgba(105, 216, 255, 0.08);
+    border: 1px solid rgba(105, 216, 255, 0.14);
+    border-radius: 7px;
+}
+
+.historical-storm-dose strong {
+    color: var(--blue);
+    font-size: 23px;
+    line-height: 1.1;
+}
+
+.historical-storm-dose span {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.45;
+}
+
+.historical-storm-card p {
+    margin: 8px 0;
+    color: #c4d1e2;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.historical-storm-card p strong {
+    color: var(--text);
+}
+
+.historical-storm-note {
+    padding: 8px;
+    background: rgba(232, 189, 105, 0.08);
+    border-left: 2px solid var(--yellow);
+    border-radius: 5px;
+}
+
+.historical-storm-game-note {
+    padding: 8px;
+    background: rgba(127, 224, 165, 0.07);
+    border-left: 2px solid var(--green);
+    border-radius: 5px;
+}
+
+.historical-storm-card a {
+    display: inline-block;
+    margin-top: 4px;
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.historical-storm-card a:hover {
+    text-decoration: underline;
+}
+
+
+/* =====================================
+   MAY 2024 SOLAR STORM MAP EFFECT
+===================================== */
+
+.map-historical-storm-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 76% 22%, rgba(163, 115, 255, 0.25), transparent 38%),
+        radial-gradient(ellipse at 48% 8%, rgba(91, 169, 255, 0.16), transparent 44%),
+        linear-gradient(180deg, rgba(106, 91, 198, 0.10), transparent 62%);
+    transition: opacity 500ms ease;
+}
+
+.map-historical-storm-layer::before,
+.map-historical-storm-layer::after {
+    content: "";
+    position: absolute;
+    inset: -25% -35%;
+    opacity: 0;
+    background:
+        repeating-linear-gradient(
+            118deg,
+            transparent 0 55px,
+            rgba(175, 153, 255, 0.12) 57px,
+            rgba(105, 216, 255, 0.07) 61px,
+            transparent 70px 120px
+        );
+    filter: blur(5px);
+}
+
+.map-historical-storm-layer::before {
+    animation: may2024-aurora-sweep 8s ease-in-out infinite;
+}
+
+.map-historical-storm-layer::after {
+    animation: may2024-aurora-sweep 11s ease-in-out -4s infinite reverse;
+    filter: blur(9px);
+}
+
+.map-historical-storm-layer i {
+    position: absolute;
+    top: -5%;
+    width: 2px;
+    height: 28px;
+    border-radius: 50%;
+    opacity: 0;
+    background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(193, 221, 255, 0.9),
+        transparent
+    );
+    box-shadow: 0 0 8px rgba(151, 193, 255, 0.7);
+}
+
+.map-historical-storm-layer i:nth-child(1) { left: 9%; animation: may2024-particle 3.4s linear infinite; }
+.map-historical-storm-layer i:nth-child(2) { left: 18%; animation: may2024-particle 4.1s linear -1s infinite; height: 18px; }
+.map-historical-storm-layer i:nth-child(3) { left: 28%; animation: may2024-particle 3.7s linear -2s infinite; }
+.map-historical-storm-layer i:nth-child(4) { left: 39%; animation: may2024-particle 4.4s linear -0.5s infinite; height: 22px; }
+.map-historical-storm-layer i:nth-child(5) { left: 51%; animation: may2024-particle 3.2s linear -1.8s infinite; }
+.map-historical-storm-layer i:nth-child(6) { left: 63%; animation: may2024-particle 4s linear -2.5s infinite; height: 16px; }
+.map-historical-storm-layer i:nth-child(7) { left: 73%; animation: may2024-particle 3.5s linear -0.8s infinite; }
+.map-historical-storm-layer i:nth-child(8) { left: 84%; animation: may2024-particle 4.3s linear -1.4s infinite; height: 22px; }
+.map-historical-storm-layer i:nth-child(9) { left: 94%; animation: may2024-particle 3.6s linear -2.2s infinite; }
+.map-historical-storm-layer i:nth-child(10) { left: 33%; animation: may2024-particle 4.5s linear -3s infinite; height: 16px; }
+.map-historical-storm-layer i:nth-child(11) { left: 68%; animation: may2024-particle 3.8s linear -2.8s infinite; }
+.map-historical-storm-layer i:nth-child(12) { left: 89%; animation: may2024-particle 4.2s linear -0.2s infinite; height: 18px; }
+
+.map[data-solar-storm="active"] .map-historical-storm-layer {
+    opacity: 1;
+}
+
+.map[data-solar-storm="active"] .map-historical-storm-layer::before,
+.map[data-solar-storm="active"] .map-historical-storm-layer::after {
+    opacity: 1;
+}
+
+@keyframes may2024-aurora-sweep {
+    0%, 100% { transform: translate3d(-4%, -2%, 0) rotate(-5deg); opacity: 0.25; }
+    50% { transform: translate3d(5%, 3%, 0) rotate(-1deg); opacity: 0.8; }
+}
+
+@keyframes may2024-particle {
+    0% { transform: translate3d(-12px, -10vh, 0) rotate(20deg); opacity: 0; }
+    18% { opacity: 0.8; }
+    82% { opacity: 0.6; }
+    100% { transform: translate3d(16px, 105vh, 0) rotate(20deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .map-historical-storm-layer *,
+    .map-historical-storm-layer::before,
+    .map-historical-storm-layer::after {
+        animation: none !important;
+    }
+    .map[data-solar-storm="active"] .map-historical-storm-layer {
+        opacity: 0.55;
+    }
+}

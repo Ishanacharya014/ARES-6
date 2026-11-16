@@ -43,6 +43,19 @@ export function canEndCurrentSol(gameState) {
 
     }
 
+    // Advanced players must also save their daily power plan.
+    if (
+        gameState.mission.powerPlanningEnabled === true &&
+        gameState.turn.powerAllocation?.confirmed !== true
+    ) {
+
+        return {
+            allowed: false,
+            reason: "Save today's power plan before ending the Mars day."
+        };
+
+    }
+
     return {
         allowed: true,
         reason: "Ready to end the Sol."
@@ -153,6 +166,15 @@ export function endCurrentSol(gameState) {
     gameState.turn.selectedChoiceId = null;
 
     gameState.turn.currentEventId = null;
+
+    // Each Mars day starts with a fresh optional power plan.
+    gameState.turn.powerAllocation = {
+        greenhouse: 0,
+        rover: 0,
+        shelter: 0,
+        total: 0,
+        confirmed: false
+    };
 
 
     return {

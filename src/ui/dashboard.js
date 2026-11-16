@@ -149,7 +149,7 @@ function updateObjectives(gameState) {
 
 
 // =====================================
-// 5. UPDATE SEVEN-SOL TIMELINE
+// 5. UPDATE FOURTEEN-DAY TIMELINE
 // =====================================
 
 function updateSolTimeline(gameState) {

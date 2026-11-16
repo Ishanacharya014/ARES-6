@@ -21,6 +21,16 @@ export const OBJECTIVES = {
     environmentalResearch: {
         title: "Environmental Research",
         description: "Study the Martian environment."
+    },
+
+    waterIceResearch: {
+        title: "Water-Ice Survey",
+        description: "Use the rover to investigate signs of water ice."
+    },
+
+    atmosphericResearch: {
+        title: "Atmosphere Study",
+        description: "Study the air and dust around the outpost."
     }
 
 };

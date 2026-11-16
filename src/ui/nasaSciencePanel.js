@@ -121,14 +121,14 @@ export function renderNasaSciencePanel(result) {
             </span>
 
             <span class="nasa-data-status">
-                NOT LIVE
+                PAST MEASUREMENT
             </span>
 
         </div>
 
 
         <span class="eyebrow">
-            ${escapeHTML(dataset.rover)} · ${escapeHTML(dataset.instrument)}
+            ${escapeHTML(dataset.rover)} · Radiation Detector
         </span>
 
 
@@ -288,7 +288,7 @@ export function renderDonkiLivePanel(result) {
                 <span class="eyebrow">SPACE WEATHER UPDATE</span>
 
                 <span class="nasa-data-status">
-                    ${result.fromCache ? "CACHED" : "RETRIEVED"}
+                    ${result.fromCache ? "SAVED COPY" : "CHECKED NOW"}
                 </span>
 
             </div>
@@ -296,7 +296,7 @@ export function renderDonkiLivePanel(result) {
             <h3>No solar particle alerts found</h3>
 
             <p>
-                NASA found no solar particle alerts in the last seven days.
+                NASA found no alerts about tiny particles from the Sun in the last seven days.
             </p>
 
             <p class="donki-update-time">
@@ -306,8 +306,8 @@ export function renderDonkiLivePanel(result) {
             <div class="nasa-science-warning">
 
                 <p>
-                    This does not mean Mars has zero radiation
-                    or that the outpost is radiation-safe.
+                    Radiation can still be near Mars. This only means NASA found no alerts
+                    of this type during these seven days.
                 </p>
 
             </div>
@@ -334,18 +334,18 @@ export function renderDonkiLivePanel(result) {
             <span class="eyebrow">SPACE WEATHER UPDATE</span>
 
             <span class="nasa-data-status">
-                ${result.fromCache ? "CACHED" : "RETRIEVED"}
+                ${result.fromCache ? "SAVED COPY" : "CHECKED NOW"}
             </span>
 
         </div>
 
         <h3>
-            Solar particle alerts
+            Sun particle alerts
         </h3>
 
         <p class="donki-introduction">
 
-            NASA returned ${notifications.length} solar particle alert(s)
+            NASA found ${notifications.length} alert(s) about tiny particles from the Sun
             between ${escapeHTML(result.startDate)} and ${escapeHTML(result.endDate)}.
 
         </p>
@@ -358,7 +358,7 @@ export function renderDonkiLivePanel(result) {
                 <article class="donki-notification">
 
                     <span class="donki-type">
-                        ${escapeHTML(notification.type)}
+                        ${notification.type === "SEP" ? "SUN PARTICLE ALERT" : escapeHTML(notification.type)}
                     </span>
 
                     <strong>
@@ -379,7 +379,7 @@ export function renderDonkiLivePanel(result) {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    View NASA notification ↗
+                                    Read NASA alert ↗
                                 </a>
                             `
                             : ""
@@ -411,7 +411,7 @@ export function renderDonkiLivePanel(result) {
 
 
         <p class="donki-source-label">
-            Source: NASA CCMC DONKI · SEP
+            Source: NASA DONKI · Sun particle alerts
         </p>
 
     `;

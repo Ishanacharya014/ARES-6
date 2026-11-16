@@ -232,6 +232,11 @@ export function applyDailyPowerAllocation(gameState) {
     return {
         success: true,
         allocated: total,
+        allocation: {
+            greenhouse: allocation.greenhouse ?? 0,
+            rover: allocation.rover ?? 0,
+            shelter: allocation.shelter ?? 0
+        },
         greenhouseBoost: allocation.greenhouse === 2,
         roverPowered: allocation.rover === 2,
         shelterPowered: allocation.shelter === 2,

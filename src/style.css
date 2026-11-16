@@ -1623,15 +1623,17 @@ button {
 }
 
 
-/* Seven-Sol timeline */
+/* Fourteen-day timeline */
 
 .sol-timeline {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    justify-items: center;
     align-items: center;
-    gap: 5px;
+    row-gap: 8px;
+    column-gap: 5px;
 
-    margin: 20px 0 12px;
+    margin: 16px 0 12px;
 }
 
 .sol-timeline span {
@@ -3725,4 +3727,14 @@ body.daily-debrief-open {
         animation: none !important;
         transition: none !important;
     }
+}
+
+
+.map-condition-water {
+    border-color: rgba(255, 209, 117, 0.68);
+    color: #ffe8b4;
+}
+
+.mission-ending-report-row strong {
+    color: var(--blue);
 }

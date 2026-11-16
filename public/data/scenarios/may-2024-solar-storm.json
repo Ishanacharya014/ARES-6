@@ -382,17 +382,15 @@
           "explanation": "A new crop cycle has started. The greenhouse can provide more food after the plants grow."
         },
         {
-          "id": "clean-solar-panels-day11",
+          "id": "check-and-clean-solar-panels-day11",
           "label": "Clean the solar panels",
-          "description": "Spend 5 power units to clear any dust and keep normal electricity generation. This also works if the panels are already clean.",
-          "costs": {
-            "power": 5
-          },
+          "description": "If the panels are dusty, spend 5 power units to clean them. If they are already clean, no power is used.",
+          "costs": {},
           "gains": {},
           "effects": {
-            "setSolarDustLevel": "clean"
+            "cleanSolarPanelsIfDusty": true
           },
-          "explanation": "The solar panels are clean and ready to collect sunlight. You chose this instead of starting another crop cycle today."
+          "explanation": "The solar panel check is complete. Dust was cleaned if it was present; already-clean panels did not use extra power."
         }
       ]
     },

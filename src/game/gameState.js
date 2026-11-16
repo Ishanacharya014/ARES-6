@@ -33,7 +33,16 @@ export const GAME_CONFIG = {
 // 2. CREATE A NEW GAME
 // =====================================
 
-export function createInitialGameState() {
+export function createInitialGameState(scenarioId = "standard") {
+
+    const validScenarioIds = [
+        "standard",
+        "may-2024-solar-storm"
+    ];
+
+    const selectedScenarioId = validScenarioIds.includes(scenarioId)
+        ? scenarioId
+        : "standard";
 
     return {
 
@@ -41,7 +50,8 @@ export function createInitialGameState() {
         mission: {
             currentSol: 1,
             totalSols: GAME_CONFIG.totalSols,
-            status: "playing"
+            status: "playing",
+            scenarioId: selectedScenarioId
         },
 
 

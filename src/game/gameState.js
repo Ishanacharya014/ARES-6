@@ -33,7 +33,7 @@ export const GAME_CONFIG = {
 // 2. CREATE A NEW GAME
 // =====================================
 
-export function createInitialGameState(scenarioId = "standard") {
+export function createInitialGameState(scenarioId = "standard", options = {}) {
 
     const validScenarioIds = [
         "standard",
@@ -51,7 +51,8 @@ export function createInitialGameState(scenarioId = "standard") {
             currentSol: 1,
             totalSols: GAME_CONFIG.totalSols,
             status: "playing",
-            scenarioId: selectedScenarioId
+            scenarioId: selectedScenarioId,
+            powerPlanningEnabled: options.powerPlanningEnabled === true
         },
 
 
@@ -74,7 +75,8 @@ export function createInitialGameState(scenarioId = "standard") {
         systems: {
             airStatus: "good",
             radiationStatus: "safe",
-            airFailureSols: 0
+            airFailureSols: 0,
+            scienceInsightPoints: 0
         },
 
 
@@ -120,7 +122,14 @@ export function createInitialGameState(scenarioId = "standard") {
 
             selectedChoiceId: null,
 
-            currentEventId: null
+            currentEventId: null,
+
+            powerAllocation: {
+                greenhouse: 0,
+                rover: 0,
+                shelter: 0,
+                confirmed: false
+            }
 
         },
 

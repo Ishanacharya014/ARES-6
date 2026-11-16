@@ -17,16 +17,6 @@ export const POWER_ALLOCATION_CONFIG = {
 
 const ALLOCATION_TYPES = ["greenhouse", "rover", "shelter"];
 
-function emptyAllocation() {
-    return {
-        greenhouse: 0,
-        rover: 0,
-        shelter: 0,
-        confirmed: false
-    };
-}
-
-
 // =====================================
 // AVAILABLE DAILY POWER BUDGET
 // =====================================
@@ -92,6 +82,17 @@ export function saveDailyPowerAllocation(gameState, allocation = {}) {
         };
     }
 
+    if (
+        typeof allocation !== "object" ||
+        allocation === null ||
+        Array.isArray(allocation)
+    ) {
+        return {
+            success: false,
+            message: "Invalid daily power plan."
+        };
+    }
+
     const cleanAllocation = {};
 
     for (const type of ALLOCATION_TYPES) {
@@ -112,10 +113,7 @@ export function saveDailyPowerAllocation(gameState, allocation = {}) {
 
     if (
         cleanAllocation.greenhouse === 2 &&
-        (
-            gameState.facilities?.greenhouse?.cropStatus !== "growing" ||
-            gameState.facilities.greenhouse.cropStartedSol >= gameState.mission.currentSol
-        )
+        gameState.facilities?.greenhouse?.cropStatus !== "growing"
     ) {
         return {
             success: false,

@@ -1,34 +1,33 @@
-
 {
   "events": [
     {
       "id": "sol-1-greenhouse-preparation",
       "sol": 1,
       "category": "greenhouse",
-      "title": "Let's prepare our greenhouse!",
-      "description": "Your crew has arrived on Mars. We need to decide whether to start growing food or save our supplies.",
-      "scienceFact": "Plants need water, light and nutrients to grow. Growing food in space requires careful resource management.",
+      "title": "Let's prepare the greenhouse!",
+      "description": "Your crew has arrived on Mars. Should you plant the first crops now, or save power and water for other jobs?",
+      "scienceFact": "Plants need water, light, and nutrients to grow. A greenhouse helps give plants the conditions they need.",
       "onStart": {},
       "choices": [
         {
           "id": "start-crops",
-          "label": "Start growing crops",
-          "description": "Use power and water to begin growing food.",
+          "label": "Start growing food",
+          "description": "Plant the first crops. This uses power and water.",
           "costs": {},
           "gains": {},
           "effects": {
             "startCropCycle": true
           },
-          "explanation": "Your greenhouse has started growing food. You will need to wait for the crops to mature."
+          "explanation": "Your crops are growing. They need time before they are ready to harvest."
         },
         {
           "id": "save-resources",
-          "label": "Save our supplies",
-          "description": "Keep your power and water for other important systems.",
+          "label": "Save power and water",
+          "description": "Keep your supplies for other important outpost jobs.",
           "costs": {},
           "gains": {},
           "effects": {},
-          "explanation": "You saved your resources, but your greenhouse has not started producing food."
+          "explanation": "You saved your supplies, but no food is growing in the greenhouse yet."
         }
       ]
     },
@@ -37,8 +36,8 @@
       "sol": 2,
       "category": "power",
       "title": "Dust is covering our solar panels!",
-      "description": "A dust storm has covered the solar panels. They cannot collect as much sunlight.",
-      "scienceFact": "Mars experiences large dust storms. Dust covering solar panels can reduce their electricity production.",
+      "description": "A dust storm has left dust on the solar panels. Dusty panels make less electricity for the outpost.",
+      "scienceFact": "Mars can have huge dust storms. Dust on a solar panel can block sunlight and lower the electricity it makes.",
       "onStart": {
         "setSolarDustLevel": "dusty"
       },
@@ -46,7 +45,7 @@
         {
           "id": "clean-panels",
           "label": "Clean the solar panels",
-          "description": "Spend 5 power units to restore normal electricity production.",
+          "description": "Use 5 power units to clean the panels. They can make more electricity again.",
           "costs": {
             "power": 5
           },
@@ -54,16 +53,16 @@
           "effects": {
             "setSolarDustLevel": "clean"
           },
-          "explanation": "The panels are clean again and can generate more electricity."
+          "explanation": "The panels are clean. They can now make more electricity each Sol."
         },
         {
           "id": "save-energy",
-          "label": "Save our energy",
-          "description": "Keep your electricity for essential equipment.",
+          "label": "Keep our power",
+          "description": "Save your electricity for other important equipment.",
           "costs": {},
           "gains": {},
           "effects": {},
-          "explanation": "You saved energy today, but dusty panels will continue producing less electricity."
+          "explanation": "You kept your power, but the dusty panels will keep making less electricity."
         }
       ]
     },
@@ -71,15 +70,15 @@
       "id": "sol-3-geological-research",
       "sol": 3,
       "category": "research",
-      "title": "We found an interesting Martian rock!",
-      "description": "The rover has discovered an interesting rock formation. The crew can investigate it to learn more about Mars.",
-      "scienceFact": "Scientists study Martian rocks to understand the planet's history and whether it may once have supported conditions suitable for life.",
+      "title": "The rover found an interesting rock!",
+      "description": "Your robot rover has found a rock that scientists would like to study. You can collect a sample or save power.",
+      "scienceFact": "By studying Martian rocks, scientists learn how Mars changed over time and what the planet was like long ago.",
       "onStart": {},
       "choices": [
         {
           "id": "collect-rock-sample",
-          "label": "Collect the rock sample",
-          "description": "Spend 8 power units to complete geological research.",
+          "label": "Collect a rock sample",
+          "description": "Use 8 power units to study the rock and finish the rock research.",
           "costs": {
             "power": 8
           },
@@ -87,16 +86,16 @@
           "effects": {
             "completeObjective": "geologicalResearch"
           },
-          "explanation": "Excellent! Your crew has completed its geological research."
+          "explanation": "Great work! Your crew has finished its rock research."
         },
         {
           "id": "save-research-energy",
-          "label": "Save our energy",
-          "description": "Postpone the investigation and conserve electricity.",
+          "label": "Save our power",
+          "description": "Wait before studying the rock and keep the electricity for later.",
           "costs": {},
           "gains": {},
           "effects": {},
-          "explanation": "You conserved power, but the geological research remains incomplete."
+          "explanation": "You saved power, but the rock research is not finished."
         }
       ]
     },
@@ -104,32 +103,32 @@
       "id": "sol-4-radiation-warning",
       "sol": 4,
       "category": "radiation",
-      "title": "Radiation warning!",
-      "description": "Mission control has reported a dangerous radiation event. Your astronauts need protection.",
-      "scienceFact": "Space radiation can harm astronauts. Protected shelters and suitable shielding materials can help reduce exposure.",
+      "title": "Space radiation warning!",
+      "description": "Mission Control has sent a warning about space radiation. Your crew can add extra protection to the shelter or save the water.",
+      "scienceFact": "Space radiation is energy that travels through space. Too much can harm astronauts. Special shielding can help protect them.",
       "onStart": {
         "setRadiationStatus": "danger"
       },
       "choices": [
         {
           "id": "activate-shelter",
-          "label": "Prepare the storm shelter",
-          "description": "Allocate 5 water units to provide basic additional shielding.",
+          "label": "Add water to the shelter",
+          "description": "In this game, set aside 5 water units to add basic shielding.",
           "costs": {},
           "gains": {},
           "effects": {
             "allocateWaterForShielding": true
           },
-          "explanation": "Your shelter has basic shielding. This reduces the simulated radiation risk."
+          "explanation": "Your shelter now has basic extra shielding. It lowers the game's radiation-risk points."
         },
         {
           "id": "continue-without-shielding",
-          "label": "Continue without extra shielding",
-          "description": "Keep the water available for normal crew needs.",
+          "label": "Save the water",
+          "description": "Keep the water for the crew's normal needs.",
           "costs": {},
           "gains": {},
           "effects": {},
-          "explanation": "You kept your water, but the astronauts have no additional shelter shielding during this event."
+          "explanation": "You kept the water, but the shelter has no extra shielding for this warning."
         }
       ]
     },
@@ -137,17 +136,17 @@
       "id": "sol-5-habitat-problem",
       "sol": 5,
       "category": "life-support",
-      "title": "Our air system needs attention!",
-      "description": "The habitat's air equipment has stopped working. The crew needs to repair it or rely on the backup system for now.",
-      "scienceFact": "Astronauts need life-support equipment to provide breathable air in environments where humans cannot breathe naturally.",
+      "title": "The habitat's air system has stopped!",
+      "description": "The machine that helps keep the habitat's air safe is not working. Fix it now, or use backup mode for one Sol.",
+      "scienceFact": "People need clean air to breathe. A Mars habitat needs machines to provide and manage safe air for the crew.",
       "onStart": {
         "setHabitatOperational": false
       },
       "choices": [
         {
           "id": "repair-habitat",
-          "label": "Repair the air system",
-          "description": "Spend 6 power units to repair the habitat.",
+          "label": "Fix the air system",
+          "description": "Use 6 power units to repair the habitat's air system.",
           "costs": {
             "power": 6
           },
@@ -156,16 +155,16 @@
             "setHabitatOperational": true,
             "resetAirFailures": true
           },
-          "explanation": "The habitat is operational again. The astronauts can safely use its air system."
+          "explanation": "The air system is working again. The crew can breathe safely inside the habitat."
         },
         {
           "id": "use-backup-system",
-          "label": "Use the backup system",
-          "description": "Save power for now, but the habitat will remain broken.",
+          "label": "Use backup mode",
+          "description": "Save power for now, but remember the air system still needs to be fixed soon.",
           "costs": {},
           "gains": {},
           "effects": {},
-          "explanation": "The backup system gives you time to respond, but leaving the air system broken for another Sol puts the crew in danger."
+          "explanation": "Backup mode gives the crew a little time. Fix the air system before another Sol passes."
         }
       ]
     },
@@ -173,15 +172,15 @@
       "id": "sol-6-greenhouse-planning",
       "sol": 6,
       "category": "greenhouse",
-      "title": "It's time to plan another harvest!",
-      "description": "The crew needs to decide whether to start another crop cycle or save resources for the final mission day. If the habitat still needs repair, this is also an important opportunity to fix it.",
-      "scienceFact": "Growing food beyond Earth requires careful planning because water, electricity and growing time are limited.",
+      "title": "Should we grow more food?",
+      "description": "The crew can start another crop cycle or save supplies. If the habitat's air system is still broken, fixing it is also important.",
+      "scienceFact": "Growing food on Mars takes planning. Plants need water, power, light, and time before they are ready to harvest.",
       "onStart": {},
       "choices": [
         {
           "id": "repair-air-system",
-          "label": "Repair the habitat",
-          "description": "Spend 6 power units to restore the air system if it is still broken.",
+          "label": "Fix the air system",
+          "description": "Use 6 power units to restore the habitat's air system.",
           "costs": {
             "power": 6
           },
@@ -190,18 +189,18 @@
             "setHabitatOperational": true,
             "resetAirFailures": true
           },
-          "explanation": "You repaired the habitat. The crew can depend on its air system again."
+          "explanation": "You repaired the habitat. The crew can use its air system again."
         },
         {
           "id": "start-another-crop-cycle",
-          "label": "Grow another food supply",
-          "description": "Start another crop cycle using power and water.",
+          "label": "Grow another batch of food",
+          "description": "Start another crop cycle. It uses 5 power units and 5 water units.",
           "costs": {},
           "gains": {},
           "effects": {
             "startCropCycle": true
           },
-          "explanation": "You started another crop cycle. Remember that an unresolved air-system problem can become critical."
+          "explanation": "New crops are growing. They need two Sols before harvest. Make sure the air system is working too."
         }
       ]
     },
@@ -209,15 +208,15 @@
       "id": "sol-7-environmental-research",
       "sol": 7,
       "category": "research",
-      "title": "Our final research opportunity!",
-      "description": "Your crew has one final opportunity to study the Martian environment before the mission ends.",
-      "scienceFact": "Scientists study the Martian atmosphere, temperature, radiation and surface conditions to understand how future explorers can operate safely.",
+      "title": "One last science mission!",
+      "description": "Before the seven-Sol mission ends, your crew has one last chance to study the land and conditions around the outpost.",
+      "scienceFact": "Scientists study Mars's air, weather, soil, and radiation to understand what future explorers may face.",
       "onStart": {},
       "choices": [
         {
           "id": "complete-environmental-survey",
-          "label": "Complete the environment survey",
-          "description": "Spend 8 power units to complete environmental research.",
+          "label": "Study Mars's environment",
+          "description": "Use 8 power units to finish the environmental research.",
           "costs": {
             "power": 8
           },
@@ -225,16 +224,16 @@
           "effects": {
             "completeObjective": "environmentalResearch"
           },
-          "explanation": "Excellent! Your crew has completed its environmental research."
+          "explanation": "Excellent work! Your crew has finished its study of the Martian environment."
         },
         {
           "id": "preserve-final-resources",
-          "label": "Preserve our resources",
-          "description": "Keep your remaining power for the outpost.",
+          "label": "Save our remaining power",
+          "description": "Keep your electricity for the outpost instead of doing the final study.",
           "costs": {},
           "gains": {},
           "effects": {},
-          "explanation": "You preserved your remaining resources, but environmental research is incomplete."
+          "explanation": "You saved power, but the environmental study is not finished."
         }
       ]
     }

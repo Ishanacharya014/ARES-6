@@ -19,7 +19,7 @@
       "unitSymbol": "µGy/day",
       "environment": "Mars surface",
       "description": "During its first 10 months on Mars, NASA's Curiosity rover measured an average of about 210 microgray of absorbed radiation each day from galactic cosmic rays.",
-      "educationalExplanation": "Radiation is energy that travels through space. Curiosity measured about 210 microgray per day from galactic cosmic rays during its first 10 months on Mars. Microgray is a unit scientists use to describe absorbed radiation energy.",
+      "educationalExplanation": "Space radiation includes energy and tiny, fast-moving particles. NASA's Curiosity rover measured a kind called galactic cosmic rays. It found an average of about 210 microgray each day during its first 10 months on Mars. A microgray is a unit scientists use to measure how much radiation energy a material absorbs.",
       "dataType": "historical_average"
     }
   ],

@@ -3076,3 +3076,234 @@ body {
     font-size: 9px;
     line-height: 1.5;
 }
+
+
+/* =====================================
+   OPTIONAL ADVANCED POWER PLANNING
+===================================== */
+
+.power-planning-toggle {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 11px;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.power-planning-toggle[aria-pressed="true"] {
+    color: var(--green);
+    background: rgba(127, 224, 165, 0.09);
+    border-color: rgba(127, 224, 165, 0.4);
+}
+
+.power-planning-toggle:hover {
+    border-color: var(--blue);
+}
+
+.power-planning-toggle:focus-visible,
+.power-plan-save:focus-visible,
+.power-planner-edit:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+}
+
+.power-planner-panel[hidden] {
+    display: none !important;
+}
+
+.power-planner-panel {
+    border-color: rgba(105, 216, 255, 0.34);
+    background:
+        linear-gradient(145deg, rgba(105, 216, 255, 0.045), transparent 50%),
+        var(--panel);
+}
+
+.power-planner-panel h3 {
+    margin: 8px 0;
+    font-size: 15px;
+}
+
+.power-planner-intro,
+.power-planner-help {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.power-planner-budget {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    padding: 11px;
+    background: rgba(105, 216, 255, 0.07);
+    border: 1px solid rgba(105, 216, 255, 0.18);
+    border-radius: 8px;
+}
+
+.power-planner-budget span {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.power-planner-budget strong {
+    flex: 0 0 auto;
+    color: var(--blue);
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.power-plan-options {
+    display: grid;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.power-plan-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 150ms ease, background 150ms ease;
+}
+
+.power-plan-option:has(input:checked) {
+    background: rgba(105, 216, 255, 0.08);
+    border-color: rgba(105, 216, 255, 0.5);
+}
+
+.power-plan-option input {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    accent-color: var(--blue);
+    cursor: pointer;
+}
+
+.power-plan-option-copy {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.power-plan-option-copy strong {
+    color: var(--text);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.power-plan-option-copy small {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.power-plan-option.is-unavailable {
+    opacity: 0.48;
+    cursor: not-allowed;
+}
+
+.power-plan-option.is-unavailable input {
+    cursor: not-allowed;
+}
+
+.power-plan-feedback {
+    margin: 10px 0;
+    padding: 9px 10px;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.035);
+    border-left: 2px solid var(--blue);
+    border-radius: 5px;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.power-plan-feedback[data-state="warning"] {
+    color: #ffd0bd;
+    background: rgba(255, 139, 111, 0.08);
+    border-left-color: #ff8b6f;
+}
+
+.power-plan-save,
+.power-planner-edit {
+    width: 100%;
+    min-height: 38px;
+    padding: 9px 12px;
+    color: #071521;
+    background: var(--blue);
+    border: 1px solid var(--blue);
+    border-radius: 7px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+}
+
+.power-plan-save:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+}
+
+.power-planner-edit {
+    margin: 6px 0 9px;
+    color: var(--blue);
+    background: rgba(105, 216, 255, 0.07);
+}
+
+.power-plan-save:hover:not(:disabled),
+.power-planner-edit:hover {
+    filter: brightness(1.08);
+}
+
+.power-planner-saved {
+    margin: 10px 0;
+    color: var(--green);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.power-planner-panel .power-planner-help {
+    display: block;
+    margin-top: 9px;
+}
+
+.mission-ending-insight-row strong {
+    color: var(--blue);
+}
+
+@media (max-width: 900px) {
+    .power-planning-toggle,
+    .mission-scenario-button,
+    .mission-guide-button {
+        min-height: 33px;
+        padding: 0 8px;
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    .power-planning-toggle,
+    .mission-scenario-button,
+    .mission-guide-button {
+        min-height: 31px;
+        padding: 0 7px;
+        font-size: 7px;
+        letter-spacing: 0.2px;
+    }
+}

@@ -153,7 +153,7 @@ function getFacilityInformation(facilityId, gameState) {
         const operational =
             facility.habitat.operational;
 
-        statusLabel = "Habitat Condition";
+        statusLabel = "Crew Home status";
 
         status = operational
             ? "Working"
@@ -163,7 +163,7 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Air system",
+                label: "Breathing air",
                 value: ({ good: "Good", "needs-attention": "Needs checking", critical: "Not working" })[gameState.systems.airStatus] ?? "Unknown"
             },
 
@@ -173,7 +173,7 @@ function getFacilityInformation(facilityId, gameState) {
             },
 
             {
-                label: "Crew members",
+                label: "People living here",
                 value: gameState.crew.count
             }
 
@@ -191,9 +191,9 @@ function getFacilityInformation(facilityId, gameState) {
         const dustLevel =
             facility.solarArray.dustLevel;
 
-        statusLabel = "Panel Condition";
+        statusLabel = "Solar panel status";
 
-        status = formatStatus(dustLevel);
+        status = dustLevel === "clean" ? "Clean" : "Dusty";
 
 
         extraDetails = [
@@ -226,7 +226,7 @@ function getFacilityInformation(facilityId, gameState) {
         const growing =
             greenhouse.cropStatus === "growing";
 
-        statusLabel = "Crop Status";
+        statusLabel = "Plant status";
 
         status = growing
             ? "Growing"
@@ -236,14 +236,14 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Days until food is ready",
+                label: "Mars days until food is ready",
                 value: growing
                     ? `${greenhouse.solsUntilHarvest} Mars day(s)`
                     : "No crops growing"
             },
 
             {
-                label: "Times crops harvested",
+                label: "Harvests completed",
                 value: greenhouse.totalHarvests
             },
 
@@ -309,11 +309,11 @@ function getFacilityInformation(facilityId, gameState) {
         const pending =
             gameState.communication.pendingReply;
 
-        statusLabel = "Connection";
+        statusLabel = "Earth connection";
 
         status = operational
-            ? "Operational"
-            : "Unavailable";
+            ? "Working"
+            : "Not working";
 
 
         extraDetails = [
@@ -344,7 +344,7 @@ function getFacilityInformation(facilityId, gameState) {
         const available =
             gameState.supportAssets.roverAvailable;
 
-        statusLabel = "Mission Status";
+        statusLabel = "Rover status";
 
         status = available
             ? "Ready to explore"
@@ -443,7 +443,7 @@ export function showFacilityPanel(facilityId, gameState) {
             <div>
 
                 <span class="eyebrow">
-                    FACILITY INSPECTION
+                    OUTPOST PLACE
                 </span>
 
                 <h3>
@@ -507,7 +507,7 @@ export function showFacilityPanel(facilityId, gameState) {
 
         <div class="science-fact">
 
-            <span>SCIENCE FACT</span>
+            <span>DID YOU KNOW?</span>
 
             <p>
                 ${escapeHTML(facility.scienceFact)}

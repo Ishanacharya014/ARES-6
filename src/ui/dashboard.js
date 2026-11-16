@@ -125,12 +125,12 @@ function updateObjectives(gameState) {
 
     updateText(
         "geological-objective-status",
-        geologicalComplete ? "Completed" : "Pending"
+        geologicalComplete ? "Done" : "Not started"
     );
 
     updateText(
         "environmental-objective-status",
-        environmentalComplete ? "Completed" : "Pending"
+        environmentalComplete ? "Done" : "Not started"
     );
 
     updateText(
@@ -166,7 +166,7 @@ function updateSolTimeline(gameState) {
 
     updateText(
         "sol-progress-label",
-        `Sol ${currentSol} of ${totalSols}`
+        `Mars day ${currentSol} of ${totalSols}`
     );
 
 

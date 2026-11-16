@@ -341,7 +341,7 @@ export function showDailyDebrief({
             <div>
                 <span class="debrief-kicker">${escapeHTML(dayResult.kicker)}</span>
                 <h1 id="daily-debrief-title">${escapeHTML(dayResult.title)}</h1>
-                <p>${escapeHTML(dayResult.description)}</p>
+                <p id="daily-debrief-description">${escapeHTML(dayResult.description)}</p>
             </div>
             <span class="debrief-result-badge">${escapeHTML(resultStatus)}</span>
         </header>

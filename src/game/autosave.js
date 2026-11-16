@@ -177,11 +177,35 @@ export function validateSavedGameState(state) {
             turn.selectedChoiceId === null ||
             typeof turn.selectedChoiceId === "string"
         ) ||
+        (turn.decisionMade && typeof turn.selectedChoiceId !== "string") ||
+        (!turn.decisionMade && turn.selectedChoiceId !== null) ||
         !(
             turn.currentEventId === null ||
             typeof turn.currentEventId === "string"
         ) ||
         !isPowerAllocation(turn.powerAllocation)
+    ) {
+        return false;
+    }
+
+    const allocationTotal =
+        turn.powerAllocation.greenhouse +
+        turn.powerAllocation.rover +
+        turn.powerAllocation.shelter;
+
+    if (
+        turn.powerAllocation.total !== undefined &&
+        turn.powerAllocation.total !== allocationTotal
+    ) {
+        return false;
+    }
+
+    if (
+        turn.powerAllocation.confirmed &&
+        (
+            !mission.powerPlanningEnabled ||
+            !turn.decisionMade
+        )
     ) {
         return false;
     }

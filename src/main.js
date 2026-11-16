@@ -802,7 +802,10 @@ function renderMissionFinished() {
     document.body.classList.add("mission-ending-open");
 
     const restartButton = screen.querySelector("#ending-restart-button");
-    restartButton?.addEventListener("click", restartMission);
+    // Replace the handler on each replay so clicks never stack listeners.
+    if (restartButton) {
+        restartButton.onclick = restartMission;
+    }
     restartButton?.focus();
 
     return true;

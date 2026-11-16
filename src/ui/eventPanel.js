@@ -53,7 +53,7 @@ export function renderEventPanel(
     panel.innerHTML = `
 
         <span class="eyebrow">
-            SOL ${String(event.sol).padStart(2, "0")}
+            MARS DAY ${String(event.sol).padStart(2, "0")}
             · ${escapeHTML(event.category).toUpperCase()}
         </span>
 

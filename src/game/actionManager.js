@@ -144,6 +144,26 @@ function applyDecisionEffects(gameState, effects = {}) {
                 break;
 
 
+            // Ensure shelter protection without allocating the same water twice.
+            case "ensureWaterShielding":
+
+                if (value !== true || !gameState.facilities?.shelter) {
+                    return {
+                        success: false,
+                        message: "Invalid shelter protection instruction."
+                    };
+                }
+
+                result = gameState.facilities.shelter.shieldingLevel === "basic"
+                    ? {
+                        success: true,
+                        message: "The shelter already has basic water shielding."
+                    }
+                    : allocateWaterForShielding(gameState);
+
+                break;
+
+
             // Allocate water to radiation shielding.
             case "allocateWaterForShielding":
 

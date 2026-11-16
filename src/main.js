@@ -4,6 +4,7 @@ import { initializeMissionBriefing } from './ui/missionBriefing.js';
 import { refreshMapEffects } from './ui/mapEffects.js';
 import { renderPowerPlanner } from './ui/powerPlanner.js';
 import { saveDailyPowerAllocation } from './game/powerAllocation.js';
+import { showDailyDebrief } from './ui/dailyDebrief.js';
 
 import { initializeOutpost } from './ui/outpost.js';
 
@@ -597,6 +598,40 @@ app.innerHTML = `
         </section>
     </div>
 
+    <!-- DAILY MISSION DEBRIEF -->
+    <div
+        class="daily-debrief-overlay"
+        id="daily-debrief-screen"
+        hidden
+    >
+        <main
+            class="daily-debrief-page"
+            id="daily-debrief-page"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="daily-debrief-title"
+            aria-describedby="daily-debrief-description"
+        >
+            <div class="daily-debrief-brand">
+                <span class="daily-debrief-brand-mark">A</span>
+                <div>
+                    <strong>ARES-6 MISSION CONTROL</strong>
+                    <small>DAILY OUTPOST REPORT</small>
+                </div>
+            </div>
+
+            <div id="daily-debrief-content"></div>
+
+            <button
+                type="button"
+                class="daily-debrief-continue"
+                id="daily-debrief-continue"
+            >
+                CONTINUE
+            </button>
+        </main>
+    </div>
+
     <!-- FULL-SCREEN MISSION ENDING -->
     <div class="mission-ending-overlay" id="mission-ending-screen" hidden>
         <div class="mission-ending-effects" aria-hidden="true">
@@ -1124,43 +1159,57 @@ async function switchMissionScenario() {
 
 async function handleEndSol() {
 
-    // Run all simulation systems.
+    // Keep a copy of the state after the player's choice but before
+    // automatic end-of-day systems run.
+    const completedSol = gameState.mission.currentSol;
+    const beforeState = structuredClone(gameState);
+
+    const decision = [...gameState.history]
+        .reverse()
+        .find(entry => entry.sol === completedSol) ?? null;
+
+    // Run solar generation, life support, crew supplies, crops,
+    // radiation and the optional power plan.
     const result = completeCurrentSol(gameState);
 
-
     if (!result.success) {
-
         return result;
-
     }
 
-
     console.log(
-        `SOL COMPLETED. Current Sol: ${gameState.mission.currentSol}`,
+        `MARS DAY ${completedSol} COMPLETED`,
         result.results
     );
 
+    refreshGameInterface();
 
-    // Update the dashboard.
-    refreshGameInterface();;
+    // Save the state after all automatic systems and mission checks.
+    const afterState = structuredClone(gameState);
 
+    // Explain the player's decision and the actual daily simulation results.
+    await showDailyDebrief({
+        completedSol,
+        beforeState,
+        afterState,
+        simulationResults: result.results,
+        decision
+    });
 
-    // Check whether the campaign has ended.
+    // The debrief appears before the final result screen.
     if (gameState.mission.status !== "playing") {
 
         renderMissionFinished();
 
         return {
             success: true,
-            message: "The seven-day Mars mission has ended."
+            message: "The Mars mission has ended."
         };
 
     }
 
-
-    // Load the next Sol's event.
+    // Continue to the next Mars day's event only after the player
+    // has read and closed the debrief.
     await initializeMissionEvent();
-
 
     return {
         success: true,

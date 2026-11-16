@@ -94,6 +94,10 @@ export function refreshMapEffects(gameState) {
     map.dataset.crops = cropsGrowing ? "growing" : "idle";
     map.dataset.shielding = shelterProtected ? "active" : "inactive";
     map.dataset.comms = messagePending ? "pending" : "idle";
+    map.dataset.waterRecycler =
+        gameState.facilities.waterRecycler?.operational === false
+            ? "offline"
+            : "online";
 
     const historicalStormActive =
         gameState.mission.scenarioId === "may-2024-solar-storm" &&
@@ -153,6 +157,13 @@ export function refreshMapEffects(gameState) {
         conditions.push({
             type: "comms",
             label: "MESSAGE FROM EARTH IN TRANSIT"
+        });
+    }
+
+    if (gameState.facilities.waterRecycler?.operational === false) {
+        conditions.push({
+            type: "water",
+            label: "WATER RECYCLER OFFLINE"
         });
     }
 

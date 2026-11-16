@@ -2302,3 +2302,448 @@ body.mission-ending-open {
         display: none !important;
     }
 }
+
+
+/* =====================================
+   LIVE MARS OUTPOST ENVIRONMENT EFFECTS
+===================================== */
+
+/* The map reacts to the active mission conditions.
+   These visuals are decorative and do not alter simulation values. */
+
+.outpost-map {
+    isolation: isolate;
+}
+
+.map-weather-effects {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.map-facility {
+    z-index: 4;
+    isolation: isolate;
+}
+
+.map-facility img {
+    position: relative;
+    z-index: 1;
+}
+
+.map-facility span {
+    position: relative;
+    z-index: 3;
+}
+
+/* DUST STORM: moving sand close to the ground and a dusty solar panel. */
+
+.map-dust-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    overflow: hidden;
+    background:
+        linear-gradient(166deg, transparent 0 48%, rgba(255, 198, 130, 0.10) 67%, transparent 82%),
+        linear-gradient(12deg, transparent 0 40%, rgba(125, 58, 37, 0.08) 57%, transparent 72%);
+    transition: opacity 650ms ease;
+}
+
+.map-dust-layer::before,
+.map-dust-layer::after {
+    content: "";
+    position: absolute;
+    inset: -35% -45%;
+    background:
+        repeating-linear-gradient(
+            168deg,
+            transparent 0 24px,
+            rgba(255, 215, 169, 0.15) 25px,
+            transparent 27px 54px
+        );
+    transform: rotate(-8deg);
+}
+
+.map-dust-layer::before {
+    animation: mars-dust-sweep 8s linear infinite;
+}
+
+.map-dust-layer::after {
+    opacity: 0.55;
+    transform: rotate(-8deg) translateY(35px);
+    animation: mars-dust-sweep 13s linear infinite reverse;
+}
+
+.map-dust-layer i {
+    position: absolute;
+    left: -5%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 222, 183, 0.8);
+    box-shadow: 0 0 7px rgba(255, 214, 169, 0.45);
+    animation: mars-dust-particle 5s linear infinite;
+}
+
+.map-dust-layer i:nth-child(1)  { top: 14%; animation-delay: -1s; }
+.map-dust-layer i:nth-child(2)  { top: 24%; animation-delay: -3s; width: 2px; }
+.map-dust-layer i:nth-child(3)  { top: 37%; animation-delay: -2s; }
+.map-dust-layer i:nth-child(4)  { top: 49%; animation-delay: -4s; width: 4px; }
+.map-dust-layer i:nth-child(5)  { top: 58%; animation-delay: -1.5s; }
+.map-dust-layer i:nth-child(6)  { top: 72%; animation-delay: -3.5s; width: 2px; }
+.map-dust-layer i:nth-child(7)  { top: 82%; animation-delay: -2.5s; }
+.map-dust-layer i:nth-child(8)  { top: 19%; animation-delay: -4.5s; width: 2px; }
+.map-dust-layer i:nth-child(9)  { top: 31%; animation-delay: -0.5s; }
+.map-dust-layer i:nth-child(10) { top: 64%; animation-delay: -2.8s; }
+.map-dust-layer i:nth-child(11) { top: 88%; animation-delay: -1.8s; width: 2px; }
+.map-dust-layer i:nth-child(12) { top: 43%; animation-delay: -3.8s; }
+.map-dust-layer i:nth-child(13) { top: 9%; animation-delay: -2.2s; width: 2px; }
+.map-dust-layer i:nth-child(14) { top: 54%; animation-delay: -0.8s; }
+.map-dust-layer i:nth-child(15) { top: 76%; animation-delay: -4.2s; }
+.map-dust-layer i:nth-child(16) { top: 27%; animation-delay: -1.2s; width: 4px; }
+.map-dust-layer i:nth-child(17) { top: 91%; animation-delay: -3.2s; }
+.map-dust-layer i:nth-child(18) { top: 61%; animation-delay: -2.1s; }
+
+.map[data-weather="dusty"] .map-dust-layer {
+    opacity: 0.82;
+}
+
+.map[data-weather="dusty"] .solar-marker img {
+    filter:
+        sepia(0.32)
+        saturate(0.78)
+        brightness(0.88)
+        drop-shadow(0 8px 8px rgba(0, 0, 0, 0.35));
+}
+
+.map[data-weather="dusty"] .solar-marker::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 5%;
+    left: 7%;
+    width: 86%;
+    height: 57%;
+    border-radius: 12%;
+    background:
+        radial-gradient(circle at 12% 20%, rgba(214, 168, 120, 0.70) 0 2px, transparent 3px),
+        radial-gradient(circle at 35% 65%, rgba(240, 198, 149, 0.62) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 71% 28%, rgba(214, 168, 120, 0.65) 0 2px, transparent 3px),
+        radial-gradient(circle at 86% 72%, rgba(240, 198, 149, 0.55) 0 1.5px, transparent 2.5px),
+        linear-gradient(135deg, rgba(174, 119, 78, 0.18), rgba(233, 182, 132, 0.34));
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.map[data-weather="clear"] .solar-marker::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 7%;
+    left: 10%;
+    width: 76%;
+    height: 47%;
+    border-radius: 12%;
+    background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.36) 48%, transparent 62%);
+    opacity: 0;
+    animation: solar-panel-glint 7s ease-in-out 1s infinite;
+    pointer-events: none;
+}
+
+/* RADIATION WARNING: a warm warning glow around the shelter. */
+
+.map-radiation-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background:
+        radial-gradient(ellipse at 62% 73%, rgba(255, 188, 91, 0.24), transparent 29%),
+        radial-gradient(ellipse at 50% 50%, rgba(245, 104, 76, 0.08), transparent 70%);
+    transition: opacity 450ms ease;
+}
+
+.map[data-radiation="danger"] .map-radiation-layer {
+    opacity: 1;
+    animation: radiation-warning-glow 2.8s ease-in-out infinite;
+}
+
+.map[data-radiation="caution"] .map-radiation-layer {
+    opacity: 0.55;
+    animation: radiation-warning-glow 4s ease-in-out infinite;
+}
+
+.map[data-radiation="danger"] .shelter-marker::before,
+.map[data-radiation="caution"] .shelter-marker::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 7% 4% 24%;
+    border: 2px solid rgba(255, 202, 119, 0.85);
+    border-radius: 42%;
+    box-shadow: 0 0 18px rgba(255, 184, 88, 0.45);
+    animation: shelter-warning-ring 1.8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.map[data-shielding="active"][data-radiation="danger"] .shelter-marker::before {
+    border-color: rgba(105, 216, 255, 0.95);
+    box-shadow:
+        0 0 16px rgba(105, 216, 255, 0.65),
+        inset 0 0 16px rgba(105, 216, 255, 0.18);
+    animation: shelter-protection-pulse 2.2s ease-in-out infinite;
+}
+
+/* AIR SYSTEM ALERT: the crew home receives a gentle warning beacon. */
+
+.map-air-alert-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: radial-gradient(ellipse at 49% 50%, rgba(255, 111, 82, 0.13), transparent 23%);
+    transition: opacity 450ms ease;
+}
+
+.map[data-air="warning"] .map-air-alert-layer {
+    opacity: 1;
+    animation: air-alert-glow 2.1s ease-in-out infinite;
+}
+
+.map[data-air="warning"] .habitat-marker::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 8% 7% 24%;
+    border: 2px solid rgba(255, 133, 105, 0.82);
+    border-radius: 48%;
+    box-shadow: 0 0 17px rgba(255, 100, 78, 0.48);
+    animation: habitat-alert-ring 1.65s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* GROWING CROPS: soft green light and tiny floating sparkles. */
+
+.map[data-crops="growing"] .greenhouse-marker::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 4% 4% 22%;
+    border: 1px solid rgba(127, 224, 165, 0.62);
+    border-radius: 24%;
+    box-shadow:
+        0 0 17px rgba(127, 224, 165, 0.42),
+        inset 0 0 17px rgba(127, 224, 165, 0.13);
+    animation: greenhouse-growth-glow 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.map-crop-particle-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.map[data-crops="growing"] .map-crop-particle-layer {
+    opacity: 1;
+}
+
+.map-crop-particle-layer i {
+    position: absolute;
+    left: 72%;
+    top: 31%;
+    color: rgba(177, 255, 195, 0.95);
+    font-size: 14px;
+    font-style: normal;
+    text-shadow: 0 0 8px rgba(127, 224, 165, 0.9);
+    animation: greenhouse-sparkle 3.2s ease-in-out infinite;
+}
+
+.map-crop-particle-layer i:nth-child(2) { left: 82%; top: 38%; animation-delay: 0.8s; font-size: 10px; }
+.map-crop-particle-layer i:nth-child(3) { left: 76%; top: 24%; animation-delay: 1.6s; }
+.map-crop-particle-layer i:nth-child(4) { left: 87%; top: 30%; animation-delay: 2.3s; font-size: 9px; }
+
+/* EARTH MESSAGE: pulsing signal rings around the antenna. */
+
+.map[data-comms="pending"] .antenna-marker::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0 0 28%;
+    border: 2px solid rgba(105, 216, 255, 0.85);
+    border-radius: 50%;
+    animation: antenna-signal-wave 2.1s ease-out infinite;
+    pointer-events: none;
+}
+
+/* CONDITION LABELS: concise status chips inside the map. */
+
+.map-condition-status {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    z-index: 8;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 6px;
+    max-width: min(75%, 560px);
+    pointer-events: none;
+}
+
+.map-condition-status[hidden] {
+    display: none !important;
+}
+
+.map-condition-heading {
+    flex-basis: 100%;
+    color: rgba(255, 246, 232, 0.88);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.map-condition-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 23px;
+    padding: 5px 8px;
+    color: #f7faff;
+    background: rgba(9, 15, 27, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 6px;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.18);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.45px;
+    backdrop-filter: blur(4px);
+}
+
+.map-condition-dust {
+    border-color: rgba(255, 202, 137, 0.65);
+    color: #ffe0b8;
+}
+
+.map-condition-radiation,
+.map-condition-air {
+    border-color: rgba(255, 139, 111, 0.72);
+    color: #ffd0bd;
+}
+
+.map-condition-caution {
+    border-color: rgba(255, 209, 117, 0.68);
+    color: #ffe8b4;
+}
+
+.map-condition-crops,
+.map-condition-shield {
+    border-color: rgba(127, 224, 165, 0.62);
+    color: #c4ffda;
+}
+
+.map-condition-comms {
+    border-color: rgba(105, 216, 255, 0.68);
+    color: #c7f4ff;
+}
+
+/* Animations */
+
+@keyframes mars-dust-sweep {
+    from { transform: translate3d(-5%, -2%, 0) rotate(-8deg); }
+    to   { transform: translate3d(12%, 5%, 0) rotate(-8deg); }
+}
+
+@keyframes mars-dust-particle {
+    0%   { transform: translate3d(-5vw, 0, 0); opacity: 0; }
+    12%  { opacity: 0.75; }
+    88%  { opacity: 0.6; }
+    100% { transform: translate3d(110vw, -12px, 0); opacity: 0; }
+}
+
+@keyframes solar-panel-glint {
+    0%, 65%, 100% { opacity: 0; transform: translateX(-18%); }
+    76% { opacity: 0.75; }
+    88% { opacity: 0; transform: translateX(18%); }
+}
+
+@keyframes radiation-warning-glow {
+    0%, 100% { opacity: 0.48; }
+    50% { opacity: 1; }
+}
+
+@keyframes shelter-warning-ring {
+    0%, 100% { opacity: 0.45; transform: scale(0.94); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes shelter-protection-pulse {
+    0%, 100% { opacity: 0.55; transform: scale(0.94); }
+    50% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes air-alert-glow {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.85; }
+}
+
+@keyframes habitat-alert-ring {
+    0%, 100% { opacity: 0.45; transform: scale(0.96); }
+    50% { opacity: 0.95; transform: scale(1.04); }
+}
+
+@keyframes greenhouse-growth-glow {
+    0%, 100% { opacity: 0.55; transform: scale(0.97); }
+    50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes greenhouse-sparkle {
+    0%, 100% { opacity: 0; transform: translateY(8px) scale(0.7); }
+    35%, 65% { opacity: 0.9; transform: translateY(-5px) scale(1); }
+}
+
+@keyframes antenna-signal-wave {
+    0% { opacity: 0.8; transform: scale(0.72); }
+    100% { opacity: 0; transform: scale(1.6); }
+}
+
+@media (max-width: 600px) {
+    .map-condition-status {
+        top: 8px;
+        left: 8px;
+        gap: 4px;
+        max-width: 88%;
+    }
+
+    .map-condition-badge {
+        min-height: 20px;
+        padding: 4px 6px;
+        font-size: 7px;
+    }
+
+    .map-condition-heading {
+        font-size: 7px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .map-weather-effects *,
+    .map-weather-effects *::before,
+    .map-weather-effects *::after,
+    .map-facility::before,
+    .map-facility::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .map[data-weather="dusty"] .map-dust-layer {
+        opacity: 0.42;
+    }
+
+    .map[data-radiation="danger"] .map-radiation-layer,
+    .map[data-radiation="caution"] .map-radiation-layer {
+        opacity: 0.5;
+    }
+}

@@ -1,4 +1,6 @@
 import './style.css';
+import './ui/missionBriefing.css';
+import { initializeMissionBriefing } from './ui/missionBriefing.js';
 
 import { initializeOutpost } from './ui/outpost.js';
 
@@ -404,6 +406,140 @@ app.innerHTML = `
         </footer>
 
     </div>
+
+    <!-- FIRST-TIME MISSION BRIEFING -->
+    <div
+        class="mission-briefing-overlay"
+        id="mission-briefing"
+        hidden
+    >
+        <section
+            class="mission-briefing-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mission-briefing-title"
+            aria-describedby="mission-briefing-description"
+        >
+            <div class="mission-briefing-topline">
+                <div class="mission-briefing-brand">
+                    <span class="mission-briefing-brand-mark">A</span>
+                    <span>ARES-6 MISSION CONTROL</span>
+                </div>
+                <span class="mission-briefing-tag">FIRST MISSION BRIEFING</span>
+            </div>
+
+            <h2 class="mission-briefing-heading" id="mission-briefing-title">
+                Welcome to Mars, Commander.
+            </h2>
+
+            <p class="mission-briefing-intro" id="mission-briefing-description">
+                Your crew is ready. Your outpost is waiting. Guide four astronauts
+                through seven Martian sols, protect their supplies, and complete
+                the mission's two science objectives.
+            </p>
+
+            <div class="mission-briefing-stats" aria-label="Mission overview">
+                <div class="mission-briefing-stat">
+                    <strong>4</strong>
+                    <span>Astronauts</span>
+                </div>
+                <div class="mission-briefing-stat">
+                    <strong>7</strong>
+                    <span>Martian sols</span>
+                </div>
+                <div class="mission-briefing-stat">
+                    <strong>2</strong>
+                    <span>Science goals</span>
+                </div>
+            </div>
+
+            <div class="mission-briefing-grid">
+                <article class="mission-briefing-card">
+                    <span class="mission-briefing-card-icon" aria-hidden="true">⚡</span>
+                    <div>
+                        <h3>Manage your supplies</h3>
+                        <p>
+                            Watch Power, Water, and Food at the top of the screen.
+                            The crew uses supplies as each Sol passes, so think
+                            before spending them.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="mission-briefing-card">
+                    <span class="mission-briefing-card-icon" aria-hidden="true">☑</span>
+                    <div>
+                        <h3>Make one decision each Sol</h3>
+                        <p>
+                            Read the daily mission event and choose option A or B.
+                            Your choice changes the outpost. You can end the Sol
+                            after making your decision.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="mission-briefing-card">
+                    <span class="mission-briefing-card-icon" aria-hidden="true">⌖</span>
+                    <div>
+                        <h3>Inspect the outpost</h3>
+                        <p>
+                            Select the Habitat, Solar Station, Greenhouse, Storm
+                            Shelter, Communications Station, or Science Rover
+                            on the map to inspect its condition.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="mission-briefing-card">
+                    <span class="mission-briefing-card-icon" aria-hidden="true">◎</span>
+                    <div>
+                        <h3>Complete both science goals</h3>
+                        <p>
+                            Finish the geological research and environmental
+                            research objectives before the end of Sol 7.
+                            Track your progress below the map.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="mission-briefing-card mission-briefing-card-wide">
+                    <span class="mission-briefing-card-icon" aria-hidden="true">🔬</span>
+                    <div>
+                        <h3>Learn from NASA science</h3>
+                        <p>
+                            Open the NASA Science &amp; Space Weather panel for
+                            Curiosity's historical Mars radiation observation and
+                            space-weather updates. Historical NASA measurements
+                            are separate from the game's simplified resource and
+                            radiation-risk values.
+                        </p>
+                    </div>
+                </article>
+            </div>
+
+            <p class="mission-briefing-note">
+                Mission tip: there is no undo button. Read each choice carefully,
+                check your resources, and keep your crew safe.
+            </p>
+
+            <div class="mission-briefing-actions">
+                <button
+                    type="button"
+                    class="mission-briefing-skip"
+                    id="mission-briefing-skip"
+                >
+                    Skip briefing
+                </button>
+                <button
+                    type="button"
+                    class="mission-briefing-start"
+                    id="mission-briefing-start"
+                >
+                    Launch mission
+                </button>
+            </div>
+        </section>
+    </div>
   
 `;
 
@@ -418,6 +554,7 @@ app.innerHTML = `
 initializeOutpost(gameState);
 
 refreshGameInterface();
+initializeMissionBriefing();
 
 
 

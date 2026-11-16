@@ -208,15 +208,15 @@
       "id": "sol-7-environmental-research",
       "sol": 7,
       "category": "research",
-      "title": "One last science mission!",
-      "description": "Before the seven-day mission ends, your crew has one last chance to study the land and conditions around the outpost.",
+      "title": "Study the environment around your outpost!",
+      "description": "Your rover has gathered information about the land, air and conditions around the outpost. Study the results or save power for the remaining mission days.",
       "scienceFact": "Scientists study Mars's air, weather, soil, and radiation to understand what future explorers may face.",
       "onStart": {},
       "choices": [
         {
           "id": "complete-environmental-survey",
           "label": "Study Mars's environment",
-          "description": "Spend 8 power units to finish this science goal.",
+          "description": "Spend 8 power units to complete this science goal.",
           "costs": {
             "power": 8
           },
@@ -228,12 +228,12 @@
         },
         {
           "id": "preserve-final-resources",
-          "label": "Save our remaining power",
-          "description": "Keep your electricity for the outpost instead of doing the final study.",
+          "label": "Save our power",
+          "description": "Keep your electricity for the remaining outpost missions.",
           "costs": {},
           "gains": {},
           "effects": {},
-          "explanation": "You saved power, but the study of Mars's environment is not finished."
+          "explanation": "You saved power, but the study of Mars's environment is not complete."
         }
       ]
     },

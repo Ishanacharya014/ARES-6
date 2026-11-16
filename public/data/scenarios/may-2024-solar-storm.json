@@ -1,0 +1,262 @@
+{
+  "scenario": {
+    "id": "may-2024-solar-storm",
+    "title": "May 2024 Solar Storm",
+    "type": "historical-training-scenario",
+    "description": "A seven-day ARES-6 training campaign featuring a historical NASA solar-storm case study on Mars day 4.",
+    "historicalScope": "The May 20, 2024 event is historical. The other six daily events remain part of the ARES-6 educational simulation and are not a replay of Curiosity's actual mission days.",
+    "source": "https://www.nasa.gov/solar-system/planets/mars/nasa-watches-mars-light-up-during-epic-solar-storm/"
+  },
+  "events": [
+    {
+      "id": "sol-1-greenhouse-preparation",
+      "sol": 1,
+      "category": "greenhouse",
+      "title": "Let's prepare the food garden!",
+      "description": "Your crew has arrived on Mars. Should you plant the first crops now, or save power and water for other jobs?",
+      "scienceFact": "Plants need water, light, and nutrients — the things that help them grow. A greenhouse gives plants a place with the right conditions.",
+      "onStart": {},
+      "choices": [
+        {
+          "id": "start-crops",
+          "label": "Plant the first crops",
+          "description": "Spend 5 power units and 5 water units to plant food. The crops need two Mars days to grow.",
+          "costs": {},
+          "gains": {},
+          "effects": {
+            "startCropCycle": true
+          },
+          "explanation": "Your crops are growing. They need time before they are ready to harvest."
+        },
+        {
+          "id": "save-resources",
+          "label": "Save power and water",
+          "description": "Keep your supplies for other important jobs around the outpost.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You saved your supplies, but no food is growing in the greenhouse yet."
+        }
+      ]
+    },
+    {
+      "id": "sol-2-dust-storm",
+      "sol": 2,
+      "category": "power",
+      "title": "Dust is covering our solar panels!",
+      "description": "A dust storm has left dust on the solar panels. Dusty panels make less electricity for the outpost.",
+      "scienceFact": "Mars can have huge dust storms. Dust on a solar panel can block sunlight, so the panel makes less electricity.",
+      "onStart": {
+        "setSolarDustLevel": "dusty"
+      },
+      "choices": [
+        {
+          "id": "clean-panels",
+          "label": "Clean the solar panels",
+          "description": "Spend 5 power units to clean the panels. They can make more electricity again.",
+          "costs": {
+            "power": 5
+          },
+          "gains": {},
+          "effects": {
+            "setSolarDustLevel": "clean"
+          },
+          "explanation": "The panels are clean. They can now make more electricity each Mars day."
+        },
+        {
+          "id": "save-energy",
+          "label": "Keep our power",
+          "description": "Save your electricity for other important equipment.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You kept your power, but the dusty panels will keep making less electricity."
+        }
+      ]
+    },
+    {
+      "id": "sol-3-geological-research",
+      "sol": 3,
+      "category": "research",
+      "title": "The robot rover found an interesting rock!",
+      "description": "Your robot rover has found a rock that scientists would like to study. You can collect a sample or save power.",
+      "scienceFact": "By studying Martian rocks, scientists learn how Mars changed over time and what the planet was like long ago.",
+      "onStart": {},
+      "choices": [
+        {
+          "id": "collect-rock-sample",
+          "label": "Collect a rock sample",
+          "description": "Spend 8 power units to study the rock and finish this science goal.",
+          "costs": {
+            "power": 8
+          },
+          "gains": {},
+          "effects": {
+            "completeObjective": "geologicalResearch"
+          },
+          "explanation": "Great work! Your crew has finished its rock research."
+        },
+        {
+          "id": "save-research-energy",
+          "label": "Save our power",
+          "description": "Wait before studying the rock and keep the electricity for later.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You saved power, but the rock research is not finished."
+        }
+      ]
+    },
+    {
+      "id": "may-2024-curiosity-solar-storm",
+      "sol": 4,
+      "category": "radiation",
+      "title": "A powerful solar storm is reaching Mars!",
+      "description": "Mission Control has received news of a major solar storm. Charged particles have reached Mars. Should your crew use extra shelter protection or save the water?",
+      "scienceFact": "The Sun can send bursts of energy and tiny charged particles into space. When a strong burst reaches Mars, it can increase radiation at the surface.",
+      "onStart": {
+        "setRadiationStatus": "danger"
+      },
+      "choices": [
+        {
+          "id": "may-2024-use-radiation-shelter",
+          "label": "Move the crew into the radiation shelter",
+          "description": "Set aside 5 water units to add basic shelter protection. In this game, it lowers the radiation-risk points from this event.",
+          "costs": {},
+          "gains": {},
+          "effects": {
+            "allocateWaterForShielding": true
+          },
+          "explanation": "The crew has extra shelter protection. It lowers the game's radiation-risk points, not a real measured dose."
+        },
+        {
+          "id": "may-2024-save-water",
+          "label": "Save the water",
+          "description": "Keep the water for the crew's normal needs. The shelter will not have extra protection for this event.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You kept the water, but the crew has no extra shelter protection for this event."
+        }
+      ],
+      "historicalRecord": {
+        "date": "May 20, 2024",
+        "curiositySol": 4190,
+        "flareClassEstimate": "X12 (estimated)",
+        "estimatedAstronautDoseMicrogray": 8100,
+        "chestXrayEquivalent": 30,
+        "radFinding": "Curiosity's Radiation Assessment Detector recorded the biggest radiation surge of its mission since the rover landed in 2012.",
+        "doseExplanation": "NASA estimated that astronauts standing near Curiosity during this event could have received about 8,100 microgray (8.1 milligray) — around 30 chest X-rays.",
+        "scienceNote": "This is NASA's estimate of a possible astronaut dose near Curiosity during the historical event. It is not a measurement of the ARES-6 crew and is not used as a game damage value.",
+        "gameModelNote": "ARES-6 uses a simple danger level and fictional risk points for this choice. The shelter option lowers those game points; it does not calculate a real astronaut dose.",
+        "sourceTitle": "NASA: Watches Mars Light Up During Epic Solar Storm",
+        "sourceUrl": "https://www.nasa.gov/solar-system/planets/mars/nasa-watches-mars-light-up-during-epic-solar-storm/"
+      }
+    },
+    {
+      "id": "sol-5-habitat-problem",
+      "sol": 5,
+      "category": "life-support",
+      "title": "The habitat's air system has stopped!",
+      "description": "The machine that keeps the habitat's air safe is not working. Fix it now, or use backup mode for one Mars day.",
+      "scienceFact": "People need clean air to breathe. A Mars home needs machines to provide and manage safe air for the crew.",
+      "onStart": {
+        "setHabitatOperational": false
+      },
+      "choices": [
+        {
+          "id": "repair-habitat",
+          "label": "Fix the air system",
+          "description": "Spend 6 power units to repair the machine that keeps the habitat's air safe.",
+          "costs": {
+            "power": 6
+          },
+          "gains": {},
+          "effects": {
+            "setHabitatOperational": true,
+            "resetAirFailures": true
+          },
+          "explanation": "The air system is working again. The crew can breathe safely inside the habitat."
+        },
+        {
+          "id": "use-backup-system",
+          "label": "Use backup mode",
+          "description": "Save power for now. The air system will still need to be fixed by the next Mars day.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "Backup mode gives the crew a little time. Fix the air system before another Mars day passes."
+        }
+      ]
+    },
+    {
+      "id": "sol-6-greenhouse-planning",
+      "sol": 6,
+      "category": "greenhouse",
+      "title": "Should we grow more food?",
+      "description": "The crew can start another crop cycle or save supplies. If the habitat's air system is still broken, fixing it is also important.",
+      "scienceFact": "Growing food on Mars takes planning. Plants need water, power, light, and time before they are ready to harvest.",
+      "onStart": {},
+      "choices": [
+        {
+          "id": "repair-air-system",
+          "label": "Fix the air system",
+          "description": "Spend 6 power units to restore the habitat's air system.",
+          "costs": {
+            "power": 6
+          },
+          "gains": {},
+          "effects": {
+            "setHabitatOperational": true,
+            "resetAirFailures": true
+          },
+          "explanation": "You repaired the habitat. The crew can use its air system again."
+        },
+        {
+          "id": "start-another-crop-cycle",
+          "label": "Grow another batch of food",
+          "description": "Spend 5 power units and 5 water units to start another crop cycle. The crops need two Mars days to grow.",
+          "costs": {},
+          "gains": {},
+          "effects": {
+            "startCropCycle": true
+          },
+          "explanation": "New crops are growing. They need two Mars days before harvest. Make sure the air system is working too."
+        }
+      ]
+    },
+    {
+      "id": "sol-7-environmental-research",
+      "sol": 7,
+      "category": "research",
+      "title": "One last science mission!",
+      "description": "Before the seven-day mission ends, your crew has one last chance to study the land and conditions around the outpost.",
+      "scienceFact": "Scientists study Mars's air, weather, soil, and radiation to understand what future explorers may face.",
+      "onStart": {},
+      "choices": [
+        {
+          "id": "complete-environmental-survey",
+          "label": "Study Mars's environment",
+          "description": "Spend 8 power units to finish this science goal.",
+          "costs": {
+            "power": 8
+          },
+          "gains": {},
+          "effects": {
+            "completeObjective": "environmentalResearch"
+          },
+          "explanation": "Excellent work! Your crew has finished its study of the Martian environment."
+        },
+        {
+          "id": "preserve-final-resources",
+          "label": "Save our remaining power",
+          "description": "Keep your electricity for the outpost instead of doing the final study.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You saved power, but the study of Mars's environment is not finished."
+        }
+      ]
+    }
+  ]
+}

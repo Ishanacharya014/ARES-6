@@ -1,10 +1,10 @@
 {
   "scenario": {
     "id": "may-2024-solar-storm",
-    "title": "May 2024 Solar Storm",
+    "title": "May 2024 Solar Storm · 14-Day Mission",
     "type": "historical-training-scenario",
-    "description": "A seven-day ARES-6 training campaign featuring a historical NASA solar-storm case study on Mars day 4.",
-    "historicalScope": "The May 20, 2024 event is historical. The other six daily events remain part of the ARES-6 educational simulation and are not a replay of Curiosity's actual mission days.",
+    "description": "A 14-day ARES-6 training campaign featuring the historical NASA solar-storm case study on Mars day 4.",
+    "historicalScope": "The May 20, 2024 event on Mars day 4 is historical. The other 13 daily events are ARES-6 educational training simulations and are not a replay of Curiosity's actual mission timeline.",
     "source": "https://www.nasa.gov/solar-system/planets/mars/nasa-watches-mars-light-up-during-epic-solar-storm/"
   },
   "events": [
@@ -255,6 +255,237 @@
           "gains": {},
           "effects": {},
           "explanation": "You saved power, but the study of Mars's environment is not finished."
+        }
+      ]
+    },
+    {
+      "sol": 8,
+      "id": "sol-8-water-ice-survey",
+      "title": "The rover has found a promising icy area!",
+      "category": "research",
+      "description": "The rover has reached a cold, rocky area that may contain water ice below the surface. Your team can scan the ground or save power for later work.",
+      "scienceFact": "Scientists have found water ice on Mars. Learning where ice is found helps planners choose places for future exploration.",
+      "choices": [
+        {
+          "id": "scan-water-ice",
+          "label": "Scan the icy ground",
+          "description": "Spend 7 power units to study the area and complete the water-ice survey.",
+          "costs": {
+            "power": 7
+          },
+          "gains": {},
+          "effects": {
+            "completeObjective": "waterIceResearch"
+          },
+          "explanation": "The rover completed its water-ice survey. Finding possible ice is useful information, but it does not automatically add water to your supplies."
+        },
+        {
+          "id": "save-ice-survey-power",
+          "label": "Save rover power",
+          "description": "Keep your electricity for the remaining outpost missions.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You saved power, but the water-ice survey is not complete."
+        }
+      ]
+    },
+    {
+      "sol": 9,
+      "id": "sol-9-water-recycler-failure",
+      "title": "The water recycler has stopped working!",
+      "category": "life-support",
+      "onStart": {
+        "setWaterRecyclerOperational": false
+      },
+      "description": "The machine that cleans and reuses some of the crew's water has stopped. You can repair it or use an emergency water reserve.",
+      "scienceFact": "Space missions reuse water carefully. Cleaning and reusing water helps reduce how much must be carried from Earth.",
+      "choices": [
+        {
+          "id": "repair-water-recycler",
+          "label": "Repair the water recycler",
+          "description": "Spend 6 power units to repair the system. It can recover 2 water units after the crew's daily use.",
+          "costs": {
+            "power": 6
+          },
+          "gains": {},
+          "effects": {
+            "setWaterRecyclerOperational": true
+          },
+          "explanation": "The recycler is working again. It can recover a small amount of water after the crew uses its supplies."
+        },
+        {
+          "id": "use-emergency-water-reserve",
+          "label": "Use the emergency water reserve",
+          "description": "Add 14 water units from the stored emergency supply, but leave the recycler offline.",
+          "costs": {},
+          "gains": {
+            "water": 14
+          },
+          "effects": {},
+          "explanation": "The extra water gives the crew more time, but the recycler is still offline and will not recover water each day."
+        }
+      ]
+    },
+    {
+      "sol": 10,
+      "id": "sol-10-second-dust-storm",
+      "title": "Another dust storm is approaching!",
+      "category": "power",
+      "onStart": {
+        "setSolarDustLevel": "dusty"
+      },
+      "description": "Dust is covering the solar panels again. The outpost will make less electricity until the panels are cleaned.",
+      "scienceFact": "Mars has dust storms that can spread dust over large areas. Dust on solar panels can reduce the sunlight they receive.",
+      "choices": [
+        {
+          "id": "clean-panels-again",
+          "label": "Clean the solar panels",
+          "description": "Spend 5 power units to clear the dust and restore normal solar generation.",
+          "costs": {
+            "power": 5
+          },
+          "gains": {},
+          "effects": {
+            "setSolarDustLevel": "clean"
+          },
+          "explanation": "The panels are clean again and can make their normal amount of electricity."
+        },
+        {
+          "id": "wait-out-dust-storm",
+          "label": "Wait for the storm to pass",
+          "description": "Save power now, but the dusty panels will keep making less electricity.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You kept your power, but the dusty panels will make less electricity until they are cleaned."
+        }
+      ]
+    },
+    {
+      "sol": 11,
+      "id": "sol-11-greenhouse-food-cycle",
+      "title": "The food garden needs another crop cycle!",
+      "category": "greenhouse",
+      "description": "The crew has used much of its stored food. The greenhouse can grow another batch, but planting needs power and water.",
+      "scienceFact": "Growing food away from Earth takes planning. Plants need water, light, nutrients and time before they can be harvested.",
+      "choices": [
+        {
+          "id": "plant-another-food-batch",
+          "label": "Plant another food batch",
+          "description": "Spend 5 power units and 5 water units to start a crop cycle. Food can be harvested after two Mars days.",
+          "costs": {},
+          "gains": {},
+          "effects": {
+            "startCropCycle": true
+          },
+          "explanation": "A new crop cycle has started. The greenhouse can provide more food after the plants grow."
+        },
+        {
+          "id": "save-greenhouse-supplies",
+          "label": "Save power and water",
+          "description": "Keep the supplies for the other outpost systems. No new crops will grow.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You saved the supplies, but the greenhouse will not produce another food batch from this choice."
+        }
+      ]
+    },
+    {
+      "sol": 12,
+      "id": "sol-12-atmosphere-study",
+      "title": "The rover has collected new air and dust readings!",
+      "category": "research",
+      "description": "The rover's instruments have recorded information about the thin air and dust around the outpost. Your crew can study the readings or save power.",
+      "scienceFact": "Mars has a very thin atmosphere made mostly of carbon dioxide. Scientists study its air and dust to understand the planet's weather and environment.",
+      "choices": [
+        {
+          "id": "study-atmosphere-readings",
+          "label": "Study the atmosphere readings",
+          "description": "Spend 8 power units to complete the atmosphere study.",
+          "costs": {
+            "power": 8
+          },
+          "gains": {},
+          "effects": {
+            "completeObjective": "atmosphericResearch"
+          },
+          "explanation": "Your crew has studied the atmosphere readings and completed the atmosphere science goal."
+        },
+        {
+          "id": "save-atmosphere-research-power",
+          "label": "Save the power",
+          "description": "Keep electricity for the remaining mission systems. The atmosphere study will remain unfinished.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You saved power, but the atmosphere study is not complete."
+        }
+      ]
+    },
+    {
+      "sol": 13,
+      "id": "sol-13-space-weather-caution",
+      "title": "Mission Control has sent another space-weather warning!",
+      "category": "radiation",
+      "onStart": {
+        "setRadiationStatus": "caution"
+      },
+      "description": "Mission Control has warned that space-weather conditions may raise radiation risk. Your crew can add extra shelter protection or save water.",
+      "scienceFact": "The Sun releases energy and charged particles. Space-weather alerts help mission teams prepare, but a warning is not the same as a measured dose at the outpost.",
+      "choices": [
+        {
+          "id": "add-shelter-protection-day13",
+          "label": "Add extra shelter protection",
+          "description": "Use 5 water units to add basic water-based shielding. It lowers the game's radiation-risk points for this warning.",
+          "costs": {},
+          "gains": {},
+          "effects": {
+            "allocateWaterForShielding": true
+          },
+          "explanation": "The shelter has extra protection. It lowers the game's fictional risk points, not a real measured radiation dose."
+        },
+        {
+          "id": "save-water-day13",
+          "label": "Save the water",
+          "description": "Keep the water for the crew's normal needs. The shelter will not receive extra protection for this warning.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You saved the water, but the shelter has no extra protection for this warning."
+        }
+      ]
+    },
+    {
+      "sol": 14,
+      "id": "sol-14-final-report-transmission",
+      "title": "The mission is nearly over. Send your research to Earth!",
+      "category": "communications",
+      "description": "Your crew has collected information from the outpost. Use the antenna to send the final mission report to Earth, or keep the remaining power in reserve.",
+      "scienceFact": "Messages from Mars take time to travel to Earth. Mission teams plan carefully so that important results can be sent home.",
+      "choices": [
+        {
+          "id": "transmit-final-science-report",
+          "label": "Transmit the final research report",
+          "description": "Spend 6 power units to send your mission results to Earth. A successful mission needs all four science goals and this final report.",
+          "costs": {
+            "power": 6
+          },
+          "gains": {},
+          "effects": {
+            "transmitFinalReport": true
+          },
+          "explanation": "The final research report has been sent to Earth. Mission Control has received your outpost's science results."
+        },
+        {
+          "id": "keep-final-power-reserve",
+          "label": "Keep the remaining power",
+          "description": "Save electricity, but the final report will not be sent to Earth.",
+          "costs": {},
+          "gains": {},
+          "effects": {},
+          "explanation": "You kept the power, but the final report was not transmitted. The crew can finish the mission, but the report is incomplete."
         }
       ]
     }

@@ -137,7 +137,7 @@ export function renderEventPanel(
             class="end-sol-help"
             id="end-sol-help"
         >
-            Select one decision to continue.
+            Choose one option to continue.
         </small>
 
     `;
@@ -221,7 +221,7 @@ export function renderEventPanel(
 
                 feedback.textContent =
                     result.message ||
-                    "Decision successfully completed.";
+                    "Choice saved.";
 
                 feedback.className = "event-feedback success";
 
@@ -232,7 +232,7 @@ export function renderEventPanel(
                 endButton.disabled = false;
 
                 endHelp.textContent =
-                    "Your decision is complete. End this Sol to continue.";
+                    "Your choice is saved. End this Mars day to continue.";
 
             } catch (error) {
 

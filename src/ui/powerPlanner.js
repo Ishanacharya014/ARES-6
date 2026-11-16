@@ -134,6 +134,7 @@ export function renderPowerPlanner(gameState, onSave) {
                     type="checkbox"
                     data-power-target="greenhouse"
                     value="2"
+                    ${allocation.greenhouse === 2 ? "checked" : ""}
                     ${greenhouseAvailable ? "" : "disabled"}
                 />
                 <span class="power-plan-option-copy">
@@ -150,6 +151,7 @@ export function renderPowerPlanner(gameState, onSave) {
                     type="checkbox"
                     data-power-target="rover"
                     value="2"
+                    ${allocation.rover === 2 ? "checked" : ""}
                     ${roverAvailable ? "" : "disabled"}
                 />
                 <span class="power-plan-option-copy">
@@ -163,6 +165,7 @@ export function renderPowerPlanner(gameState, onSave) {
                     type="checkbox"
                     data-power-target="shelter"
                     value="2"
+                    ${allocation.shelter === 2 ? "checked" : ""}
                     ${shelterAvailable ? "" : "disabled"}
                 />
                 <span class="power-plan-option-copy">

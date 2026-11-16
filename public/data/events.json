@@ -344,9 +344,9 @@
     {
       "sol": 11,
       "id": "sol-11-greenhouse-food-cycle",
-      "title": "The food garden needs another crop cycle!",
+      "title": "The greenhouse needs another crop cycle!",
       "category": "greenhouse",
-      "description": "The crew has used much of its stored food. The greenhouse can grow another batch, but planting needs power and water.",
+      "description": "The food garden can grow another batch. Your crew can plant more food or use the power to make sure the solar panels are clean.",
       "scienceFact": "Growing food away from Earth takes planning. Plants need water, light, nutrients and time before they can be harvested.",
       "choices": [
         {
@@ -361,13 +361,17 @@
           "explanation": "A new crop cycle has started. The greenhouse can provide more food after the plants grow."
         },
         {
-          "id": "save-greenhouse-supplies",
-          "label": "Save power and water",
-          "description": "Keep the supplies for the other outpost systems. No new crops will grow.",
-          "costs": {},
+          "id": "clean-solar-panels-day11",
+          "label": "Clean the solar panels",
+          "description": "Spend 5 power units to clear any dust and keep normal electricity generation. This also works if the panels are already clean.",
+          "costs": {
+            "power": 5
+          },
           "gains": {},
-          "effects": {},
-          "explanation": "You saved the supplies, but the greenhouse will not produce another food batch from this choice."
+          "effects": {
+            "setSolarDustLevel": "clean"
+          },
+          "explanation": "The solar panels are clean and ready to collect sunlight. You chose this instead of starting another crop cycle today."
         }
       ]
     },

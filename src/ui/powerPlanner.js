@@ -60,7 +60,7 @@ export function renderPowerPlanner(gameState, onSave) {
                 power to help one or more outpost systems.
             </p>
             <div class="power-planner-budget">
-                <span>Extra power available after today's solar generation</span>
+                <span>Power available after the life-support reserve</span>
                 <strong>${budget} units</strong>
             </div>
             <p class="power-planner-help">
@@ -124,7 +124,7 @@ export function renderPowerPlanner(gameState, onSave) {
         </p>
 
         <div class="power-planner-budget">
-            <span>Extra power available today</span>
+            <span>Power available after life support</span>
             <strong><span id="power-plan-total">0</span> / ${budget} units</strong>
         </div>
 

@@ -117,7 +117,15 @@ function refreshGameInterface() {
     // Render the optional daily power planner.
     renderPowerPlanner(
         gameState,
-        allocation => saveDailyPowerAllocation(gameState, allocation)
+        allocation => {
+            const result = saveDailyPowerAllocation(gameState, allocation);
+
+            if (result.success) {
+                persistCurrentMission();
+            }
+
+            return result;
+        }
     );
 
     updatePowerPlanningUI();
@@ -867,7 +875,10 @@ function handleChoiceSelected(choice) {
 
 
     // Update resources and crew status.
-    refreshGameInterface();;
+    refreshGameInterface();
+
+    // Preserve the choice if the browser closes before this Mars day ends.
+    persistCurrentMission();
 
 
     return {
@@ -1051,7 +1062,10 @@ async function restartMission() {
     const powerPlanningEnabled = gameState.mission.powerPlanningEnabled === true;
 
     // Create a completely fresh mission state.
-    gameState = createInitialGameState(selectedScenarioId, { powerPlanningEnabled });
+    replaceCurrentGameState(
+        createInitialGameState(selectedScenarioId, { powerPlanningEnabled })
+    );
+    persistCurrentMission();
 
     // Close any facility inspection left open from the previous mission.
     const facilityPanel = document.querySelector("#facility-panel-root");
@@ -1142,6 +1156,7 @@ function togglePowerPlanning() {
     };
 
     refreshGameInterface();
+    persistCurrentMission();
 
 }
 
@@ -1225,7 +1240,10 @@ async function switchMissionScenario() {
     document.body.classList.remove("mission-ending-open");
 
     const powerPlanningEnabled = gameState.mission.powerPlanningEnabled === true;
-    gameState = createInitialGameState(nextScenarioId, { powerPlanningEnabled });
+    replaceCurrentGameState(
+        createInitialGameState(nextScenarioId, { powerPlanningEnabled })
+    );
+    persistCurrentMission();
 
     const facilityPanel = document.querySelector("#facility-panel-root");
     if (facilityPanel) {
@@ -1274,6 +1292,9 @@ async function handleEndSol() {
         `MARS DAY ${completedSol} COMPLETED`,
         result.results
     );
+
+    // Save only after the complete simulation has committed.
+    persistCurrentMission();
 
     refreshGameInterface();
 
@@ -1367,10 +1388,18 @@ async function initializeMissionEvent() {
 
         handleEndSol,
 
-        gameState.mission.scenarioId ?? "standard"
+        gameState.mission.scenarioId ?? "standard",
+
+        {
+            ...gameState.turn,
+            powerPlanningEnabled: gameState.mission.powerPlanningEnabled
+        }
 
     );
 
+
+    // Save event starting conditions and the current event identifier.
+    persistCurrentMission();
 
     console.log(
         "Current event loaded:",
@@ -1472,40 +1501,89 @@ async function startApplication() {
 
     console.log("===== ARES-6 INITIALIZATION =====");
 
+    updateAutosaveStatus("CHECKING SAVE", "idle");
 
-    // Load independent mission panels together.
-    const results = await Promise.allSettled([
+    // Check for a previous mission before loading the event panel.
+    const savedMission = readAutosave();
 
-        initializeMissionEvent(),
+    if (savedMission.status === "valid" || savedMission.status === "invalid") {
 
-        initializeNasaSciencePanel(),
+        const startupChoice = await showSavePrompt(savedMission);
 
-        initializeDonkiPanel()
+        if (
+            startupChoice === "continue" &&
+            savedMission.status === "valid"
+        ) {
 
-    ]);
+            replaceCurrentGameState(savedMission.gameState);
 
+            updateAutosaveStatus("SAVE RESTORED", "saved");
 
-    // Report initialization failures.
-    results.forEach((result, index) => {
-
-        const names = [
-            "Mission Event",
-            "NASA Science",
-            "NASA DONKI"
-        ];
-
-
-        if (result.status === "rejected") {
-
-            console.error(
-                `${names[index]} initialization failed:`,
-                result.reason
+            console.log(
+                "ARES-6 mission restored:",
+                gameState.mission.scenarioId,
+                "Mars day",
+                gameState.mission.currentSol
             );
 
+        } else {
+
+            clearAutosave();
+            replaceCurrentGameState(createInitialGameState());
+
+            updateAutosaveStatus("NEW MISSION", "idle");
+
+        }
+
+    } else if (savedMission.status === "unavailable") {
+
+        updateAutosaveStatus("SAVE UNAVAILABLE", "error");
+
+    } else {
+
+        updateAutosaveStatus("NEW MISSION", "idle");
+
+    }
+
+    // Rebuild the visible interface from the restored or fresh state.
+    refreshGameInterface();
+
+    // Show the first-time briefing only after the save decision.
+    initializeMissionBriefing();
+
+    const initializationTasks = [
+        initializeNasaSciencePanel(),
+        initializeDonkiPanel()
+    ];
+
+    if (gameState.mission.status === "playing") {
+
+        initializationTasks.unshift(initializeMissionEvent());
+
+    } else {
+
+        // A saved completed/failed campaign opens directly to its result.
+        renderMissionFinished();
+
+    }
+
+    const results = await Promise.allSettled(initializationTasks);
+
+    results.forEach((result, index) => {
+
+        if (result.status === "rejected") {
+            console.error(
+                `ARES-6 initialization task ${index + 1} failed:`,
+                result.reason
+            );
         }
 
     });
 
+    // The event loader also saves after its starting conditions are applied.
+    if (gameState.mission.status === "playing") {
+        persistCurrentMission();
+    }
 
     console.log("===== ARES-6 INITIALIZATION FINISHED =====");
 

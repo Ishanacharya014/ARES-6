@@ -549,6 +549,98 @@ app.innerHTML = `
             </div>
         </section>
     </div>
+
+    <!-- FULL-SCREEN MISSION ENDING -->
+    <div class="mission-ending-overlay" id="mission-ending-screen" hidden>
+        <main
+            class="mission-ending-page"
+            id="mission-ending-page"
+            data-outcome="success"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ending-title"
+            aria-describedby="ending-description"
+        >
+            <div class="mission-ending-brand">
+                <span class="mission-ending-brand-mark">A</span>
+                <div>
+                    <strong>ARES-6</strong>
+                    <small>JUNIOR ASTRONAUT MISSION</small>
+                </div>
+            </div>
+
+            <section class="mission-ending-hero">
+                <div class="mission-ending-mark" id="ending-mark" aria-hidden="true">✓</div>
+                <span class="mission-ending-kicker" id="ending-kicker">MISSION COMPLETE</span>
+                <h1 id="ending-title">Mission Accomplished!</h1>
+                <p id="ending-description"></p>
+            </section>
+
+            <section class="mission-ending-stats" aria-label="Mission results">
+                <article class="mission-ending-stat">
+                    <span>MARS DAYS</span>
+                    <strong id="ending-days">7 / 7</strong>
+                    <small>Days completed</small>
+                </article>
+                <article class="mission-ending-stat">
+                    <span>CREW STATUS</span>
+                    <strong id="ending-crew-status">Healthy</strong>
+                    <small id="ending-crew-count">4 astronauts</small>
+                </article>
+                <article class="mission-ending-stat">
+                    <span>SCIENCE GOALS</span>
+                    <strong id="ending-objective-count">2 / 2</strong>
+                    <small>Goals completed</small>
+                </article>
+            </section>
+
+            <section class="mission-ending-details">
+                <article class="mission-ending-detail-card">
+                    <h2>Science goals</h2>
+                    <div class="mission-ending-goal-row">
+                        <span>Study a Martian rock</span>
+                        <strong id="ending-geological-status">Completed</strong>
+                    </div>
+                    <div class="mission-ending-goal-row">
+                        <span>Study Mars's environment</span>
+                        <strong id="ending-environmental-status">Completed</strong>
+                    </div>
+                </article>
+
+                <article class="mission-ending-detail-card">
+                    <h2>Supplies remaining</h2>
+                    <div class="mission-ending-resource-row">
+                        <span>⚡ Power</span>
+                        <strong id="ending-power">0 units</strong>
+                    </div>
+                    <div class="mission-ending-resource-row">
+                        <span>💧 Water</span>
+                        <strong id="ending-water">0 units</strong>
+                    </div>
+                    <div class="mission-ending-resource-row">
+                        <span>🌱 Food</span>
+                        <strong id="ending-food">0 units</strong>
+                    </div>
+                </article>
+            </section>
+
+            <div class="mission-ending-footer">
+                <p id="ending-footer-note">Your final mission report is ready.</p>
+                <button
+                    type="button"
+                    class="mission-ending-restart"
+                    id="ending-restart-button"
+                >
+                    ↻ RESTART MISSION
+                </button>
+            </div>
+
+            <small class="mission-ending-footnote">
+                ARES-6 · EDUCATIONAL MARS SIMULATION
+            </small>
+        </main>
+    </div>
+
   
 `;
 
@@ -603,101 +695,117 @@ function handleChoiceSelected(choice) {
 // DISPLAY FINAL MISSION RESULT
 // =====================================
 
+
+function setEndingText(id, value) {
+    const element = document.getElementById(id);
+
+    if (element) {
+        element.textContent = String(value);
+    }
+}
+
+
+// =====================================
+// DISPLAY THE FULL-SCREEN MISSION ENDING
+// =====================================
+
 function renderMissionFinished() {
 
-    const panel = document.querySelector("#event-panel-root");
+    const screen = document.querySelector("#mission-ending-screen");
+    const page = document.querySelector("#mission-ending-page");
 
-    const status = gameState.mission.status;
-
-
-    let title;
-    let description;
-
-
-    if (status === "success") {
-
-        title = "Mission Successful!";
-
-        description =
-            "Your crew made it through all seven days on Mars and finished both science goals. Excellent work!";
-
-    } else if (status === "partial-success") {
-
-        title = "Mission Finished";
-
-        description =
-            "Your crew made it through all seven days, but one or both science goals are not finished.";
-
-    } else {
-
-        title = "Mission Failed";
-
-        description =
-            "The crew could not safely finish the mission. Check the supplies and make sure the habitat air system is working.";
-
+    if (!screen || !page) {
+        console.error("Mission ending screen was not found.");
+        return false;
     }
 
+    const outcomes = {
+        success: {
+            kicker: "MISSION ACCOMPLISHED",
+            title: "You did it, Commander!",
+            description:
+                "Your crew made it through all seven days on Mars and completed both science goals. The outpost mission was a success!",
+            mark: "✓",
+            footer:
+                "Mission Control has received your final report. Ready for another mission?",
+            outcome: "success"
+        },
+        "partial-success": {
+            kicker: "MISSION COMPLETE",
+            title: "Your crew made it!",
+            description:
+                "Your crew completed all seven days on Mars. Some science goals are still unfinished, so there is more to discover on your next mission.",
+            mark: "★",
+            footer:
+                "You kept the mission going. Try again to complete both science goals.",
+            outcome: "partial-success"
+        },
+        failure: {
+            kicker: "MISSION ENDED",
+            title: "This mission needs a new plan.",
+            description:
+                "The crew could no longer continue safely. Review the air system and crew supplies, then try again with a new plan.",
+            mark: "!",
+            footer:
+                "Every mission teaches us something. Make a new plan and give it another try.",
+            outcome: "failure"
+        }
+    };
 
+    const result = outcomes[gameState.mission.status] ?? outcomes.failure;
+
+    const geologicalComplete = Boolean(gameState.objectives.geologicalResearch);
+    const environmentalComplete = Boolean(gameState.objectives.environmentalResearch);
     const completedObjectives =
-        Object.values(gameState.objectives)
-            .filter(Boolean).length;
+        Number(geologicalComplete) + Number(environmentalComplete);
 
+    const crewLabels = {
+        healthy: "Healthy",
+        "needs-attention": "Needs attention",
+        critical: "Critical"
+    };
 
-    panel.innerHTML = `
+    page.dataset.outcome = result.outcome;
 
-        <span class="eyebrow">MISSION REPORT</span>
+    setEndingText("ending-kicker", result.kicker);
+    setEndingText("ending-title", result.title);
+    setEndingText("ending-description", result.description);
+    setEndingText("ending-mark", result.mark);
+    setEndingText("ending-footer-note", result.footer);
 
-        <h3 class="event-title">${title}</h3>
+    setEndingText(
+        "ending-days",
+        gameState.mission.currentSol + " / " + gameState.mission.totalSols
+    );
 
-        <p class="event-description">
-            ${description}
-        </p>
+    setEndingText(
+        "ending-crew-status",
+        crewLabels[gameState.crew.condition] ?? "Unknown"
+    );
 
-        <div class="event-science-fact">
+    setEndingText("ending-crew-count", gameState.crew.count + " astronauts");
+    setEndingText("ending-objective-count", completedObjectives + " / 2");
+    setEndingText(
+        "ending-geological-status",
+        geologicalComplete ? "Completed" : "Not completed"
+    );
+    setEndingText(
+        "ending-environmental-status",
+        environmentalComplete ? "Completed" : "Not completed"
+    );
 
-            <span>RESEARCH PROGRESS</span>
+    setEndingText("ending-power", gameState.resources.power + " units");
+    setEndingText("ending-water", gameState.resources.water + " units");
+    setEndingText("ending-food", gameState.resources.food + " units");
 
-            <p>
-                ${completedObjectives} of 2 science goals completed.
-            </p>
+    screen.hidden = false;
+    document.body.classList.add("mission-ending-open");
 
-        </div>
-
-        <div class="event-science-fact">
-
-            <span>FINAL RESOURCES</span>
-
-            <p>
-                Power: ${gameState.resources.power}<br>
-                Water: ${gameState.resources.water}<br>
-                Food: ${gameState.resources.food}
-            </p>
-
-        </div>
-
-        <p class="event-description">
-            Thank you for completing ARES-6.
-        </p>
-
-        <div class="mission-report-actions">
-            <button
-                type="button"
-                class="restart-mission-button"
-                id="restart-mission-button"
-            >
-                ↻ Restart Mission
-            </button>
-        </div>
-
-        <small class="restart-mission-help">
-            Start again from Mars day 1 with full supplies.
-        </small>
-
-    `;
-
-    const restartButton = panel.querySelector("#restart-mission-button");
+    const restartButton = screen.querySelector("#ending-restart-button");
     restartButton?.addEventListener("click", restartMission);
+    restartButton?.focus();
 
+    return true;
 }
 
 
@@ -715,6 +823,13 @@ async function restartMission() {
     if (!confirmed) {
         return;
     }
+
+    // Close the ending screen before starting the new mission.
+    const endingScreen = document.querySelector("#mission-ending-screen");
+    if (endingScreen) {
+        endingScreen.hidden = true;
+    }
+    document.body.classList.remove("mission-ending-open");
 
     // Create a completely fresh mission state.
     gameState = createInitialGameState();

@@ -3,7 +3,7 @@
     ARES-6
     TURN MANAGER
 
-    Controls the seven-Sol mission progression.
+    Controls the 14-day mission progression.
 */
 
 
@@ -87,11 +87,13 @@ function checkMissionFailure(gameState) {
 
 function getMissionResult(gameState) {
 
-    const bothObjectivesComplete =
-        gameState.objectives.geologicalResearch &&
-        gameState.objectives.environmentalResearch;
+    const allObjectivesComplete =
+        Object.values(gameState.objectives).every(Boolean);
 
-    if (bothObjectivesComplete) {
+    const reportTransmitted =
+        gameState.mission.finalReportTransmitted === true;
+
+    if (allObjectivesComplete && reportTransmitted) {
 
         return "success";
 
@@ -150,7 +152,7 @@ export function endCurrentSol(gameState) {
             ended: true,
             advanced: false,
             outcome: gameState.mission.status,
-            message: "The seven-Sol mission is complete."
+            message: "The 14-day Mars mission is complete."
         };
 
     }

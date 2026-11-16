@@ -265,10 +265,17 @@ export function advanceCropGrowth(gameState) {
     const availableSpace =
         GAME_CONFIG.maxResource - currentFood;
 
+    const bonusFood = Math.max(
+        0,
+        greenhouse.nextHarvestBonus ?? 0
+    );
+
     const foodGained = Math.min(
-        GREENHOUSE_CONFIG.foodHarvest,
+        GREENHOUSE_CONFIG.foodHarvest + bonusFood,
         availableSpace
     );
+
+    greenhouse.nextHarvestBonus = 0;
 
 
     // Update food reserves.

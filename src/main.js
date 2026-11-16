@@ -519,6 +519,7 @@ app.innerHTML = `
                         <p>
                             Power, water, and food help the crew live and keep the outpost running.
                             The crew uses some supplies every Mars day, so spend them carefully.
+                            For an extra challenge, turn on Power Plan in the top bar to share extra power between outpost systems.
                         </p>
                     </div>
                 </article>

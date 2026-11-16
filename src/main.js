@@ -531,6 +531,7 @@ app.innerHTML = `
                         <p>
                             Power, water, and food help the crew live and keep the outpost running.
                             The crew uses some supplies every Mars day, so spend them carefully.
+                            The water recycler can recover 2 water units each day while it is working. Repair it if it breaks, or use the emergency reserve.
                             For an extra challenge, turn on Power Plan in the top bar to share extra power between outpost systems.
                         </p>
                     </div>
@@ -969,7 +970,7 @@ function renderMissionFinished() {
 
 
 // =====================================
-// RESTART THE SEVEN-SOL MISSION
+// RESTART THE FOURTEEN-DAY MISSION
 // =====================================
 
 async function restartMission() {

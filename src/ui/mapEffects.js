@@ -21,6 +21,10 @@ function ensureMapEffectLayers(map) {
                 <i></i><i></i><i></i><i></i><i></i><i></i>
             </div>
             <div class="map-radiation-layer"></div>
+            <div class="map-historical-storm-layer">
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
             <div class="map-air-alert-layer"></div>
             <div class="map-crop-particle-layer">
                 <i>✦</i><i>✧</i><i>✦</i><i>✧</i>
@@ -91,6 +95,13 @@ export function refreshMapEffects(gameState) {
     map.dataset.shielding = shelterProtected ? "active" : "inactive";
     map.dataset.comms = messagePending ? "pending" : "idle";
 
+    const historicalStormActive =
+        gameState.mission.scenarioId === "may-2024-solar-storm" &&
+        gameState.mission.currentSol === 4 &&
+        radiation === "danger";
+
+    map.dataset.solarStorm = historicalStormActive ? "active" : "inactive";
+
     const conditions = [];
 
     if (dusty) {
@@ -103,7 +114,9 @@ export function refreshMapEffects(gameState) {
     if (radiation === "danger") {
         conditions.push({
             type: "radiation",
-            label: "SPACE RADIATION WARNING"
+            label: historicalStormActive
+                ? "HISTORICAL SOLAR STORM"
+                : "SPACE RADIATION WARNING"
         });
     } else if (radiation === "caution") {
         conditions.push({

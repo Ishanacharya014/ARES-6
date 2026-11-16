@@ -218,6 +218,13 @@ export function applyDailyPowerAllocation(gameState) {
 
     gameState.resources.power -= total;
 
+    // Extra greenhouse lighting and temperature control add a small bonus
+    // to the next harvest. This is a simplified game effect.
+    if (allocation.greenhouse === 2) {
+        gameState.facilities.greenhouse.nextHarvestBonus =
+            (gameState.facilities.greenhouse.nextHarvestBonus ?? 0) + 6;
+    }
+
     const scienceInsightsGained = allocation.rover === 2 ? 1 : 0;
 
     gameState.systems.scienceInsightPoints =

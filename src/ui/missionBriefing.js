@@ -1,8 +1,9 @@
 /*
     ARES-6
-    FIRST-TIME MISSION BRIEFING
+    MISSION GUIDE
 
-    Shows a short, dismissible introduction once per browser.
+    Shows the mission briefing automatically for first-time players
+    and lets players reopen it whenever they need help.
 */
 
 const BRIEFING_STORAGE_KEY = "ares6-mission-briefing-seen-v1";
@@ -10,21 +11,11 @@ const BRIEFING_STORAGE_KEY = "ares6-mission-briefing-seen-v1";
 export function initializeMissionBriefing() {
 
     const briefing = document.querySelector("#mission-briefing");
+    const openButton = document.querySelector("#mission-guide-open");
 
     if (!briefing) {
         console.error("Mission briefing container not found.");
         return false;
-    }
-
-    // Returning players who have completed or skipped the briefing
-    // go directly to the mission on later visits.
-    try {
-        if (window.localStorage.getItem(BRIEFING_STORAGE_KEY) === "true") {
-            return true;
-        }
-    } catch (error) {
-        // If browser storage is unavailable, keep the briefing usable.
-        console.warn("Mission briefing preference could not be read.", error);
     }
 
     const startButton = briefing.querySelector("#mission-briefing-start");
@@ -35,12 +26,13 @@ export function initializeMissionBriefing() {
         return false;
     }
 
-    const previousFocus = document.activeElement;
-
-    briefing.hidden = false;
-    document.body.classList.add("briefing-open");
+    let returnFocusElement = null;
 
     function dismissBriefing() {
+
+        if (briefing.hidden) {
+            return;
+        }
 
         briefing.hidden = true;
         document.body.classList.remove("briefing-open");
@@ -51,9 +43,34 @@ export function initializeMissionBriefing() {
             console.warn("Mission briefing preference could not be saved.", error);
         }
 
-        if (previousFocus instanceof HTMLElement) {
-            previousFocus.focus();
+        const focusTarget =
+            returnFocusElement instanceof HTMLElement
+                ? returnFocusElement
+                : openButton;
+
+        focusTarget?.focus();
+    }
+
+    function openBriefing() {
+
+        if (!briefing.hidden) {
+            return;
         }
+
+        returnFocusElement =
+            document.activeElement instanceof HTMLElement
+                ? document.activeElement
+                : null;
+
+        briefing.hidden = false;
+        document.body.classList.add("briefing-open");
+        startButton.focus();
+
+    }
+
+    // The guide button is always available, including for returning players.
+    if (openButton) {
+        openButton.addEventListener("click", openBriefing);
     }
 
     startButton.addEventListener("click", dismissBriefing);
@@ -89,7 +106,19 @@ export function initializeMissionBriefing() {
 
     });
 
-    startButton.focus();
+    // First-time players see the briefing automatically.
+    let hasSeenBriefing = false;
+
+    try {
+        hasSeenBriefing =
+            window.localStorage.getItem(BRIEFING_STORAGE_KEY) === "true";
+    } catch (error) {
+        console.warn("Mission briefing preference could not be read.", error);
+    }
+
+    if (!hasSeenBriefing) {
+        openBriefing();
+    }
 
     return true;
 }

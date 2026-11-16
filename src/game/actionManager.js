@@ -213,6 +213,55 @@ function applyDecisionEffects(gameState, effects = {}) {
                 break;
 
 
+            // Repair or disable the water recycler.
+            case "setWaterRecyclerOperational":
+
+                if (
+                    typeof value !== "boolean" ||
+                    !gameState.facilities?.waterRecycler
+                ) {
+                    return {
+                        success: false,
+                        message: "Invalid water recycler instruction."
+                    };
+                }
+
+                gameState.facilities.waterRecycler.operational = value;
+
+                result = {
+                    success: true,
+                    message: value
+                        ? "Water recycler repaired."
+                        : "Water recycler remains offline."
+                };
+
+                break;
+
+
+            // Record the final mission report as transmitted to Earth.
+            case "transmitFinalReport":
+
+                if (
+                    value !== true ||
+                    !gameState.supportAssets?.antennaOperational ||
+                    gameState.mission.finalReportTransmitted === true
+                ) {
+                    return {
+                        success: false,
+                        message: "The final report cannot be transmitted."
+                    };
+                }
+
+                gameState.mission.finalReportTransmitted = true;
+
+                result = {
+                    success: true,
+                    message: "The final research report was transmitted to Earth."
+                };
+
+                break;
+
+
             // Reject unknown instructions.
             default:
 

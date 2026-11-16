@@ -300,6 +300,15 @@ export function updateDashboard(gameState) {
         }
     );
 
+    updateStatus(
+        "water-recycler-status-value",
+        gameState.facilities?.waterRecycler?.operational ? "good" : "critical",
+        {
+            good: "Working",
+            critical: "Offline"
+        }
+    );
+
 
     // =====================================
     // OVERALL MISSION STATUS

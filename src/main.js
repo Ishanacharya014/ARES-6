@@ -56,6 +56,9 @@ function refreshGameInterface() {
     // Show dust, radiation, crop and equipment conditions on the Mars map.
     refreshMapEffects(gameState);
 
+    // Keep the active campaign mode visible in the top navigation.
+    updateMissionScenarioUI();
+
 }
 
 // Temporary verification.
@@ -98,6 +101,16 @@ app.innerHTML = `
                 aria-label="Open mission guide"
             >
                 ? GUIDE
+            </button>
+
+            <button
+                type="button"
+                class="mission-scenario-button"
+                id="mission-scenario-button"
+                aria-label="Switch to the May 2024 historical solar storm scenario"
+                title="Start the optional May 2024 historical solar storm scenario"
+            >
+                MAY 2024 STORM
             </button>
 
             <div class="sol-counter">
@@ -675,6 +688,13 @@ initializeOutpost(gameState);
 refreshGameInterface();
 initializeMissionBriefing();
 
+document.querySelector("#mission-scenario-button")?.addEventListener(
+    "click",
+    switchMissionScenario
+);
+
+updateMissionScenarioUI();
+
 
 
 // =====================================
@@ -853,8 +873,11 @@ async function restartMission() {
     }
     document.body.classList.remove("mission-ending-open");
 
+    // Preserve the selected campaign when replaying.
+    const selectedScenarioId = gameState.mission.scenarioId ?? "standard";
+
     // Create a completely fresh mission state.
-    gameState = createInitialGameState();
+    gameState = createInitialGameState(selectedScenarioId);
 
     // Close any facility inspection left open from the previous mission.
     const facilityPanel = document.querySelector("#facility-panel-root");
@@ -881,6 +904,106 @@ async function restartMission() {
     console.log("ARES-6 mission restarted with a fresh game state.");
 }
 
+
+
+// =====================================
+// UPDATE THE ACTIVE SCENARIO LABEL
+// =====================================
+
+function updateMissionScenarioUI() {
+
+    const button = document.querySelector("#mission-scenario-button");
+    const statusLabel = document.querySelector("#mission-status-label");
+    const statusDot = document.querySelector("#mission-status-dot");
+
+    const historicalActive =
+        gameState.mission.scenarioId === "may-2024-solar-storm";
+
+    if (button) {
+        button.textContent = historicalActive
+            ? "STANDARD CAMPAIGN"
+            : "MAY 2024 STORM";
+
+        button.setAttribute(
+            "aria-label",
+            historicalActive
+                ? "Switch to the standard ARES-6 campaign"
+                : "Switch to the May 2024 historical solar storm scenario"
+        );
+
+        button.title = historicalActive
+            ? "Return to the standard seven-day campaign"
+            : "Play a training scenario based on NASA's May 20, 2024 Mars solar storm";
+    }
+
+    if (statusLabel) {
+        statusLabel.textContent = historicalActive
+            ? "MAY 2024 STORM SCENARIO"
+            : "MARS MISSION ACTIVE";
+    }
+
+    if (statusDot) {
+        statusDot.dataset.status = historicalActive
+            ? "historical"
+            : "playing";
+    }
+
+}
+
+
+// =====================================
+// SWITCH BETWEEN CAMPAIGN SCENARIOS
+// =====================================
+
+async function switchMissionScenario() {
+
+    const currentScenarioId = gameState.mission.scenarioId ?? "standard";
+
+    const nextScenarioId =
+        currentScenarioId === "may-2024-solar-storm"
+            ? "standard"
+            : "may-2024-solar-storm";
+
+    const nextScenarioName =
+        nextScenarioId === "may-2024-solar-storm"
+            ? "the May 2024 Solar Storm Scenario"
+            : "the standard ARES-6 campaign";
+
+    const confirmed = window.confirm(
+        "Start " + nextScenarioName + "? Your current campaign progress will be reset."
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    const endingScreen = document.querySelector("#mission-ending-screen");
+    if (endingScreen) {
+        endingScreen.hidden = true;
+    }
+
+    document.body.classList.remove("mission-ending-open");
+
+    gameState = createInitialGameState(nextScenarioId);
+
+    const facilityPanel = document.querySelector("#facility-panel-root");
+    if (facilityPanel) {
+        facilityPanel.hidden = true;
+        facilityPanel.innerHTML = "";
+    }
+
+    document.querySelector(".science-drawer")?.removeAttribute("open");
+
+    refreshGameInterface();
+    await initializeMissionEvent();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+    console.log("ARES-6 scenario selected:", nextScenarioId);
+}
 
 
 // =====================================

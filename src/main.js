@@ -176,7 +176,7 @@ app.innerHTML = `
     type="button"
     class="map-facility habitat-marker"
     data-facility="habitat"
-    aria-label="Inspect Habitat"
+    aria-label="Inspect Crew Home"
 >
     <img src="/assets/habitat.png" alt="" />
     <span>Crew Home</span>
@@ -209,7 +209,7 @@ app.innerHTML = `
     type="button"
     class="map-facility shelter-marker"
     data-facility="shelter"
-    aria-label="Inspect Storm Shelter"
+    aria-label="Inspect Radiation Shelter"
 >
     <img src="/assets/shelter.png" alt="" />
     <span>Radiation Shelter</span>
@@ -220,7 +220,7 @@ app.innerHTML = `
     type="button"
     class="map-facility antenna-marker"
     data-facility="antenna"
-    aria-label="Inspect Communications"
+    aria-label="Inspect Talk-to-Earth Antenna"
 >
     <img src="/assets/antenna.png" alt="" />
     <span>Talk to Earth</span>
@@ -231,7 +231,7 @@ app.innerHTML = `
     type="button"
     class="map-facility rover-marker"
     data-facility="rover"
-    aria-label="Inspect Science Rover"
+    aria-label="Inspect Robot Rover"
 >
     <img src="/assets/rover.png" alt="" />
     <span>Robot Rover</span>
@@ -462,7 +462,7 @@ app.innerHTML = `
             </div>
 
             <p class="mission-briefing-intro">
-                A Sol is one day on Mars. In this game, we call it a Mars day.
+                Scientists call one day on Mars a Sol. To make the game easier to follow, we call it a Mars day.
             </p>
 
             <div class="mission-briefing-grid">

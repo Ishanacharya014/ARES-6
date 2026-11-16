@@ -97,7 +97,7 @@ app.innerHTML = `
             </button>
 
             <div class="sol-counter">
-                SOL <strong id="sol-value">01</strong> /
+                MARS DAY <strong id="sol-value">01</strong> /
 <span id="total-sols-value">07</span>
             </div>
 
@@ -179,7 +179,7 @@ app.innerHTML = `
     aria-label="Inspect Habitat"
 >
     <img src="/assets/habitat.png" alt="" />
-    <span>Habitat</span>
+    <span>Crew Home</span>
 </button>
 
 <!-- Solar Station -->
@@ -190,7 +190,7 @@ app.innerHTML = `
     aria-label="Inspect Solar Station"
 >
     <img src="/assets/solar-array.png" alt="" />
-    <span>Solar Station</span>
+    <span>Solar Panels</span>
 </button>
 
 <!-- Greenhouse -->
@@ -212,7 +212,7 @@ app.innerHTML = `
     aria-label="Inspect Storm Shelter"
 >
     <img src="/assets/shelter.png" alt="" />
-    <span>Storm Shelter</span>
+    <span>Radiation Shelter</span>
 </button>
 
 <!-- Communication Antenna -->
@@ -223,7 +223,7 @@ app.innerHTML = `
     aria-label="Inspect Communications"
 >
     <img src="/assets/antenna.png" alt="" />
-    <span>Communications</span>
+    <span>Talk to Earth</span>
 </button>
 
 <!-- Science Rover -->
@@ -234,7 +234,7 @@ app.innerHTML = `
     aria-label="Inspect Science Rover"
 >
     <img src="/assets/rover.png" alt="" />
-    <span>Science Rover</span>
+    <span>Robot Rover</span>
 </button>
 
 
@@ -258,12 +258,12 @@ app.innerHTML = `
         </div>
 
         <div class="objective-item">
-            <span>Geological research</span>
+            <span>Study a Martian rock</span>
             <strong id="geological-objective-status">Pending</strong>
         </div>
 
         <div class="objective-item">
-            <span>Environmental research</span>
+            <span>Study Mars's environment</span>
             <strong id="environmental-objective-status">Pending</strong>
         </div>
 
@@ -442,9 +442,8 @@ app.innerHTML = `
             </h2>
 
             <p class="mission-briefing-intro" id="mission-briefing-description">
-                Your crew is ready. Your outpost is waiting. Guide four astronauts
-                through seven Martian sols, protect their supplies, and complete
-                the mission's two science objectives.
+                Your crew is ready. Guide four astronauts through seven days on Mars.
+                Keep enough power, water, and food for everyone, and finish both science goals.
             </p>
 
             <div class="mission-briefing-stats" aria-label="Mission overview">
@@ -454,7 +453,7 @@ app.innerHTML = `
                 </div>
                 <div class="mission-briefing-stat">
                     <strong>7</strong>
-                    <span>Martian sols</span>
+                    <span>Mars days</span>
                 </div>
                 <div class="mission-briefing-stat">
                     <strong>2</strong>
@@ -462,15 +461,18 @@ app.innerHTML = `
                 </div>
             </div>
 
+            <p class="mission-briefing-intro">
+                A Sol is one day on Mars. In this game, we call it a Mars day.
+            </p>
+
             <div class="mission-briefing-grid">
                 <article class="mission-briefing-card">
                     <span class="mission-briefing-card-icon" aria-hidden="true">⚡</span>
                     <div>
-                        <h3>Manage your supplies</h3>
+                        <h3>Watch your supplies</h3>
                         <p>
-                            Watch Power, Water, and Food at the top of the screen.
-                            The crew uses supplies as each Sol passes, so think
-                            before spending them.
+                            Power, water, and food help the crew live and keep the outpost running.
+                            The crew uses some supplies every Mars day, so spend them carefully.
                         </p>
                     </div>
                 </article>
@@ -478,11 +480,10 @@ app.innerHTML = `
                 <article class="mission-briefing-card">
                     <span class="mission-briefing-card-icon" aria-hidden="true">☑</span>
                     <div>
-                        <h3>Make one decision each Sol</h3>
+                        <h3>Choose once each Mars day</h3>
                         <p>
-                            Read the daily mission event and choose option A or B.
-                            Your choice changes the outpost. You can end the Sol
-                            after making your decision.
+                            Read the mission event and choose A or B. You can make one big choice
+                            each Mars day. Press End Sol after choosing to move to the next day.
                         </p>
                     </div>
                 </article>
@@ -490,11 +491,11 @@ app.innerHTML = `
                 <article class="mission-briefing-card">
                     <span class="mission-briefing-card-icon" aria-hidden="true">⌖</span>
                     <div>
-                        <h3>Inspect the outpost</h3>
+                        <h3>Explore the outpost</h3>
                         <p>
-                            Select the Habitat, Solar Station, Greenhouse, Storm
-                            Shelter, Communications Station, or Science Rover
-                            on the map to inspect its condition.
+                            Click the Crew Home, Solar Panels, Greenhouse, Radiation Shelter,
+                            Talk to Earth antenna, or Robot Rover on the map
+                            to learn what each place does.
                         </p>
                     </div>
                 </article>
@@ -502,10 +503,10 @@ app.innerHTML = `
                 <article class="mission-briefing-card">
                     <span class="mission-briefing-card-icon" aria-hidden="true">◎</span>
                     <div>
-                        <h3>Complete both science goals</h3>
+                        <h3>Finish both science goals</h3>
                         <p>
-                            Finish the geological research and environmental
-                            research objectives before the end of Sol 7.
+                            Study a Martian rock and learn about the area around your outpost.
+                            Finish both goals before the end of Mars day 7.
                             Track your progress below the map.
                         </p>
                     </div>
@@ -514,21 +515,20 @@ app.innerHTML = `
                 <article class="mission-briefing-card mission-briefing-card-wide">
                     <span class="mission-briefing-card-icon" aria-hidden="true">🔬</span>
                     <div>
-                        <h3>Learn from NASA science</h3>
+                        <h3>Explore real Mars science</h3>
                         <p>
-                            Open the NASA Science &amp; Space Weather panel for
-                            Curiosity's historical Mars radiation observation and
-                            space-weather updates. Historical NASA measurements
-                            are separate from the game's simplified resource and
-                            radiation-risk values.
+                            Open the NASA Science &amp; Space Weather panel to see what NASA's
+                            Curiosity rover measured on Mars and to check space-weather
+                            updates. NASA measurements are real; the game's resource
+                            and radiation points are made for this simulation.
                         </p>
                     </div>
                 </article>
             </div>
 
             <p class="mission-briefing-note">
-                Mission tip: there is no undo button. Read each choice carefully,
-                check your resources, and keep your crew safe.
+                Mission tip: you cannot undo a choice. Read both options, check your supplies,
+                and do your best to keep the crew safe.
             </p>
 
             <div class="mission-briefing-actions">
@@ -619,14 +619,14 @@ function renderMissionFinished() {
         title = "Mission Successful!";
 
         description =
-            "Your crew survived seven Sols and completed both scientific research objectives. Excellent mission work!";
+            "Your crew made it through all seven days on Mars and finished both science goals. Excellent work!";
 
     } else if (status === "partial-success") {
 
         title = "Mission Complete!";
 
         description =
-            "Your crew survived the seven-Sol mission, but some research objectives remain incomplete.";
+            "Your crew made it through all seven days, but one or both science goals are not finished.";
 
     } else {
 
@@ -658,7 +658,7 @@ function renderMissionFinished() {
             <span>RESEARCH PROGRESS</span>
 
             <p>
-                ${completedObjectives} of 2 scientific objectives completed.
+                ${completedObjectives} of 2 science goals completed.
             </p>
 
         </div>
@@ -690,7 +690,7 @@ function renderMissionFinished() {
         </div>
 
         <small class="restart-mission-help">
-            Start a new seven-Sol mission with all progress reset.
+            Start again from Mars day 1 with full supplies.
         </small>
 
     `;

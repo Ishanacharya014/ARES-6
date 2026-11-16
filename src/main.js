@@ -552,6 +552,20 @@ app.innerHTML = `
 
     <!-- FULL-SCREEN MISSION ENDING -->
     <div class="mission-ending-overlay" id="mission-ending-screen" hidden>
+        <div class="mission-ending-effects" aria-hidden="true">
+            <span class="mission-ending-particle particle-1">✦</span>
+            <span class="mission-ending-particle particle-2">◆</span>
+            <span class="mission-ending-particle particle-3">✧</span>
+            <span class="mission-ending-particle particle-4">●</span>
+            <span class="mission-ending-particle particle-5">✦</span>
+            <span class="mission-ending-particle particle-6">◆</span>
+            <span class="mission-ending-particle particle-7">✧</span>
+            <span class="mission-ending-particle particle-8">●</span>
+            <span class="mission-ending-particle particle-9">✦</span>
+            <span class="mission-ending-particle particle-10">◆</span>
+            <span class="mission-ending-particle particle-11">✧</span>
+            <span class="mission-ending-particle particle-12">●</span>
+        </div>
         <main
             class="mission-ending-page"
             id="mission-ending-page"
@@ -766,6 +780,7 @@ function renderMissionFinished() {
     };
 
     page.dataset.outcome = result.outcome;
+    screen.dataset.outcome = result.outcome;
 
     setEndingText("ending-kicker", result.kicker);
     setEndingText("ending-title", result.title);

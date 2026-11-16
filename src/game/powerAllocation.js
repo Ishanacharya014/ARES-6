@@ -181,6 +181,7 @@ export function applyDailyPowerAllocation(gameState) {
     if (gameState.mission.powerPlanningEnabled !== true) {
         return {
             success: true,
+            enabled: false,
             allocated: 0,
             scienceInsightsGained: 0,
             message: "Advanced power planning is off."
@@ -231,6 +232,7 @@ export function applyDailyPowerAllocation(gameState) {
 
     return {
         success: true,
+        enabled: true,
         allocated: total,
         allocation: {
             greenhouse: allocation.greenhouse ?? 0,

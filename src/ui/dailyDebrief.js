@@ -116,7 +116,7 @@ function getOperationSummary(results, afterState) {
     }
 
     const allocation = results?.powerAllocation;
-    if (allocation?.allocated > 0) {
+    if (allocation?.enabled && allocation.allocated > 0) {
 
         const targets = allocation.allocation ?? {};
 
@@ -132,7 +132,7 @@ function getOperationSummary(results, afterState) {
             `${allocation.allocated} power units sent to ${destinations.join(", ") || "outpost systems"}.`
         );
 
-    } else if (allocation) {
+    } else if (allocation?.enabled) {
         addOperation(
             items,
             "Extra power plan",
@@ -226,12 +226,20 @@ function getOperationSummary(results, afterState) {
     }
 
     const communication = results?.communication;
-    if (communication?.delivered || communication?.message) {
+    if (communication?.delivered) {
 
         addOperation(
             items,
             "Communication",
-            communication.message || "A message from Earth was delivered."
+            "Earth's reply has arrived."
+        );
+
+    } else if (communication?.expectedReplySol) {
+
+        addOperation(
+            items,
+            "Communication",
+            `Earth's reply is still travelling. It is expected on Mars day ${communication.expectedReplySol}.`
         );
 
     }

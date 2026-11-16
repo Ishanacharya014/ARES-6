@@ -14,6 +14,8 @@ import {
     setRadiationStatus
 } from "../simulation/radiationSystem.js";
 
+import { GAME_CONFIG } from "./gameState.js";
+
 
 // =====================================
 // 1. EVENT DATA CACHE
@@ -64,11 +66,11 @@ export async function loadEvents(scenarioId = "standard") {
         if (
             !data ||
             !Array.isArray(data.events) ||
-            data.events.length !== 7
+            data.events.length !== GAME_CONFIG.totalSols
         ) {
             return {
                 success: false,
-                message: "Invalid mission data. Seven events are required."
+                message: "Invalid mission data. Fourteen events are required."
             };
         }
 
@@ -92,7 +94,7 @@ export async function loadEvents(scenarioId = "standard") {
                 event.id.trim() === "" ||
                 !Number.isInteger(event.sol) ||
                 event.sol < 1 ||
-                event.sol > 7 ||
+                event.sol > GAME_CONFIG.totalSols ||
                 ids.has(event.id) ||
                 sols.has(event.sol) ||
                 !Array.isArray(event.choices) ||
@@ -108,7 +110,7 @@ export async function loadEvents(scenarioId = "standard") {
             sols.add(event.sol);
         }
 
-        for (let sol = 1; sol <= 7; sol++) {
+        for (let sol = 1; sol <= GAME_CONFIG.totalSols; sol++) {
             if (!sols.has(sol)) {
                 return {
                     success: false,
@@ -183,6 +185,27 @@ function applyEventStartEffects(gameState, event) {
             case "setRadiationStatus":
 
                 result = setRadiationStatus(draft, value);
+
+                break;
+
+
+            case "setWaterRecyclerOperational":
+
+                if (
+                    typeof value !== "boolean" ||
+                    !draft.facilities?.waterRecycler
+                ) {
+                    return {
+                        success: false,
+                        message: "Invalid water recycler starting condition."
+                    };
+                }
+
+                draft.facilities.waterRecycler.operational = value;
+
+                result = {
+                    success: true
+                };
 
                 break;
 

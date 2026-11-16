@@ -87,6 +87,15 @@ app.innerHTML = `
 
 </div>
 
+            <button
+                type="button"
+                class="mission-guide-button"
+                id="mission-guide-open"
+                aria-label="Open mission guide"
+            >
+                ? GUIDE
+            </button>
+
             <div class="sol-counter">
                 SOL <strong id="sol-value">01</strong> /
 <span id="total-sols-value">07</span>

@@ -40,6 +40,8 @@ import {
     applyDailyPowerAllocation
 } from "../game/powerAllocation.js";
 
+import { recoverWater } from "./waterRecycler.js";
+
 
 // =====================================
 // 1. UPDATE CREW CONDITION
@@ -287,6 +289,23 @@ export function completeCurrentSol(gameState) {
     }
 
     results.supplies = supplyResult.result;
+
+
+    // =====================================
+    // STEP 3B: RECOVER WATER
+    // =====================================
+
+    const waterRecoveryResult = runSimulationStep(
+        "Water recycling",
+        recoverWater,
+        draftState
+    );
+
+    if (!waterRecoveryResult.success) {
+        return waterRecoveryResult;
+    }
+
+    results.waterRecovery = waterRecoveryResult.result;
 
 
     // =====================================

@@ -156,15 +156,15 @@ function getFacilityInformation(facilityId, gameState) {
         statusLabel = "Habitat Condition";
 
         status = operational
-            ? "Operational"
-            : "Needs repair";
+            ? "Working"
+            : "Needs fixing";
 
 
         extraDetails = [
 
             {
                 label: "Air system",
-                value: formatStatus(gameState.systems.airStatus)
+                value: ({ good: "Good", "needs-attention": "Needs checking", critical: "Not working" })[gameState.systems.airStatus] ?? "Unknown"
             },
 
             {
@@ -199,15 +199,15 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Power stored",
+                label: "Power available",
                 value: `${gameState.resources.power} units`
             },
 
             {
                 label: "Panel cleaning",
                 value: dustLevel === "clean"
-                    ? "Not required"
-                    : "Cleaning recommended"
+                    ? "No cleaning needed"
+                    : "Needs cleaning"
             }
 
         ];
@@ -230,7 +230,7 @@ function getFacilityInformation(facilityId, gameState) {
 
         status = growing
             ? "Growing"
-            : formatStatus(greenhouse.cropStatus);
+            : greenhouse.cropStatus === "empty" ? "Ready to plant" : formatStatus(greenhouse.cropStatus);
 
 
         extraDetails = [
@@ -238,8 +238,8 @@ function getFacilityInformation(facilityId, gameState) {
             {
                 label: "Days until food is ready",
                 value: growing
-                    ? `${greenhouse.solsUntilHarvest} Sol(s)`
-                    : "No active crop cycle"
+                    ? `${greenhouse.solsUntilHarvest} Mars day(s)`
+                    : "No crops growing"
             },
 
             {
@@ -271,8 +271,8 @@ function getFacilityInformation(facilityId, gameState) {
         statusLabel = "Extra protection";
 
         status = shieldingActive
-            ? "Basic shielding active"
-            : "Not added";
+            ? "Extra protection added"
+            : "No extra protection";
 
 
         extraDetails = [
@@ -321,7 +321,7 @@ function getFacilityInformation(facilityId, gameState) {
             {
                 label: "Reply from Earth",
                 value: pending
-                    ? `Expected on Sol ${pending.deliverOnSol}`
+                    ? `Expected on Mars day ${pending.deliverOnSol}`
                     : "No pending reply"
             },
 
@@ -347,8 +347,8 @@ function getFacilityInformation(facilityId, gameState) {
         statusLabel = "Mission Status";
 
         status = available
-            ? "Ready"
-            : "Unavailable";
+            ? "Ready to explore"
+            : "Not available";
 
 
         extraDetails = [

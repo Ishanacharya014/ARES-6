@@ -221,7 +221,7 @@ export function renderEventPanel(
     const endHelp = panel.querySelector("#end-sol-help");
 
 
-    const decisionSubmitted =
+    let decisionSubmitted =
         turnState?.decisionMade === true &&
         typeof turnState.selectedChoiceId === "string";
 

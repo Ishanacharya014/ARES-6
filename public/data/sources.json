@@ -1,4 +1,3 @@
-
 {
   "sources": [
     {
@@ -34,6 +33,15 @@
       "url": "https://osdr.nasa.gov/bio/repo/",
       "accessed": "2026-11-15",
       "usedFor": "Optional astronaut health and space life-science research"
+    },
+    {
+      "id": "nasa-may-2024-mars-solar-storm",
+      "agency": "NASA",
+      "title": "NASA Watches Mars Light Up During Epic Solar Storm",
+      "publisher": "NASA / Jet Propulsion Laboratory",
+      "url": "https://www.nasa.gov/solar-system/planets/mars/nasa-watches-mars-light-up-during-epic-solar-storm/",
+      "accessed": "2026-11-16",
+      "usedFor": "Historical May 20, 2024 Mars solar-storm case study; estimated potential astronaut dose near Curiosity and Curiosity RAD observations"
     }
   ]
 }

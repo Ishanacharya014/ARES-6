@@ -421,13 +421,13 @@
         {
           "id": "add-shelter-protection-day13",
           "label": "Add extra shelter protection",
-          "description": "Use 5 water units to add basic water-based shielding. It lowers the game's radiation-risk points for this warning.",
+          "description": "If the shelter is not protected yet, spend 5 water units to add basic shielding. Existing protection stays active without using more water.",
           "costs": {},
           "gains": {},
           "effects": {
-            "allocateWaterForShielding": true
+            "ensureWaterShielding": true
           },
-          "explanation": "The shelter has extra protection. It lowers the game's fictional risk points, not a real measured radiation dose."
+          "explanation": "The crew checked the shelter. If it already had water shielding, that protection stays active. Otherwise, 5 water units were used to add it."
         },
         {
           "id": "save-water-day13",

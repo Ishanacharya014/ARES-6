@@ -4,7 +4,7 @@
     EVENT PANEL
 
     Displays daily events, player decisions
-    and the End Sol control.
+    and the End Mars day control.
 */
 
 function escapeHTML(value) {
@@ -50,11 +50,23 @@ export function renderEventPanel(
     }
 
 
+    const categoryLabels = {
+        greenhouse: "FOOD GARDEN",
+        power: "POWER",
+        research: "SCIENCE",
+        radiation: "SPACE RADIATION",
+        "life-support": "AIR SYSTEM"
+    };
+
+    const categoryLabel =
+        categoryLabels[event.category] ??
+        String(event.category || "MISSION").toUpperCase();
+
     panel.innerHTML = `
 
         <span class="eyebrow">
             MARS DAY ${String(event.sol).padStart(2, "0")}
-            · ${escapeHTML(event.category).toUpperCase()}
+            · ${escapeHTML(categoryLabel)}
         </span>
 
         <h3 class="event-title">
@@ -118,7 +130,7 @@ export function renderEventPanel(
             hidden
             disabled
         >
-            END SOL
+            END MARS DAY
         </button>
 
         <small
@@ -245,7 +257,7 @@ export function renderEventPanel(
 
 
     // =====================================
-    // HANDLE END SOL
+    // HANDLE END MARS DAY
     // =====================================
 
     endButton.addEventListener("click", async () => {
@@ -268,12 +280,12 @@ export function renderEventPanel(
 
                 endButton.disabled = false;
 
-                endButton.textContent = "END SOL";
+                endButton.textContent = "END MARS DAY";
 
                 feedback.hidden = false;
 
                 feedback.textContent =
-                    result?.message || "Could not complete this Sol.";
+                    result?.message || "Could not complete this Mars day.";
 
                 feedback.className = "event-feedback error";
 
@@ -286,16 +298,16 @@ export function renderEventPanel(
 
         } catch (error) {
 
-            console.error("End Sol error:", error);
+            console.error("End Mars day error:", error);
 
             endButton.disabled = false;
 
-            endButton.textContent = "END SOL";
+            endButton.textContent = "END MARS DAY";
 
             feedback.hidden = false;
 
             feedback.textContent =
-                "An error occurred while completing this Sol.";
+                "Something went wrong while finishing this Mars day.";
 
             feedback.className = "event-feedback error";
 

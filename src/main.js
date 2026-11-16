@@ -8,7 +8,7 @@ import { showDailyDebrief } from './ui/dailyDebrief.js';
 
 import { initializeOutpost } from './ui/outpost.js';
 
-import { createInitialGameState } from './game/gameState.js';
+import { GAME_CONFIG, createInitialGameState } from './game/gameState.js';
 
 import { renderEventPanel } from './ui/eventPanel.js';
 
@@ -292,7 +292,7 @@ app.innerHTML = `
 
         <div class="progress-card-heading">
             <span class="eyebrow">MISSION OBJECTIVES</span>
-            <strong id="completed-objectives-value">0 / 2</strong>
+            <strong id="completed-objectives-value">0 / 4</strong>
         </div>
 
         <div class="objective-item">
@@ -305,6 +305,16 @@ app.innerHTML = `
             <strong id="environmental-objective-status">Not started</strong>
         </div>
 
+        <div class="objective-item">
+            <span>Survey possible water ice</span>
+            <strong id="water-ice-objective-status">Not started</strong>
+        </div>
+
+        <div class="objective-item">
+            <span>Study Mars's atmosphere</span>
+            <strong id="atmospheric-objective-status">Not started</strong>
+        </div>
+
         <div class="progress-track">
             <div id="objectives-progress-fill"></div>
         </div>
@@ -312,23 +322,20 @@ app.innerHTML = `
     </div>
 
 
-    <!-- SEVEN SOL TIMELINE -->
+    <!-- FOURTEEN MARS DAY TIMELINE -->
     <div class="progress-card">
 
         <div class="progress-card-heading">
             <span class="eyebrow">MISSION TIMELINE</span>
-            <strong id="sol-progress-label">Mars day 1 of 7</strong>
+            <strong id="sol-progress-label">Mars day 1 of 14</strong>
         </div>
 
-        <div class="sol-timeline" id="sol-timeline">
+        <div class="sol-timeline" id="sol-timeline" aria-label="14-day mission timeline">
 
-            <span data-sol-step="1" class="is-current">1</span>
-            <span data-sol-step="2">2</span>
-            <span data-sol-step="3">3</span>
-            <span data-sol-step="4">4</span>
-            <span data-sol-step="5">5</span>
-            <span data-sol-step="6">6</span>
-            <span data-sol-step="7">7</span>
+            ${Array.from({ length: GAME_CONFIG.totalSols }, (_, index) => {
+                const day = index + 1;
+                return `<span data-sol-step="${day}"${day === 1 ? ' class="is-current"' : ''}>${day}</span>`;
+            }).join("")}
 
         </div>
 
@@ -373,6 +380,10 @@ app.innerHTML = `
         <div class="status-row">
             <span>Radiation</span>
             <span class="status-good" id="radiation-status-value">Safe</span>
+        </div>
+        <div class="status-row">
+            <span>Water recovery</span>
+            <span class="status-good" id="water-recycler-status-value">Working</span>
         </div>
 
     </section>
@@ -457,7 +468,7 @@ app.innerHTML = `
 
         <!-- FOOTER -->
         <footer class="game-footer">
-            ARES-6 · SEVEN MARS DAYS TO SURVIVE
+            ARES-6 · FOURTEEN MARS DAYS TO COMPLETE
             <span>EDUCATIONAL MARS SIMULATION</span>
         </footer>
 
@@ -489,8 +500,8 @@ app.innerHTML = `
             </h2>
 
             <p class="mission-briefing-intro" id="mission-briefing-description">
-                Your crew is ready. Guide four astronauts through seven days on Mars.
-                Keep enough power, water, and food for everyone, and finish both science goals.
+                Your crew is ready. Guide four astronauts through 14 days on Mars.
+                Keep enough power, water, and food for everyone, complete four science goals, and send your final report to Earth.
             </p>
 
             <div class="mission-briefing-stats" aria-label="Mission overview">
@@ -499,11 +510,11 @@ app.innerHTML = `
                     <span>Astronauts</span>
                 </div>
                 <div class="mission-briefing-stat">
-                    <strong>7</strong>
+                    <strong>14</strong>
                     <span>Mars days</span>
                 </div>
                 <div class="mission-briefing-stat">
-                    <strong>2</strong>
+                    <strong>4</strong>
                     <span>Science goals</span>
                 </div>
             </div>
@@ -551,10 +562,10 @@ app.innerHTML = `
                 <article class="mission-briefing-card">
                     <span class="mission-briefing-card-icon" aria-hidden="true">◎</span>
                     <div>
-                        <h3>Finish both science goals</h3>
+                        <h3>Finish all four science goals</h3>
                         <p>
-                            Study a Martian rock and learn about the area around your outpost.
-                            Finish both goals before the end of Mars day 7.
+                            Study a Martian rock, map possible water ice, learn about the environment, and study the atmosphere.
+                            Complete all four goals and send your final report by Mars day 14.
                             Track your progress below the map.
                         </p>
                     </div>
@@ -675,7 +686,7 @@ app.innerHTML = `
             <section class="mission-ending-stats" aria-label="Mission results">
                 <article class="mission-ending-stat">
                     <span>MARS DAYS</span>
-                    <strong id="ending-days">7 / 7</strong>
+                    <strong id="ending-days">1 / 14</strong>
                     <small>Days completed</small>
                 </article>
                 <article class="mission-ending-stat">
@@ -685,7 +696,7 @@ app.innerHTML = `
                 </article>
                 <article class="mission-ending-stat">
                     <span>SCIENCE GOALS</span>
-                    <strong id="ending-objective-count">2 / 2</strong>
+                    <strong id="ending-objective-count">0 / 4</strong>
                     <small>Goals completed</small>
                 </article>
             </section>
@@ -700,6 +711,18 @@ app.innerHTML = `
                     <div class="mission-ending-goal-row">
                         <span>Study Mars's environment</span>
                         <strong id="ending-environmental-status">Completed</strong>
+                    </div>
+                    <div class="mission-ending-goal-row">
+                        <span>Survey possible water ice</span>
+                        <strong id="ending-water-ice-status">Not completed</strong>
+                    </div>
+                    <div class="mission-ending-goal-row">
+                        <span>Study Mars's atmosphere</span>
+                        <strong id="ending-atmospheric-status">Not completed</strong>
+                    </div>
+                    <div class="mission-ending-goal-row mission-ending-report-row">
+                        <span>Final report sent to Earth</span>
+                        <strong id="ending-report-status">Not sent</strong>
                     </div>
                     <div class="mission-ending-goal-row mission-ending-insight-row">
                         <span>Bonus science insights</span>
@@ -837,7 +860,7 @@ function renderMissionFinished() {
             kicker: "MISSION ACCOMPLISHED",
             title: "You did it, Commander!",
             description:
-                "Your crew made it through all seven days on Mars and completed both science goals. The outpost mission was a success!",
+                "Your crew made it through all 14 days on Mars, completed all four science goals, and sent the final report to Earth. The mission was a success!",
             mark: "✓",
             footer:
                 "Mission Control has received your final report. Ready for another mission?",
@@ -847,10 +870,10 @@ function renderMissionFinished() {
             kicker: "MISSION COMPLETE",
             title: "Your crew made it!",
             description:
-                "Your crew completed all seven days on Mars. Some science goals are still unfinished, so there is more to discover on your next mission.",
+                "Your crew completed all 14 days on Mars, but some science goals or the final report are unfinished. There is more to discover on your next mission.",
             mark: "★",
             footer:
-                "You kept the mission going. Try again to complete both science goals.",
+                "You kept the mission going. Try again to complete all four science goals and send the final report.",
             outcome: "partial-success"
         },
         failure: {
@@ -867,10 +890,13 @@ function renderMissionFinished() {
 
     const result = outcomes[gameState.mission.status] ?? outcomes.failure;
 
+    const objectiveEntries = Object.entries(gameState.objectives);
+    const completedObjectives = objectiveEntries.filter(([, complete]) => complete).length;
+    const totalObjectives = objectiveEntries.length;
     const geologicalComplete = Boolean(gameState.objectives.geologicalResearch);
     const environmentalComplete = Boolean(gameState.objectives.environmentalResearch);
-    const completedObjectives =
-        Number(geologicalComplete) + Number(environmentalComplete);
+    const waterIceComplete = Boolean(gameState.objectives.waterIceResearch);
+    const atmosphericComplete = Boolean(gameState.objectives.atmosphericResearch);
 
     const crewLabels = {
         healthy: "Healthy",
@@ -898,7 +924,7 @@ function renderMissionFinished() {
     );
 
     setEndingText("ending-crew-count", gameState.crew.count + " astronauts");
-    setEndingText("ending-objective-count", completedObjectives + " / 2");
+    setEndingText("ending-objective-count", completedObjectives + " / " + totalObjectives);
     setEndingText(
         "ending-geological-status",
         geologicalComplete ? "Completed" : "Not completed"
@@ -906,6 +932,18 @@ function renderMissionFinished() {
     setEndingText(
         "ending-environmental-status",
         environmentalComplete ? "Completed" : "Not completed"
+    );
+    setEndingText(
+        "ending-water-ice-status",
+        waterIceComplete ? "Completed" : "Not completed"
+    );
+    setEndingText(
+        "ending-atmospheric-status",
+        atmosphericComplete ? "Completed" : "Not completed"
+    );
+    setEndingText(
+        "ending-report-status",
+        gameState.mission.finalReportTransmitted ? "Sent to Earth" : "Not sent"
     );
     setEndingText(
         "ending-science-insights",
@@ -1078,7 +1116,7 @@ function updateMissionScenarioUI() {
         );
 
         button.title = historicalActive
-            ? "Return to the standard seven-day campaign"
+            ? "Return to the standard 14-day campaign"
             : "Play a training scenario based on NASA's May 20, 2024 Mars solar storm";
     }
 

@@ -1110,7 +1110,9 @@ async function initializeMissionEvent() {
 
         handleChoiceSelected,
 
-        handleEndSol
+        handleEndSol,
+
+        gameState.mission.scenarioId ?? "standard"
 
     );
 

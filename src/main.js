@@ -2,6 +2,8 @@ import './style.css';
 import './ui/missionBriefing.css';
 import { initializeMissionBriefing } from './ui/missionBriefing.js';
 import { refreshMapEffects } from './ui/mapEffects.js';
+import { renderPowerPlanner } from './ui/powerPlanner.js';
+import { saveDailyPowerAllocation } from './game/powerAllocation.js';
 
 import { initializeOutpost } from './ui/outpost.js';
 
@@ -59,6 +61,14 @@ function refreshGameInterface() {
     // Keep the active campaign mode visible in the top navigation.
     updateMissionScenarioUI();
 
+    // Render the optional daily power planner.
+    renderPowerPlanner(
+        gameState,
+        allocation => saveDailyPowerAllocation(gameState, allocation)
+    );
+
+    updatePowerPlanningUI();
+
 }
 
 // Temporary verification.
@@ -111,6 +121,16 @@ app.innerHTML = `
                 title="Start the optional May 2024 historical solar storm scenario"
             >
                 MAY 2024 STORM
+            </button>
+
+            <button
+                type="button"
+                class="power-planning-toggle"
+                id="power-planning-toggle"
+                aria-pressed="false"
+                title="Optional advanced power planning"
+            >
+                POWER PLAN: OFF
             </button>
 
             <div class="sol-counter">
@@ -371,6 +391,15 @@ app.innerHTML = `
         <p>Your daily situation will appear here.</p>
 
     </section>
+
+
+    <!-- OPTIONAL ADVANCED POWER PLANNING -->
+    <section
+        class="side-panel power-planner-panel"
+        id="power-planner-panel"
+        hidden
+        aria-live="polite"
+    ></section>
 
 
     <!-- FACILITY INSPECTION -->
@@ -636,6 +665,10 @@ app.innerHTML = `
                         <span>Study Mars's environment</span>
                         <strong id="ending-environmental-status">Completed</strong>
                     </div>
+                    <div class="mission-ending-goal-row mission-ending-insight-row">
+                        <span>Bonus science insights</span>
+                        <strong id="ending-science-insights">0</strong>
+                    </div>
                 </article>
 
                 <article class="mission-ending-detail-card">
@@ -693,7 +726,13 @@ document.querySelector("#mission-scenario-button")?.addEventListener(
     switchMissionScenario
 );
 
+document.querySelector("#power-planning-toggle")?.addEventListener(
+    "click",
+    togglePowerPlanning
+);
+
 updateMissionScenarioUI();
+updatePowerPlanningUI();
 
 
 
@@ -832,6 +871,10 @@ function renderMissionFinished() {
         "ending-environmental-status",
         environmentalComplete ? "Completed" : "Not completed"
     );
+    setEndingText(
+        "ending-science-insights",
+        gameState.systems.scienceInsightPoints ?? 0
+    );
 
     setEndingText("ending-power", gameState.resources.power + " units");
     setEndingText("ending-water", gameState.resources.water + " units");
@@ -873,11 +916,12 @@ async function restartMission() {
     }
     document.body.classList.remove("mission-ending-open");
 
-    // Preserve the selected campaign when replaying.
+    // Preserve the selected campaign and planning mode when replaying.
     const selectedScenarioId = gameState.mission.scenarioId ?? "standard";
+    const powerPlanningEnabled = gameState.mission.powerPlanningEnabled === true;
 
     // Create a completely fresh mission state.
-    gameState = createInitialGameState(selectedScenarioId);
+    gameState = createInitialGameState(selectedScenarioId, { powerPlanningEnabled });
 
     // Close any facility inspection left open from the previous mission.
     const facilityPanel = document.querySelector("#facility-panel-root");
@@ -904,6 +948,72 @@ async function restartMission() {
     console.log("ARES-6 mission restarted with a fresh game state.");
 }
 
+
+
+// =====================================
+// UPDATE ADVANCED POWER PLANNING BUTTON
+// =====================================
+
+function updatePowerPlanningUI() {
+
+    const button = document.querySelector("#power-planning-toggle");
+
+    if (!button) {
+        return;
+    }
+
+    const enabled = gameState.mission.powerPlanningEnabled === true;
+
+    button.textContent = enabled
+        ? "POWER PLAN: ON"
+        : "POWER PLAN: OFF";
+
+    button.setAttribute("aria-pressed", String(enabled));
+
+    button.setAttribute(
+        "aria-label",
+        enabled
+            ? "Turn off advanced power planning"
+            : "Turn on advanced power planning"
+    );
+
+}
+
+
+// =====================================
+// TOGGLE OPTIONAL POWER PLANNING
+// =====================================
+
+function togglePowerPlanning() {
+
+    if (gameState.mission.status !== "playing") {
+        return;
+    }
+
+    const enabling =
+        gameState.mission.powerPlanningEnabled !== true;
+
+    const message = enabling
+        ? "Turn on advanced power planning? You will need to save a power plan before ending each Mars day. The usual A/B mission choices stay the same."
+        : "Turn off advanced power planning? Today's saved power plan will be cleared.";
+
+    if (!window.confirm(message)) {
+        return;
+    }
+
+    gameState.mission.powerPlanningEnabled = enabling;
+
+    gameState.turn.powerAllocation = {
+        greenhouse: 0,
+        rover: 0,
+        shelter: 0,
+        total: 0,
+        confirmed: false
+    };
+
+    refreshGameInterface();
+
+}
 
 
 // =====================================
@@ -984,7 +1094,8 @@ async function switchMissionScenario() {
 
     document.body.classList.remove("mission-ending-open");
 
-    gameState = createInitialGameState(nextScenarioId);
+    const powerPlanningEnabled = gameState.mission.powerPlanningEnabled === true;
+    gameState = createInitialGameState(nextScenarioId, { powerPlanningEnabled });
 
     const facilityPanel = document.querySelector("#facility-panel-root");
     if (facilityPanel) {

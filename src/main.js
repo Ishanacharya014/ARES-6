@@ -187,7 +187,7 @@ app.innerHTML = `
     type="button"
     class="map-facility solar-marker"
     data-facility="solarArray"
-    aria-label="Inspect Solar Station"
+    aria-label="Inspect Solar Panels"
 >
     <img src="/assets/solar-array.png" alt="" />
     <span>Solar Panels</span>
@@ -259,12 +259,12 @@ app.innerHTML = `
 
         <div class="objective-item">
             <span>Study a Martian rock</span>
-            <strong id="geological-objective-status">Pending</strong>
+            <strong id="geological-objective-status">Not started</strong>
         </div>
 
         <div class="objective-item">
             <span>Study Mars's environment</span>
-            <strong id="environmental-objective-status">Pending</strong>
+            <strong id="environmental-objective-status">Not started</strong>
         </div>
 
         <div class="progress-track">
@@ -279,7 +279,7 @@ app.innerHTML = `
 
         <div class="progress-card-heading">
             <span class="eyebrow">MISSION TIMELINE</span>
-            <strong id="sol-progress-label">Sol 1 of 7</strong>
+            <strong id="sol-progress-label">Mars day 1 of 7</strong>
         </div>
 
         <div class="sol-timeline" id="sol-timeline">
@@ -410,7 +410,7 @@ app.innerHTML = `
 
         <!-- FOOTER -->
         <footer class="game-footer">
-            ARES-6 · SEVEN SOLS TO SURVIVE
+            ARES-6 · SEVEN MARS DAYS TO SURVIVE
             <span>EDUCATIONAL MARS SIMULATION</span>
         </footer>
 
@@ -483,7 +483,7 @@ app.innerHTML = `
                         <h3>Choose once each Mars day</h3>
                         <p>
                             Read the mission event and choose A or B. You can make one big choice
-                            each Mars day. Press End Sol after choosing to move to the next day.
+                            each Mars day. Press End Mars Day after choosing to move to the next day.
                         </p>
                     </div>
                 </article>
@@ -623,7 +623,7 @@ function renderMissionFinished() {
 
     } else if (status === "partial-success") {
 
-        title = "Mission Complete!";
+        title = "Mission Finished";
 
         description =
             "Your crew made it through all seven days, but one or both science goals are not finished.";
@@ -633,7 +633,7 @@ function renderMissionFinished() {
         title = "Mission Failed";
 
         description =
-            "The crew could not safely complete the mission. Review the resource and life-support decisions.";
+            "The crew could not safely finish the mission. Check the supplies and make sure the habitat air system is working.";
 
     }
 
@@ -780,7 +780,7 @@ async function handleEndSol() {
 
         return {
             success: true,
-            message: "The seven-Sol mission has ended."
+            message: "The seven-day Mars mission has ended."
         };
 
     }
@@ -792,7 +792,7 @@ async function handleEndSol() {
 
     return {
         success: true,
-        message: "The next Sol has started."
+        message: "The next Mars day has started."
     };
 
 }

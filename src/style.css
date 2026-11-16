@@ -2747,3 +2747,39 @@ body.mission-ending-open {
         opacity: 0.5;
     }
 }
+
+
+/* =====================================
+   DEEP-SPACE GAME BACKGROUND
+===================================== */
+
+/* The supplied image stays behind the interface.
+   Dark overlays preserve contrast for all game text and panels. */
+body {
+    background-color: #040814;
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(4, 9, 20, 0.70) 0%,
+            rgba(5, 10, 22, 0.82) 48%,
+            rgba(4, 9, 19, 0.88) 100%
+        ),
+        url("/assets/universe-background.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Keep the game canvas transparent so the space scene can show
+   through the gaps around panels and map content. */
+.game-shell {
+    background: transparent;
+}
+
+@media (max-width: 700px) {
+    body {
+        background-attachment: scroll;
+        background-position: center center;
+    }
+}

@@ -15,94 +15,63 @@ let activeFacilityId = null;
 const facilityDescriptions = {
 
     habitat: {
-
-        title: "Habitat",
-
+        title: "Habitat — Crew Home",
         description:
-            "This is where our four astronauts live. " +
-            "The life-support equipment helps provide " +
-            "breathable air and a safe indoor environment.",
-
+            "This is the crew's home on Mars. It gives the astronauts a protected place to live. " +
+            "Machines inside help make the air safe to breathe.",
         scienceFact:
-            "Mars has an atmosphere that humans cannot breathe. " +
-            "Astronauts need special life-support systems."
-
+            "People cannot breathe the thin air on Mars. The habitat needs special machines " +
+            "to give the crew safe air."
     },
-
 
     solarArray: {
-
-        title: "Solar Station",
-
+        title: "Solar Station — Power Panels",
         description:
-            "Solar panels collect sunlight and turn it into " +
-            "electricity for our Mars outpost.",
-
+            "These panels use sunlight to make electricity for the outpost. " +
+            "The electricity powers important equipment.",
         scienceFact:
-            "Dust covering solar panels can reduce the " +
-            "amount of sunlight they receive."
-
+            "Dust can cover the panels and block sunlight. " +
+            "When that happens, they make less electricity."
     },
-
 
     greenhouse: {
-
-        title: "Greenhouse",
-
+        title: "Greenhouse — Food Garden",
         description:
-            "The greenhouse helps astronauts grow food. " +
-            "Plants need water, light and the right conditions.",
-
+            "This is the outpost's food garden. The crew can grow plants here " +
+            "so they have another way to get food.",
         scienceFact:
-            "Growing plants in space requires careful control " +
-            "of water, light and nutrients."
-
+            "Plants need water, light, and nutrients from the soil or growing material. " +
+            "The crew must give them the right conditions."
     },
-
 
     shelter: {
-
-        title: "Storm Shelter",
-
+        title: "Storm Shelter — Radiation Shelter",
         description:
-            "Astronauts can use this protected area during " +
-            "dangerous radiation events.",
-
+            "The crew can go here when there is a warning about space radiation. " +
+            "The shelter is designed to give them extra protection.",
         scienceFact:
-            "Materials containing hydrogen, including water, " +
-            "can help protect astronauts from certain " +
-            "forms of space radiation."
-
+            "Some materials, including water, can help block certain kinds of space radiation. " +
+            "Real shelters need carefully planned shielding."
     },
-
 
     antenna: {
-
-        title: "Communication Station",
-
+        title: "Communication Station — Talk to Earth",
         description:
-            "The antenna helps the crew send messages " +
-            "and receive information from Earth.",
-
+            "The antenna helps the crew send messages to Earth " +
+            "and receive replies from mission control.",
         scienceFact:
-            "Messages between Earth and Mars can take " +
-            "several minutes or longer to travel one way."
-
+            "Earth and Mars are very far apart. A message can take several minutes " +
+            "or more to travel one way."
     },
 
-
     rover: {
-
-        title: "Science Rover",
-
+        title: "Science Rover — Robot Explorer",
         description:
-            "The rover explores the Martian surface " +
-            "and helps the crew collect scientific information.",
-
+            "This robot explorer travels over the surface of Mars. " +
+            "It helps the crew study rocks, soil, and the land around the outpost.",
         scienceFact:
-            "Mars rovers use scientific instruments to " +
-            "study rocks, soil and the Martian environment."
-
+            "The rover carries special tools that help scientists learn about " +
+            "Martian rocks, soil, and the planet around them."
     }
 
 };
@@ -199,7 +168,7 @@ function getFacilityInformation(facilityId, gameState) {
             },
 
             {
-                label: "Air failure days",
+                label: "Days with an air-system problem",
                 value: gameState.systems.airFailureSols ?? 0
             },
 
@@ -230,7 +199,7 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Available outpost power",
+                label: "Power stored",
                 value: `${gameState.resources.power} units`
             },
 
@@ -267,19 +236,19 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Growth remaining",
+                label: "Days until food is ready",
                 value: growing
                     ? `${greenhouse.solsUntilHarvest} Sol(s)`
                     : "No active crop cycle"
             },
 
             {
-                label: "Completed harvests",
+                label: "Times crops harvested",
                 value: greenhouse.totalHarvests
             },
 
             {
-                label: "Available food",
+                label: "Food in storage",
                 value: `${gameState.resources.food} units`
             }
 
@@ -299,7 +268,7 @@ function getFacilityInformation(facilityId, gameState) {
         const shieldingActive =
             shelter.shieldingLevel !== "none";
 
-        statusLabel = "Extra Shielding";
+        statusLabel = "Extra protection";
 
         status = shieldingActive
             ? "Basic shielding active"
@@ -309,17 +278,17 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Shielding level",
+                label: "Protection level",
                 value: formatStatus(shelter.shieldingLevel)
             },
 
             {
-                label: "Allocated water",
+                label: "Water set aside",
                 value: `${shelter.waterAllocated} units`
             },
 
             {
-                label: "Available water",
+                label: "Water left",
                 value: `${gameState.resources.water} units`
             }
 
@@ -350,14 +319,14 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Pending Earth reply",
+                label: "Reply from Earth",
                 value: pending
                     ? `Expected on Sol ${pending.deliverOnSol}`
                     : "No pending reply"
             },
 
             {
-                label: "Messages received",
+                label: "Messages from Earth received",
                 value: gameState.communication.receivedMessages.length
             }
 
@@ -385,17 +354,17 @@ function getFacilityInformation(facilityId, gameState) {
         extraDetails = [
 
             {
-                label: "Geological research",
+                label: "Study a Martian rock",
                 value: gameState.objectives.geologicalResearch
-                    ? "Completed"
-                    : "Pending"
+                    ? "Done"
+                    : "Not started"
             },
 
             {
-                label: "Environmental research",
+                label: "Study Mars's environment",
                 value: gameState.objectives.environmentalResearch
-                    ? "Completed"
-                    : "Pending"
+                    ? "Done"
+                    : "Not started"
             }
 
         ];

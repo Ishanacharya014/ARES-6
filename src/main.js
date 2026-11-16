@@ -5,6 +5,8 @@ import { refreshMapEffects } from './ui/mapEffects.js';
 import { renderPowerPlanner } from './ui/powerPlanner.js';
 import { saveDailyPowerAllocation } from './game/powerAllocation.js';
 import { showDailyDebrief } from './ui/dailyDebrief.js';
+import { saveAutosave, readAutosave, clearAutosave } from './game/autosave.js';
+import { showSavePrompt } from './ui/savePrompt.js';
 
 import { initializeOutpost } from './ui/outpost.js';
 
@@ -43,6 +45,56 @@ if (!app) {
 }
 // Create a fresh mission state.
 let gameState = createInitialGameState();
+
+// =====================================
+// LOCAL AUTOSAVE HELPERS
+// =====================================
+
+function updateAutosaveStatus(message, status = "saved") {
+
+    const indicator = document.querySelector("#autosave-status");
+
+    if (!indicator) return;
+
+    indicator.textContent = message;
+    indicator.dataset.status = status;
+
+}
+
+function persistCurrentMission() {
+
+    const result = saveAutosave(gameState);
+
+    if (result.success) {
+        const time = new Date(result.savedAt).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+        updateAutosaveStatus("AUTOSAVED · " + time, "saved");
+
+    } else {
+
+        updateAutosaveStatus("SAVE UNAVAILABLE", "error");
+
+    }
+
+    return result;
+
+}
+
+function replaceCurrentGameState(nextState) {
+
+    // Preserve the original outer object so existing outpost event
+    // listeners continue to reference the active game state.
+    for (const key of Object.keys(gameState)) {
+        delete gameState[key];
+    }
+
+    Object.assign(gameState, nextState);
+
+}
+
 
 // =====================================
 // CENTRALIZED INTERFACE REFRESH
@@ -104,6 +156,10 @@ app.innerHTML = `
     </span>
 
 </div>
+
+            <span class="autosave-status" id="autosave-status" role="status">
+                SAVE READY
+            </span>
 
             <button
                 type="button"
@@ -779,7 +835,6 @@ app.innerHTML = `
 initializeOutpost(gameState);
 
 refreshGameInterface();
-initializeMissionBriefing();
 
 document.querySelector("#mission-scenario-button")?.addEventListener(
     "click",

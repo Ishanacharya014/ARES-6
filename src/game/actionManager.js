@@ -11,7 +11,10 @@ import { GAME_CONFIG } from "./gameState.js";
 
 import { startCropCycle } from "../simulation/greenhouse.js";
 
-import { setSolarDustLevel } from "../simulation/powerSystem.js";
+import {
+    consumePower,
+    setSolarDustLevel
+} from "../simulation/powerSystem.js";
 
 import {
     allocateWaterForShielding
@@ -124,6 +127,46 @@ function applyDecisionEffects(gameState, effects = {}) {
                 }
 
                 result = startCropCycle(gameState);
+
+                break;
+
+
+            // Clean panels only when they are actually dusty.
+            // If they are already clean, do not charge the player again.
+            case "cleanSolarPanelsIfDusty":
+
+                if (value !== true || !gameState.facilities?.solarArray) {
+                    return {
+                        success: false,
+                        message: "Invalid solar panel cleaning instruction."
+                    };
+                }
+
+                if (gameState.facilities.solarArray.dustLevel === "dusty") {
+
+                    result = consumePower(gameState, 5, "Solar panel cleaning");
+
+                    if (!result.success) {
+                        return result;
+                    }
+
+                    result = setSolarDustLevel(gameState, "clean");
+
+                } else if (gameState.facilities.solarArray.dustLevel === "clean") {
+
+                    result = {
+                        success: true,
+                        message: "The solar panels are already clean."
+                    };
+
+                } else {
+
+                    return {
+                        success: false,
+                        message: "Solar panel condition is unknown."
+                    };
+
+                }
 
                 break;
 

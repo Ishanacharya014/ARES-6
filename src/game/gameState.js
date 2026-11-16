@@ -12,7 +12,7 @@
 
 export const GAME_CONFIG = {
 
-    totalSols: 7,
+    totalSols: 14,
 
     crewCount: 4,
 
@@ -52,7 +52,8 @@ export function createInitialGameState(scenarioId = "standard", options = {}) {
             totalSols: GAME_CONFIG.totalSols,
             status: "playing",
             scenarioId: selectedScenarioId,
-            powerPlanningEnabled: options.powerPlanningEnabled === true
+            powerPlanningEnabled: options.powerPlanningEnabled === true,
+            finalReportTransmitted: false
         },
 
 
@@ -101,6 +102,10 @@ export function createInitialGameState(scenarioId = "standard", options = {}) {
             shelter: {
                 shieldingLevel: "none",
                 waterAllocated: 0
+            },
+
+            waterRecycler: {
+                operational: true
             }
 
         },
@@ -140,7 +145,11 @@ export function createInitialGameState(scenarioId = "standard", options = {}) {
 
             geologicalResearch: false,
 
-            environmentalResearch: false
+            environmentalResearch: false,
+
+            waterIceResearch: false,
+
+            atmosphericResearch: false
 
         },
 

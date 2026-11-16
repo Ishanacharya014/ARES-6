@@ -2407,11 +2407,11 @@ body.mission-ending-open {
 .map-dust-layer i:nth-child(17) { top: 91%; animation-delay: -3.2s; }
 .map-dust-layer i:nth-child(18) { top: 61%; animation-delay: -2.1s; }
 
-.map[data-weather="dusty"] .map-dust-layer {
+.outpost-map[data-weather="dusty"] .map-dust-layer {
     opacity: 0.82;
 }
 
-.map[data-weather="dusty"] .solar-marker img {
+.outpost-map[data-weather="dusty"] .solar-marker img {
     filter:
         sepia(0.32)
         saturate(0.78)
@@ -2419,7 +2419,7 @@ body.mission-ending-open {
         drop-shadow(0 8px 8px rgba(0, 0, 0, 0.35));
 }
 
-.map[data-weather="dusty"] .solar-marker::before {
+.outpost-map[data-weather="dusty"] .solar-marker::before {
     content: "";
     position: absolute;
     z-index: 2;
@@ -2438,7 +2438,7 @@ body.mission-ending-open {
     pointer-events: none;
 }
 
-.map[data-weather="clear"] .solar-marker::before {
+.outpost-map[data-weather="clear"] .solar-marker::before {
     content: "";
     position: absolute;
     z-index: 2;
@@ -2465,18 +2465,18 @@ body.mission-ending-open {
     transition: opacity 450ms ease;
 }
 
-.map[data-radiation="danger"] .map-radiation-layer {
+.outpost-map[data-radiation="danger"] .map-radiation-layer {
     opacity: 1;
     animation: radiation-warning-glow 2.8s ease-in-out infinite;
 }
 
-.map[data-radiation="caution"] .map-radiation-layer {
+.outpost-map[data-radiation="caution"] .map-radiation-layer {
     opacity: 0.55;
     animation: radiation-warning-glow 4s ease-in-out infinite;
 }
 
-.map[data-radiation="danger"] .shelter-marker::before,
-.map[data-radiation="caution"] .shelter-marker::before {
+.outpost-map[data-radiation="danger"] .shelter-marker::before,
+.outpost-map[data-radiation="caution"] .shelter-marker::before {
     content: "";
     position: absolute;
     z-index: 0;
@@ -2488,7 +2488,7 @@ body.mission-ending-open {
     pointer-events: none;
 }
 
-.map[data-shielding="active"][data-radiation="danger"] .shelter-marker::before {
+.outpost-map[data-shielding="active"][data-radiation="danger"] .shelter-marker::before {
     border-color: rgba(105, 216, 255, 0.95);
     box-shadow:
         0 0 16px rgba(105, 216, 255, 0.65),
@@ -2506,12 +2506,12 @@ body.mission-ending-open {
     transition: opacity 450ms ease;
 }
 
-.map[data-air="warning"] .map-air-alert-layer {
+.outpost-map[data-air="warning"] .map-air-alert-layer {
     opacity: 1;
     animation: air-alert-glow 2.1s ease-in-out infinite;
 }
 
-.map[data-air="warning"] .habitat-marker::before {
+.outpost-map[data-air="warning"] .habitat-marker::before {
     content: "";
     position: absolute;
     z-index: 0;
@@ -2525,7 +2525,7 @@ body.mission-ending-open {
 
 /* GROWING CROPS: soft green light and tiny floating sparkles. */
 
-.map[data-crops="growing"] .greenhouse-marker::before {
+.outpost-map[data-crops="growing"] .greenhouse-marker::before {
     content: "";
     position: absolute;
     z-index: 0;
@@ -2546,7 +2546,7 @@ body.mission-ending-open {
     pointer-events: none;
 }
 
-.map[data-crops="growing"] .map-crop-particle-layer {
+.outpost-map[data-crops="growing"] .map-crop-particle-layer {
     opacity: 1;
 }
 
@@ -2567,7 +2567,7 @@ body.mission-ending-open {
 
 /* EARTH MESSAGE: pulsing signal rings around the antenna. */
 
-.map[data-comms="pending"] .antenna-marker::before {
+.outpost-map[data-comms="pending"] .antenna-marker::before {
     content: "";
     position: absolute;
     z-index: 0;
@@ -2738,12 +2738,12 @@ body.mission-ending-open {
         transition: none !important;
     }
 
-    .map[data-weather="dusty"] .map-dust-layer {
+    .outpost-map[data-weather="dusty"] .map-dust-layer {
         opacity: 0.42;
     }
 
-    .map[data-radiation="danger"] .map-radiation-layer,
-    .map[data-radiation="caution"] .map-radiation-layer {
+    .outpost-map[data-radiation="danger"] .map-radiation-layer,
+    .outpost-map[data-radiation="caution"] .map-radiation-layer {
         opacity: 0.5;
     }
 }
@@ -3020,12 +3020,12 @@ body {
 .map-historical-storm-layer i:nth-child(11) { left: 68%; animation: may2024-particle 3.8s linear -2.8s infinite; }
 .map-historical-storm-layer i:nth-child(12) { left: 89%; animation: may2024-particle 4.2s linear -0.2s infinite; height: 18px; }
 
-.map[data-solar-storm="active"] .map-historical-storm-layer {
+.outpost-map[data-solar-storm="active"] .map-historical-storm-layer {
     opacity: 1;
 }
 
-.map[data-solar-storm="active"] .map-historical-storm-layer::before,
-.map[data-solar-storm="active"] .map-historical-storm-layer::after {
+.outpost-map[data-solar-storm="active"] .map-historical-storm-layer::before,
+.outpost-map[data-solar-storm="active"] .map-historical-storm-layer::after {
     opacity: 1;
 }
 
@@ -3047,7 +3047,7 @@ body {
     .map-historical-storm-layer::after {
         animation: none !important;
     }
-    .map[data-solar-storm="active"] .map-historical-storm-layer {
+    .outpost-map[data-solar-storm="active"] .map-historical-storm-layer {
         opacity: 0.55;
     }
 }

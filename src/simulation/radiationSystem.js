@@ -335,14 +335,16 @@ export function resolveRadiationEvent(gameState) {
     }
 
 
-    // Basic shielding reduces the risk.
+    // Water shielding and the advanced powered shield can both help.
     const hasShielding =
         gameState.facilities.shelter.shieldingLevel === "basic";
 
+    const hasPoweredShielding =
+        gameState.turn?.powerAllocation?.shelter === 2;
 
-    const protection = hasShielding
-        ? RADIATION_CONFIG.shieldingProtection
-        : 0;
+    const protection =
+        (hasShielding ? RADIATION_CONFIG.shieldingProtection : 0) +
+        (hasPoweredShielding ? RADIATION_CONFIG.shieldingProtection : 0);
 
 
     const riskAdded = Math.max(
@@ -398,7 +400,11 @@ export function resolveRadiationEvent(gameState) {
 
         radiationStatus: radiationStatus,
 
-        shieldingActive: hasShielding,
+        shieldingActive: hasShielding || hasPoweredShielding,
+
+        waterShieldingActive: hasShielding,
+
+        poweredShieldingActive: hasPoweredShielding,
 
         riskAdded: riskAdded,
 

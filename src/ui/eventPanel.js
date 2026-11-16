@@ -31,7 +31,8 @@ export function renderEventPanel(
     event,
     onChoiceSelected,
     onEndSol,
-    scenarioId = "standard"
+    scenarioId = "standard",
+    turnState = null
 ) {
 
     const panel = document.querySelector("#event-panel-root");
@@ -220,7 +221,45 @@ export function renderEventPanel(
     const endHelp = panel.querySelector("#end-sol-help");
 
 
-    let decisionSubmitted = false;
+    const decisionSubmitted =
+        turnState?.decisionMade === true &&
+        typeof turnState.selectedChoiceId === "string";
+
+    if (decisionSubmitted) {
+
+        buttons.forEach(button => {
+
+            button.disabled = true;
+
+            if (
+                event.choices[Number(button.dataset.choiceIndex)]?.id ===
+                turnState.selectedChoiceId
+            ) {
+                button.classList.add("is-selected");
+            }
+
+        });
+
+        feedback.hidden = false;
+        feedback.textContent = "Your saved choice is ready. You can continue this Mars day.";
+        feedback.className = "event-feedback success";
+
+        endButton.hidden = false;
+
+        const planConfirmed =
+            turnState.powerAllocation?.confirmed === true;
+
+        const planningEnabled =
+            turnState.powerPlanningEnabled === true;
+
+        endButton.disabled = planningEnabled && !planConfirmed;
+
+        endHelp.textContent =
+            planningEnabled && !planConfirmed
+                ? "Save today's advanced power plan before ending this Mars day."
+                : "Your choice is saved. End this Mars day to continue.";
+
+    }
 
 
     // =====================================

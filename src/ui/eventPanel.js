@@ -62,6 +62,54 @@ export function renderEventPanel(
         categoryLabels[event.category] ??
         String(event.category || "MISSION").toUpperCase();
 
+    const historicalRecord = event.historicalRecord;
+
+    const historicalRecordMarkup = historicalRecord
+        ? `
+            <section class="historical-storm-card" aria-label="NASA historical solar storm record">
+                <div class="historical-storm-header">
+                    <span>NASA HISTORICAL EVENT</span>
+                    <span>ARCHIVED</span>
+                </div>
+
+                <strong class="historical-storm-date">
+                    ${escapeHTML(historicalRecord.date)} · Curiosity Mars day ${escapeHTML(historicalRecord.curiositySol)}
+                </strong>
+
+                <div class="historical-storm-dose">
+                    <strong>${Number(historicalRecord.estimatedAstronautDoseMicrogray).toLocaleString("en-US")}</strong>
+                    <span>µGy estimated astronaut dose near Curiosity</span>
+                </div>
+
+                <p>
+                    ${escapeHTML(historicalRecord.doseExplanation)}
+                </p>
+
+                <p>
+                    The solar flare was later estimated at
+                    <strong>${escapeHTML(historicalRecord.flareClassEstimate)}</strong>.
+                    ${escapeHTML(historicalRecord.radFinding)}
+                </p>
+
+                <p class="historical-storm-note">
+                    ${escapeHTML(historicalRecord.scienceNote)}
+                </p>
+
+                <p class="historical-storm-game-note">
+                    ${escapeHTML(historicalRecord.gameModelNote)}
+                </p>
+
+                <a
+                    href="${/^https:\/\//i.test(historicalRecord.sourceUrl) ? escapeHTML(historicalRecord.sourceUrl) : "#"}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Read the NASA report ↗
+                </a>
+            </section>
+        `
+        : "";
+
     panel.innerHTML = `
 
         <span class="eyebrow">
@@ -84,6 +132,8 @@ export function renderEventPanel(
             <p>${escapeHTML(event.scienceFact)}</p>
 
         </div>
+
+        ${historicalRecordMarkup}
 
         <div class="event-decision-heading">
             YOUR CHOICE

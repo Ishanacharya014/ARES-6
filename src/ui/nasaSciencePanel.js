@@ -58,11 +58,10 @@ export function renderNasaSciencePanel(result) {
 
             <span class="eyebrow">NASA SCIENCE DATA</span>
 
-            <h3>Science data unavailable</h3>
+            <h3>NASA science data is unavailable</h3>
 
             <p>
-                Historical NASA data could not be loaded.
-                The mission simulation can continue.
+                We could not load the older NASA measurements. You can still play the mission.
             </p>
 
         `;
@@ -82,7 +81,7 @@ export function renderNasaSciencePanel(result) {
 
     if (!observation) {
 
-        panel.textContent = "No radiation observations available.";
+        panel.textContent = "No radiation measurements are available.";
 
         return false;
 
@@ -160,7 +159,7 @@ export function renderNasaSciencePanel(result) {
 
         <div class="nasa-science-detail">
 
-            <span>WHERE WAS THIS MEASURED?</span>
+            <span>WHERE DID NASA MEASURE IT?</span>
 
             <p>
                 ${escapeHTML(dataset.rover)} rover,
@@ -186,13 +185,13 @@ export function renderNasaSciencePanel(result) {
             <strong>Important</strong>
 
             <p>
-                This is a historical NASA measurement, not a
-                current Mars reading or a prediction for our outpost.
+                NASA collected this measurement in the past. It is not a live reading
+                and it does not tell us exactly what our game outpost would experience.
             </p>
 
             <p>
-                ARES-6 radiation risk points are simplified
-                game values, not measured radiation doses.
+                The radiation points in ARES-6 are only part of the game. They are not
+                real radiation measurements.
             </p>
 
         </div>
@@ -242,7 +241,7 @@ export function renderDonkiLivePanel(result) {
 
             <span class="nasa-data-status">UNAVAILABLE</span>
 
-            <h3>Live update unavailable</h3>
+            <h3>Space-weather update unavailable</h3>
 
             <p>
                 ${escapeHTML(result?.message)}
@@ -251,13 +250,11 @@ export function renderDonkiLivePanel(result) {
             <div class="nasa-science-warning">
 
                 <p>
-                    Historical NASA radiation information
-                    is still available above.
+                    The older NASA Mars measurements are still available above.
                 </p>
 
                 <p>
-                    The mission simulation does not depend
-                    on an internet connection.
+                    You can keep playing even when the internet is not working.
                 </p>
 
             </div>
@@ -296,12 +293,10 @@ export function renderDonkiLivePanel(result) {
 
             </div>
 
-            <h3>No SEP notifications found</h3>
+            <h3>No solar particle alerts found</h3>
 
             <p>
-                NASA DONKI returned no Solar Energetic
-                Particle notifications for the selected
-                seven-day query window.
+                NASA found no solar particle alerts in the last seven days.
             </p>
 
             <p class="donki-update-time">
@@ -345,15 +340,13 @@ export function renderDonkiLivePanel(result) {
         </div>
 
         <h3>
-            Solar particle notifications
+            Solar particle alerts
         </h3>
 
         <p class="donki-introduction">
 
-            NASA DONKI returned
-            ${notifications.length} SEP notification(s)
-            between ${escapeHTML(result.startDate)}
-            and ${escapeHTML(result.endDate)}.
+            NASA returned ${notifications.length} solar particle alert(s)
+            between ${escapeHTML(result.startDate)} and ${escapeHTML(result.endDate)}.
 
         </p>
 
@@ -406,13 +399,12 @@ export function renderDonkiLivePanel(result) {
 
         <div class="nasa-science-warning">
 
-            <strong>Scientific note</strong>
+            <strong>Remember</strong>
 
             <p>
-                These are space-weather notifications,
-                not direct radiation measurements at Mars.
-                They do not calculate the ARES-6 crew's
-                radiation exposure.
+                These alerts tell us about activity from the Sun. They are not
+                radiation measurements taken on Mars, and they do not tell us
+                how much radiation the ARES-6 crew receives.
             </p>
 
         </div>

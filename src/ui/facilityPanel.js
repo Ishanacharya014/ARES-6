@@ -15,7 +15,7 @@ let activeFacilityId = null;
 const facilityDescriptions = {
 
     habitat: {
-        title: "Habitat — Crew Home",
+        title: "Crew Home",
         description:
             "This is the crew's home on Mars. It gives the astronauts a protected place to live. " +
             "Machines inside help make the air safe to breathe.",
@@ -25,7 +25,7 @@ const facilityDescriptions = {
     },
 
     solarArray: {
-        title: "Solar Station — Power Panels",
+        title: "Solar Panels",
         description:
             "These panels use sunlight to make electricity for the outpost. " +
             "The electricity powers important equipment.",
@@ -40,22 +40,21 @@ const facilityDescriptions = {
             "This is the outpost's food garden. The crew can grow plants here " +
             "so they have another way to get food.",
         scienceFact:
-            "Plants need water, light, and nutrients from the soil or growing material. " +
-            "The crew must give them the right conditions."
+            "Plants need water, light, and nutrients. Nutrients are the helpful things in soil or growing material that plants need to grow."
     },
 
     shelter: {
-        title: "Storm Shelter — Radiation Shelter",
+        title: "Radiation Shelter",
         description:
             "The crew can go here when there is a warning about space radiation. " +
             "The shelter is designed to give them extra protection.",
         scienceFact:
-            "Some materials, including water, can help block certain kinds of space radiation. " +
-            "Real shelters need carefully planned shielding."
+            "Some materials, including water, can help reduce how much space radiation gets through. " +
+            "Real shelters need carefully planned protection."
     },
 
     antenna: {
-        title: "Communication Station — Talk to Earth",
+        title: "Talk-to-Earth Antenna",
         description:
             "The antenna helps the crew send messages to Earth " +
             "and receive replies from mission control.",
@@ -65,7 +64,7 @@ const facilityDescriptions = {
     },
 
     rover: {
-        title: "Science Rover — Robot Explorer",
+        title: "Robot Rover",
         description:
             "This robot explorer travels over the surface of Mars. " +
             "It helps the crew study rocks, soil, and the land around the outpost.",
@@ -168,7 +167,7 @@ function getFacilityInformation(facilityId, gameState) {
             },
 
             {
-                label: "Days with an air-system problem",
+                label: "Mars days with an air problem",
                 value: gameState.systems.airFailureSols ?? 0
             },
 
@@ -279,11 +278,11 @@ function getFacilityInformation(facilityId, gameState) {
 
             {
                 label: "Protection level",
-                value: formatStatus(shelter.shieldingLevel)
+                value: shelter.shieldingLevel === "basic" ? "Basic extra protection" : "None"
             },
 
             {
-                label: "Water set aside",
+                label: "Water saved for protection",
                 value: `${shelter.waterAllocated} units`
             },
 
@@ -322,7 +321,7 @@ function getFacilityInformation(facilityId, gameState) {
                 label: "Reply from Earth",
                 value: pending
                     ? `Expected on Mars day ${pending.deliverOnSol}`
-                    : "No pending reply"
+                    : "No message waiting"
             },
 
             {

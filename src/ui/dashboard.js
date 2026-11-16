@@ -112,43 +112,37 @@ function updateObjectives(gameState) {
 
     const objectives = gameState.objectives;
 
-    const geologicalComplete =
-        objectives.geologicalResearch;
+    const objectiveStatus = {
+        geologicalResearch: "geological-objective-status",
+        environmentalResearch: "environmental-objective-status",
+        waterIceResearch: "water-ice-objective-status",
+        atmosphericResearch: "atmospheric-objective-status"
+    };
 
-    const environmentalComplete =
-        objectives.environmentalResearch;
+    for (const [key, elementId] of Object.entries(objectiveStatus)) {
+        updateText(
+            elementId,
+            objectives[key] ? "Done" : "Not started"
+        );
+    }
 
     const completedObjectives =
-        Number(geologicalComplete) +
-        Number(environmentalComplete);
+        Object.values(objectives).filter(Boolean).length;
 
-
-    updateText(
-        "geological-objective-status",
-        geologicalComplete ? "Done" : "Not started"
-    );
-
-    updateText(
-        "environmental-objective-status",
-        environmentalComplete ? "Done" : "Not started"
-    );
+    const totalObjectives = Object.keys(objectives).length;
 
     updateText(
         "completed-objectives-value",
-        `${completedObjectives} / 2`
+        `${completedObjectives} / ${totalObjectives}`
     );
 
-
-    // Update objective progress bar.
     const objectiveFill = document.getElementById(
         "objectives-progress-fill"
     );
 
     if (objectiveFill) {
-
         objectiveFill.style.width =
-            `${completedObjectives / 2 * 100}%`;
-
+            `${totalObjectives > 0 ? completedObjectives / totalObjectives * 100 : 0}%`;
     }
 
 }

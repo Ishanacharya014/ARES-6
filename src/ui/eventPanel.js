@@ -79,14 +79,14 @@ export function renderEventPanel(
 
         <div class="event-science-fact">
 
-            <span>SCIENCE FACT</span>
+            <span>DID YOU KNOW?</span>
 
             <p>${escapeHTML(event.scienceFact)}</p>
 
         </div>
 
         <div class="event-decision-heading">
-            YOUR DECISION
+            YOUR CHOICE
         </div>
 
         <div class="event-choice-list">

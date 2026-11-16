@@ -3738,3 +3738,263 @@ body.daily-debrief-open {
 .mission-ending-report-row strong {
     color: var(--blue);
 }
+
+
+/* =====================================
+   LOCAL AUTOSAVE STATUS
+===================================== */
+
+.autosave-status {
+    flex: 0 0 auto;
+    padding: 5px 7px;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.55px;
+    white-space: nowrap;
+}
+
+.autosave-status[data-status="saved"] {
+    color: var(--green);
+    border-color: rgba(127, 224, 165, 0.24);
+    background: rgba(127, 224, 165, 0.06);
+}
+
+.autosave-status[data-status="error"] {
+    color: #ffb49d;
+    border-color: rgba(255, 139, 111, 0.35);
+    background: rgba(255, 139, 111, 0.08);
+}
+
+@media (max-width: 900px) {
+    .autosave-status {
+        font-size: 7px;
+        padding: 4px 5px;
+    }
+}
+
+
+/* =====================================
+   CONTINUE / NEW MISSION PROMPT
+===================================== */
+
+.save-resume-overlay[hidden] {
+    display: none !important;
+}
+
+.save-resume-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1400;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    overflow-y: auto;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(105, 216, 255, 0.13), transparent 40%),
+        rgba(3, 8, 17, 0.96);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+
+.save-resume-card {
+    width: min(100%, 560px);
+    margin: auto;
+    padding: clamp(20px, 4vw, 32px);
+    color: var(--text);
+    background:
+        linear-gradient(145deg, rgba(105, 216, 255, 0.055), transparent 45%),
+        var(--panel);
+    border: 1px solid #35516f;
+    border-radius: 16px;
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
+}
+
+.save-resume-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.save-resume-brand > span {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.save-resume-brand strong,
+.save-resume-brand small {
+    display: block;
+}
+
+.save-resume-brand strong {
+    font-size: 12px;
+    letter-spacing: 0.7px;
+}
+
+.save-resume-brand small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 8px;
+    letter-spacing: 1.2px;
+}
+
+.save-resume-hero {
+    padding: 25px 0 20px;
+}
+
+.save-resume-hero .eyebrow {
+    color: var(--blue);
+}
+
+.save-resume-hero h1 {
+    margin: 9px 0;
+    font-size: clamp(23px, 4vw, 31px);
+    line-height: 1.18;
+}
+
+.save-resume-hero p {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.save-resume-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.save-resume-summary > div {
+    min-width: 0;
+    padding: 11px;
+    background: rgba(105, 216, 255, 0.055);
+    border: 1px solid rgba(105, 216, 255, 0.14);
+    border-radius: 8px;
+}
+
+.save-resume-summary span,
+.save-resume-summary strong {
+    display: block;
+}
+
+.save-resume-summary span {
+    margin-bottom: 5px;
+    color: var(--muted);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+}
+
+.save-resume-summary strong {
+    overflow-wrap: anywhere;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.save-resume-resources {
+    margin-top: 12px;
+    padding: 10px;
+    color: var(--blue);
+    background: rgba(105, 216, 255, 0.07);
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.save-resume-warning {
+    padding: 12px;
+    color: #ffd1bd;
+    background: rgba(255, 139, 111, 0.08);
+    border: 1px solid rgba(255, 139, 111, 0.2);
+    border-left: 3px solid #ff8b6f;
+    border-radius: 7px;
+    font-size: 10px;
+    line-height: 1.65;
+}
+
+.save-resume-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 20px;
+}
+
+.save-resume-actions button {
+    min-height: 43px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.65px;
+}
+
+.save-resume-continue {
+    color: #071521;
+    background: var(--blue);
+    border: 1px solid var(--blue);
+}
+
+.save-resume-new {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border);
+}
+
+.save-resume-actions button:hover {
+    filter: brightness(1.1);
+}
+
+.save-resume-actions button:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+}
+
+.save-resume-footnote {
+    display: block;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 8px;
+    text-align: center;
+}
+
+@media (max-width: 520px) {
+    .save-resume-overlay {
+        padding: 9px;
+    }
+
+    .save-resume-card {
+        padding: 19px 14px;
+        border-radius: 12px;
+    }
+
+    .save-resume-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .save-resume-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .save-resume-card,
+    .save-resume-actions button {
+        animation: none !important;
+        transition: none !important;
+    }
+}

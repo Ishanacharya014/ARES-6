@@ -30,7 +30,8 @@ function escapeHTML(value) {
 export function renderEventPanel(
     event,
     onChoiceSelected,
-    onEndSol
+    onEndSol,
+    scenarioId = "standard"
 ) {
 
     const panel = document.querySelector("#event-panel-root");
@@ -61,6 +62,19 @@ export function renderEventPanel(
     const categoryLabel =
         categoryLabels[event.category] ??
         String(event.category || "MISSION").toUpperCase();
+
+    const scenarioIntroductionMarkup =
+        scenarioId === "may-2024-solar-storm" && event.sol === 1
+            ? `
+                <div class="historical-scenario-intro">
+                    <strong>HISTORICAL TRAINING SCENARIO</strong>
+                    <p>
+                        On Mars day 4, you will study a real solar storm from May 20, 2024.
+                        The other daily events are ARES-6 practice simulations.
+                    </p>
+                </div>
+            `
+            : "";
 
     const historicalRecord = event.historicalRecord;
 
@@ -116,6 +130,8 @@ export function renderEventPanel(
             MARS DAY ${String(event.sol).padStart(2, "0")}
             · ${escapeHTML(categoryLabel)}
         </span>
+
+        ${scenarioIntroductionMarkup}
 
         <h3 class="event-title">
             ${escapeHTML(event.title)}

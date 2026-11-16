@@ -36,6 +36,10 @@ import {
     processCommunication
 } from "./communication.js";
 
+import {
+    applyDailyPowerAllocation
+} from "../game/powerAllocation.js";
+
 
 // =====================================
 // 1. UPDATE CREW CONDITION
@@ -235,6 +239,23 @@ export function completeCurrentSol(gameState) {
 
 
     // =====================================
+    // STEP 1B: APPLY THE OPTIONAL POWER PLAN
+    // =====================================
+
+    const allocationResult = runSimulationStep(
+        "Daily power allocation",
+        applyDailyPowerAllocation,
+        draftState
+    );
+
+    if (!allocationResult.success) {
+        return allocationResult;
+    }
+
+    results.powerAllocation = allocationResult.result;
+
+
+    // =====================================
     // STEP 2: OPERATE LIFE SUPPORT
     // =====================================
 
@@ -274,7 +295,10 @@ export function completeCurrentSol(gameState) {
 
     const cropResult = runSimulationStep(
         "Greenhouse",
-        advanceCropGrowth,
+        state => advanceCropGrowth(
+            state,
+            state.turn.powerAllocation?.greenhouse === 2
+        ),
         draftState
     );
 

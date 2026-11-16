@@ -225,6 +225,20 @@ function getOperationSummary(results, afterState) {
 
     }
 
+    const waterRecovery = results?.waterRecovery;
+    if (waterRecovery) {
+
+        addOperation(
+            items,
+            "Water recycling",
+            waterRecovery.operational
+                ? `The recycler recovered ${waterRecovery.recovered ?? 0} water units for later use.`
+                : "The water recycler was offline. No water could be recovered today.",
+            waterRecovery.operational ? "good" : "warning"
+        );
+
+    }
+
     const communication = results?.communication;
     if (communication?.delivered) {
 
@@ -290,8 +304,10 @@ export function showDailyDebrief({
     const endResources = afterState.resources ?? {};
 
     const objectiveCount =
-        Number(Boolean(afterState.objectives?.geologicalResearch)) +
-        Number(Boolean(afterState.objectives?.environmentalResearch));
+        Object.values(afterState.objectives ?? {}).filter(Boolean).length;
+
+    const objectiveTotal =
+        Object.keys(afterState.objectives ?? {}).length;
 
     const dayResult = afterState.mission.status === "failure"
         ? {
@@ -331,7 +347,7 @@ export function showDailyDebrief({
         : afterState.mission.status === "success"
             ? "ALL SCIENCE GOALS COMPLETE"
             : afterState.mission.status === "partial-success"
-                ? "SEVEN DAYS COMPLETE"
+                ? "14 DAYS COMPLETE"
                 : "DAY COMPLETE";
 
     page.dataset.result = afterState.mission.status;

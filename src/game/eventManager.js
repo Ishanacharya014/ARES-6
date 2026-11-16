@@ -19,66 +19,77 @@ import {
 // 1. EVENT DATA CACHE
 // =====================================
 
-let cachedEvents = null;
+const EVENT_FILES = {
+    standard: "/data/events.json",
+    "may-2024-solar-storm": "/data/scenarios/may-2024-solar-storm.json"
+};
+
+const eventCache = new Map();
 
 
 // =====================================
-// 2. LOAD EVENTS FROM JSON
+// 2. LOAD EVENTS FROM THE SELECTED SCENARIO
 // =====================================
 
-export async function loadEvents() {
+export async function loadEvents(scenarioId = "standard") {
 
-    // Reuse previously loaded event data.
-    if (cachedEvents !== null) {
+    const filePath = EVENT_FILES[scenarioId];
 
+    if (!filePath) {
         return {
-            success: true,
-            events: cachedEvents
+            success: false,
+            message: "Unknown mission scenario."
         };
-
     }
 
+    if (eventCache.has(scenarioId)) {
+        return {
+            success: true,
+            events: eventCache.get(scenarioId)
+        };
+    }
 
     try {
-
-        const response = await fetch("/data/events.json");
+        const response = await fetch(filePath);
 
         if (!response.ok) {
-
             return {
                 success: false,
-                message: `Could not load events: ${response.status}`
+                message: `Could not load mission events: ${response.status}`
             };
-
         }
 
-
         const data = await response.json();
-
 
         if (
             !data ||
             !Array.isArray(data.events) ||
             data.events.length !== 7
         ) {
-
             return {
                 success: false,
-                message: "Invalid event data. Seven events are required."
+                message: "Invalid mission data. Seven events are required."
             };
-
         }
 
+        if (
+            scenarioId !== "standard" &&
+            data.scenario?.id !== scenarioId
+        ) {
+            return {
+                success: false,
+                message: "The scenario information does not match the selected mission."
+            };
+        }
 
-        // Check event IDs and Sol numbers.
         const ids = new Set();
         const sols = new Set();
 
         for (const event of data.events) {
-
             if (
                 !event ||
                 typeof event.id !== "string" ||
+                event.id.trim() === "" ||
                 !Number.isInteger(event.sol) ||
                 event.sol < 1 ||
                 event.sol > 7 ||
@@ -87,56 +98,42 @@ export async function loadEvents() {
                 !Array.isArray(event.choices) ||
                 event.choices.length !== 2
             ) {
-
                 return {
                     success: false,
-                    message: "Event data contains invalid or duplicate entries."
+                    message: "Mission events contain invalid or duplicate entries."
                 };
-
             }
 
             ids.add(event.id);
             sols.add(event.sol);
-
         }
 
-
-        // Confirm all seven Sols exist.
         for (let sol = 1; sol <= 7; sol++) {
-
             if (!sols.has(sol)) {
-
                 return {
                     success: false,
-                    message: `Event for Sol ${sol} is missing.`
+                    message: `Event for Mars day ${sol} is missing.`
                 };
-
             }
-
         }
 
+        const events = [...data.events].sort((a, b) => a.sol - b.sol);
 
-        // Sort events into campaign order.
-        cachedEvents = [...data.events].sort(
-            (a, b) => a.sol - b.sol
-        );
-
+        eventCache.set(scenarioId, events);
 
         return {
             success: true,
-            events: cachedEvents
+            events,
+            scenario: data.scenario ?? null
         };
 
-
     } catch (error) {
-
         console.error("Event loading error:", error);
 
         return {
             success: false,
             message: "Unable to load mission events."
         };
-
     }
 
 }
@@ -272,7 +269,8 @@ export async function loadEventForCurrentSol(gameState) {
 
 
     // Load the campaign events.
-    const loadResult = await loadEvents();
+    const scenarioId = gameState.mission.scenarioId ?? "standard";
+    const loadResult = await loadEvents(scenarioId);
 
     if (!loadResult.success) {
 

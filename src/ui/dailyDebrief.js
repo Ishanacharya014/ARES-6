@@ -402,7 +402,7 @@ export function showDailyDebrief({
             </div>
             <div>
                 <span class="eyebrow">SCIENCE GOALS</span>
-                <strong>${objectiveCount} / 2</strong>
+                <strong>${objectiveCount} / ${objectiveTotal}</strong>
                 <small>Goals completed</small>
             </div>
             <div>

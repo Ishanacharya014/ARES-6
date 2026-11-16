@@ -38,7 +38,7 @@ if (!app) {
     throw new Error('ARES-6 application container not found.');
 }
 // Create a fresh mission state.
-const gameState = createInitialGameState();
+let gameState = createInitialGameState();
 
 // =====================================
 // CENTRALIZED INTERFACE REFRESH
@@ -679,12 +679,71 @@ function renderMissionFinished() {
             Thank you for completing ARES-6.
         </p>
 
+        <div class="mission-report-actions">
+            <button
+                type="button"
+                class="restart-mission-button"
+                id="restart-mission-button"
+            >
+                ↻ Restart Mission
+            </button>
+        </div>
+
+        <small class="restart-mission-help">
+            Start a new seven-Sol mission with all progress reset.
+        </small>
+
     `;
 
-
-    
+    const restartButton = panel.querySelector("#restart-mission-button");
+    restartButton?.addEventListener("click", restartMission);
 
 }
+
+
+// =====================================
+// RESTART THE SEVEN-SOL MISSION
+// =====================================
+
+async function restartMission() {
+
+    // Ask before discarding the completed campaign.
+    const confirmed = window.confirm(
+        "Restart ARES-6? Your current mission progress and resources will be reset."
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    // Create a completely fresh mission state.
+    gameState = createInitialGameState();
+
+    // Close any facility inspection left open from the previous mission.
+    const facilityPanel = document.querySelector("#facility-panel-root");
+
+    if (facilityPanel) {
+        facilityPanel.hidden = true;
+        facilityPanel.innerHTML = "";
+    }
+
+    // Collapse the optional science drawer for the new run.
+    document.querySelector(".science-drawer")?.removeAttribute("open");
+
+    // Reset resources, crew, facilities, objectives and mission progress.
+    refreshGameInterface();
+
+    // Load the first Sol event and restore its decision controls.
+    await initializeMissionEvent();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+    console.log("ARES-6 mission restarted with a fresh game state.");
+}
+
 
 
 // =====================================

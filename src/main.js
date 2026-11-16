@@ -1,6 +1,7 @@
 import './style.css';
 import './ui/missionBriefing.css';
 import { initializeMissionBriefing } from './ui/missionBriefing.js';
+import { refreshMapEffects } from './ui/mapEffects.js';
 
 import { initializeOutpost } from './ui/outpost.js';
 
@@ -51,6 +52,9 @@ function refreshGameInterface() {
 
     // Update currently inspected facility.
     refreshFacilityPanel(gameState);
+
+    // Show dust, radiation, crop and equipment conditions on the Mars map.
+    refreshMapEffects(gameState);
 
 }
 

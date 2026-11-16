@@ -94,7 +94,8 @@ export function createInitialGameState(scenarioId = "standard", options = {}) {
             greenhouse: {
                 cropStatus: "empty",
                 solsUntilHarvest: 0,
-                totalHarvests: 0
+                totalHarvests: 0,
+                nextHarvestBonus: 0
             },
 
             shelter: {
